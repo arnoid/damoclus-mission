@@ -1,0 +1,88 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	roboto-regular-large: {
+		file: roboto-regular-large.fnt
+	}
+	roboto-regular-medium: {
+		file: roboto-regular-medium.fnt
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	primary: {
+		r: 1
+		g: 0.59607846
+		b: 0
+		a: 1
+	}
+	primaryDark: {
+		r: 0.9607843
+		g: 0.4862745
+		b: 0
+		a: 1
+	}
+	primaryLight: {
+		r: 1
+		g: 0.8784314
+		b: 0.69803923
+		a: 1
+	}
+	white: {
+		r: 1
+		g: 1
+		b: 1
+		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+	default: {
+		up: skin_btn_default_normal_holo_dark
+		down: skin_btn_default_pressed_holo_dark
+		over: skin_btn_default_focused_holo_dark
+		disabled: skin_btn_default_disabled_holo_dark
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+	default: {
+		checkboxOn: skin_btn_check_on_holo_dark
+		checkboxOff: skin_btn_check_off_holo_dark
+		checkboxOver: skin_btn_check_off_focused_holo_dark
+		checkboxOnDisabled: skin_btn_check_on_disabled_holo_dark
+		checkboxOffDisabled: skin_btn_check_off_disabled_holo_dark
+		font: roboto-regular-medium
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: roboto-regular-medium
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		font: roboto-regular-medium
+		up: skin_btn_default_normal_holo_dark
+		down: skin_btn_default_pressed_holo_dark
+		over: skin_btn_default_focused_holo_dark
+		disabled: skin_btn_default_disabled_holo_dark
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+	default: {
+		font: roboto-regular-medium
+		fontColor: white
+		background: skin_textfield_default_holo_dark
+		focusedBackground: skin_textfield_activated_holo_dark
+		disabledBackground: skin_textfield_disabled_holo_dark
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+	default: {
+		background: window
+		titleFont: roboto-regular-large
+	}
+}
+}
