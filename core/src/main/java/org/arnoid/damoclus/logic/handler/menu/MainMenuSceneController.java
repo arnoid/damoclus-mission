@@ -1,8 +1,8 @@
-package org.arnoid.damoclus.logic.handler.menu.main;
+package org.arnoid.damoclus.logic.handler.menu;
 
 import com.badlogic.gdx.Gdx;
 import org.arnoid.damoclus.DamoclusGdxGame;
-import org.arnoid.damoclus.controller.scene.SceneProducer;
+import org.arnoid.damoclus.SceneNavigator;
 import org.arnoid.damoclus.ui.scene.AbstractScene;
 
 public class MainMenuSceneController extends AbstractScene.SceneController {
@@ -20,7 +20,7 @@ public class MainMenuSceneController extends AbstractScene.SceneController {
     public void onOptions() {
         Gdx.app.log(TAG, "Options clicked");
 
-        getGame().loadScene(SceneProducer.SceneType.OPTIONS_MENU);
+        getGame().loadScene(SceneNavigator.SceneType.MENU_OPTIONS);
     }
 
     public void onQuit() {

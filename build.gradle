@@ -4,8 +4,12 @@ buildscript {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
+        classpath "net.ltgt.gradle:gradle-apt-plugin:0.9"
     }
 }
 
@@ -29,10 +33,12 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
+
 }
 
 project(":desktop") {
     apply plugin: "java"
+    apply plugin: "net.ltgt.apt"
 
 
     dependencies {
@@ -50,6 +56,7 @@ project(":desktop") {
 
 project(":core") {
     apply plugin: "java"
+    apply plugin: "net.ltgt.apt"
 
 
     dependencies {

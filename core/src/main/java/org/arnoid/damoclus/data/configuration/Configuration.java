@@ -1,6 +1,10 @@
 package org.arnoid.damoclus.data.configuration;
 
-public class ControlMapConfiguration {
+import java.util.Locale;
+
+public class Configuration {
+
+    Locale locale;
 
     UserControllerMap keyboardMap;
 
@@ -10,5 +14,13 @@ public class ControlMapConfiguration {
 
     public void setKeyboardMap(UserControllerMap keyboardMap) {
         this.keyboardMap = keyboardMap;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 }

@@ -1,0 +1,20 @@
+{
+  "loading_window_title": "Загружаем...",
+
+  "main_menu_window_title": "Damoclus mission",
+  "main_menu_btn_quit": "Выход",
+  "main_menu_btn_new_game": "Новая игра",
+  "main_menu_btn_options": "Настройки",
+
+  "options_menu_window_title": "Настройки",
+  "options_menu_btn_audio": "Аудио",
+  "options_menu_btn_video": "Видео",
+  "options_menu_btn_language": "Язык",
+  "options_menu_btn_controllers": "Управление",
+  "options_menu_btn_back": "Назад",
+
+  "language_menu_window_title":"Язык",
+  "language_menu_en":"Английский",
+  "language_menu_ru":"Русский",
+  "language_menu_btn_back": "Назад"
+}

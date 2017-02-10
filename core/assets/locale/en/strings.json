@@ -9,6 +9,13 @@
   "options_menu_window_title": "Options",
   "options_menu_btn_audio": "Audio",
   "options_menu_btn_video": "Video",
+  "options_menu_btn_language": "Language",
   "options_menu_btn_controllers": "Controllers",
-  "options_menu_btn_back": "Back"
+  "options_menu_btn_back": "Back",
+
+  "language_menu_window_title":"Language",
+  "language_menu_en":"English",
+  "language_menu_ru":"Russian",
+  "language_menu_btn_back": "Back"
+
 }

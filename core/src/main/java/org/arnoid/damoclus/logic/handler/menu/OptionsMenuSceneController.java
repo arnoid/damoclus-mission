@@ -1,7 +1,8 @@
-package org.arnoid.damoclus.logic.handler.menu.options;
+package org.arnoid.damoclus.logic.handler.menu;
 
 import com.badlogic.gdx.Gdx;
 import org.arnoid.damoclus.DamoclusGdxGame;
+import org.arnoid.damoclus.SceneNavigator;
 import org.arnoid.damoclus.ui.scene.AbstractScene;
 
 public class OptionsMenuSceneController extends AbstractScene.SceneController {
@@ -22,6 +23,10 @@ public class OptionsMenuSceneController extends AbstractScene.SceneController {
 
     public void onControllers() {
         Gdx.app.log(TAG, "Controllers clicked");
+    }
+
+    public void onLanguage() {
+        getGame().loadScene(SceneNavigator.SceneType.MENU_LANGUAGE);
     }
 
     public void onBack() {

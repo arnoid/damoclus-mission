@@ -83,6 +83,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
 		background: window
 		titleFont: roboto-regular-large
+		titleFontColor: primary
 	}
 }
 }

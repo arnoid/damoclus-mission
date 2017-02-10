@@ -19,12 +19,12 @@ public class StringsController implements Disposable {
     private final Gson gson;
     private Map<String, String> stringsMap;
 
-    public StringsController() {
+    public StringsController(Locale locale) {
         gson = new Gson();
-        loadForLocale(Locale.ENGLISH);
+        loadLocale(locale);
     }
 
-    public void loadForLocale(Locale locale) {
+    public void loadLocale(Locale locale) {
         Type type = new TypeToken<Map<String, String>>() {
         }.getType();
         Reader reader = Gdx.files.internal(getLocalePath(locale)).reader(Charset.defaultCharset().displayName());
@@ -46,6 +46,10 @@ public class StringsController implements Disposable {
     }
 
     public String string(String key) {
-        return stringsMap.get(key);
+        if (stringsMap.containsKey(key)) {
+            return stringsMap.get(key);
+        } else {
+            return key;
+        }
     }
 }

@@ -1,47 +1,50 @@
 package org.arnoid.damoclus.ui.scene.menu;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.*;
-import com.badlogic.gdx.scenes.scene2d.actions.EventAction;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.FocusListener;
 import com.badlogic.gdx.utils.Align;
-import org.arnoid.damoclus.DamoclusGdxGame;
-import org.arnoid.damoclus.MenuNavigationInputAdapter;
 import org.arnoid.damoclus.controller.skin.SkinController;
 import org.arnoid.damoclus.controller.strings.StringsController;
+import org.arnoid.damoclus.logic.handler.menu.MenuNavigationInputAdapter;
 import org.arnoid.damoclus.ui.scene.AbstractScene;
 
+import javax.inject.Inject;
 import java.util.LinkedList;
 
 public abstract class AbstractMenuScene<M extends AbstractScene.SceneController> extends AbstractScene<M> implements MenuNavigationInputAdapter.MenuNavigationListener {
 
     private static final String TAG = AbstractMenuScene.class.getSimpleName();
 
-    private final SkinController skinController;
-    private final StringsController stringsController;
+    @Inject
+    StringsController stringsController;
+    @Inject
+    SkinController skinController;
 
-    private final Window window;
-    private final SpriteBatch spriteBatch;
-    private final ClickListener clickListener;
+    private Window window;
+    private SpriteBatch spriteBatch;
+    private ClickListener clickListener;
 
-    private LinkedList<TextButton> menuButtons = new LinkedList<>();
+    private LinkedList<TextButton> menuItems = new LinkedList<>();
 
-    public AbstractMenuScene(DamoclusGdxGame game, Stage stage) {
-        super(game, stage);
+    public AbstractMenuScene(Stage stage) {
+        super(stage);
+    }
 
-        skinController = game.skinController;
-        stringsController = game.stringsController;
-
+    protected void init() {
         spriteBatch = new SpriteBatch();
 
         Skin skin = skinController.getSkin();
 
-        window = new Window(getWindowTitle(stringsController), skin);
+        window = new Window(getWindowTitle(), skin);
         window.getTitleTable().padLeft(5);
 
         window.setPosition(0, 0);
@@ -55,21 +58,37 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneController>
             }
         };
 
-        produceMenuButtons(skin, stringsController);
+        produceMenuContent(window, skin);
 
-        window.setModal(true);
-        window.setMovable(true);
-
-        if (menuButtons.size() > 0) {
-            Button firstButton = menuButtons.get(0);
-            stage.setKeyboardFocus(firstButton);
+        if (menuItems.size() > 0) {
+            Actor firstButton = menuItems.get(0);
+            getStage().setKeyboardFocus(firstButton);
         }
+    }
+
+    public Window getWindow() {
+        return window;
+    }
+
+    protected void produceMenuContent(Window window, Skin skin) {
+        produceMenuButtons();
     }
 
     @Override
     public void show() {
         window.setTouchable(Touchable.enabled);
+
+        window.getTitleLabel().setText(getWindowTitle());
+
+        for (TextButton button : menuItems) {
+            button.setText(getButtonLabel(button.getName()));
+        }
+
         getStage().addActor(window);
+    }
+
+    protected String getButtonLabel(String name) {
+        return getStringsController().string(name);
     }
 
     @Override
@@ -80,9 +99,9 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneController>
 
     protected abstract void clicked(Actor actor, InputEvent event);
 
-    protected abstract String getWindowTitle(StringsController stringsController);
+    protected abstract String getWindowTitle();
 
-    protected abstract void produceMenuButtons(Skin skin, StringsController stringsController);
+    protected abstract void produceMenuButtons();
 
     protected float getButtonsWidth() {
         return 0;
@@ -101,7 +120,7 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneController>
     }
 
     protected TextButton appendMenuButton(TextButton button, int align) {
-        Cell<TextButton> cell = window.align(align).add(button);
+        Cell<Button> cell = window.align(align).add(button);
 
         float buttonsWidth = getButtonsWidth();
 
@@ -118,10 +137,10 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneController>
         window.row();
         window.add().height(getButtonsSpacing()).row();
 
-        menuButtons.add(button);
+        menuItems.add(button);
 
-        if (menuButtons.size() == 1) {
-            markSelected(menuButtons.peek());
+        if (menuItems.size() == 1) {
+            markSelected(menuItems.peek());
         }
 
         button.addListener(clickListener);
@@ -129,10 +148,18 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneController>
         return button;
     }
 
-    protected TextButton produceButton(Skin skin, StringsController stringsController, String name) {
-        TextButton textButton = new TextButton(stringsController.string(name), skin);
-        textButton.setName(name);
-        return textButton;
+    public StringsController getStringsController() {
+        return stringsController;
+    }
+
+    public SkinController getSkinController() {
+        return skinController;
+    }
+
+    protected TextButton produceButton(String name) {
+        TextButton button = new TextButton(getButtonLabel(name), getSkinController().getSkin());
+        button.setName(name);
+        return button;
     }
 
     @Override
@@ -161,32 +188,32 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneController>
     }
 
     public void selectNextButton() {
-        TextButton button = menuButtons.removeFirst();
+        TextButton button = menuItems.removeFirst();
 
-        menuButtons.addLast(button);
+        menuItems.addLast(button);
 
         markNotSelected(button);
 
-        markSelected(menuButtons.peek());
+        markSelected(menuItems.peek());
     }
 
     public void selectPreviousButton() {
-        markNotSelected(menuButtons.peek());
+        markNotSelected(menuItems.peek());
 
-        TextButton button = menuButtons.removeLast();
+        TextButton button = menuItems.removeLast();
 
         markSelected(button);
 
-        menuButtons.addFirst(button);
+        menuItems.addFirst(button);
     }
 
-    private void markNotSelected(TextButton button) {
+    private void markNotSelected(Button button) {
         InputEvent inputEvent = new InputEvent();
         inputEvent.setListenerActor(button);
         button.getClickListener().exit(inputEvent, 0, 0, -1, button);
     }
 
-    private void markSelected(TextButton button) {
+    private void markSelected(Button button) {
         button.getClickListener().enter(null, 0, 0, -1, button);
     }
 
@@ -202,6 +229,6 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneController>
 
     @Override
     public void onInteract() {
-        clicked(menuButtons.peek(), new InputEvent());
+        clicked(menuItems.peek(), new InputEvent());
     }
 }

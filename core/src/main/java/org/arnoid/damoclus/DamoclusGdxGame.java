@@ -6,56 +6,90 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import org.arnoid.damoclus.controller.persistent.ControlMapConfigurationController;
-import org.arnoid.damoclus.controller.scene.SceneControllerProducer;
-import org.arnoid.damoclus.controller.scene.SceneProducer;
+import org.arnoid.damoclus.component.ControllerModule;
+import org.arnoid.damoclus.component.DaggerMainComponent;
+import org.arnoid.damoclus.component.MainComponent;
+import org.arnoid.damoclus.component.SceneControllerModule;
+import org.arnoid.damoclus.component.SceneModule;
+import org.arnoid.damoclus.controller.persistent.ConfigurationController;
 import org.arnoid.damoclus.controller.skin.SkinController;
 import org.arnoid.damoclus.controller.strings.StringsController;
+import org.arnoid.damoclus.logic.handler.menu.MenuNavigationInputAdapter;
 import org.arnoid.damoclus.ui.SceneContainer;
 import org.arnoid.damoclus.ui.scene.AbstractScene;
 
-public class DamoclusGdxGame implements ApplicationListener {
+import javax.inject.Inject;
 
-    private SceneContainer sceneContainer;
+public class DamoclusGdxGame implements ApplicationListener, SceneNavigator {
 
-    public static SceneProducer sceneProducer;
-    public static SceneControllerProducer sceneControllerProducer;
-
-
-    public static SkinController skinController;
-    public static StringsController stringsController;
+    private static final String TAG = DamoclusGdxGame.class.getSimpleName();
 
     private Stage stage;
-    private ControlMapConfigurationController controllersConfigurationController;
+    private SceneContainer sceneContainer;
+
+    @Inject
+    ConfigurationController configurationController;
+    @Inject
+    StringsController stringsController;
+    @Inject
+    SkinController skinController;
+
     private MenuNavigationInputAdapter menuNavigationInputAdapter;
+
+    public static MainComponent mainComponent;
 
     @Override
     public void create() {
         Gdx.graphics.setContinuousRendering(true);
 
-        sceneProducer = new SceneProducer();
-        sceneControllerProducer = new SceneControllerProducer();
+        stage = new Stage(new ScreenViewport());
 
-        controllersConfigurationController = new ControlMapConfigurationController();
+        mainComponent = DaggerMainComponent.builder()
+                .controllerModule(new ControllerModule())
+                .sceneModule(new SceneModule(stage))
+                .sceneControllerModule(new SceneControllerModule(this))
+                .build();
 
-        skinController = new SkinController();
-        stringsController = new StringsController();
+        mainComponent.inject(this);
 
-        menuNavigationInputAdapter = new MenuNavigationInputAdapter();
+        menuNavigationInputAdapter = new MenuNavigationInputAdapter(mainComponent);
 
         sceneContainer = new SceneContainer();
 
-        stage = new Stage(new ScreenViewport());
-
         Gdx.input.setInputProcessor(new InputMultiplexer(menuNavigationInputAdapter, stage));
 
-        loadScene(SceneProducer.SceneType.MAIN_MENU);
+        loadScene(SceneType.MENU_MAIN);
     }
 
-    public void loadScene(SceneProducer.SceneType sceneType) {
+    public void loadScene(SceneType sceneType) {
 
-        AbstractScene scene = sceneProducer.produce(sceneType, this, stage);
-        AbstractScene.SceneController sceneController = sceneControllerProducer.produce(sceneType, this);
+        AbstractScene scene;
+        AbstractScene.SceneController sceneController;
+
+        switch (sceneType) {
+            case MENU_MAIN:
+                scene = mainComponent.provideMainMenu();
+                sceneController = mainComponent.provideMainMenuController();
+                break;
+            case MENU_OPTIONS:
+                scene = mainComponent.provideOptionsMenu();
+                sceneController = mainComponent.provideOptionsMenuController();
+                break;
+            case MENU_LANGUAGE:
+                scene = mainComponent.provideLanguageMenu();
+                sceneController = mainComponent.provideLanguageMenuController();
+                break;
+            default:
+                String sceneName;
+                if (sceneType == null) {
+                    sceneName = "null";
+                } else {
+                    sceneName = sceneType.name();
+                }
+                String message = "Unable to load scene [" + sceneName + "]";
+                Gdx.app.error(TAG, message);
+                throw new RuntimeException(message);
+        }
 
         scene.setSceneController(sceneController);
 
@@ -84,7 +118,7 @@ public class DamoclusGdxGame implements ApplicationListener {
         sceneContainer.dispose();
 
         skinController.dispose();
-        sceneProducer.dispose();
+        stringsController.dispose();
     }
 
     @Override

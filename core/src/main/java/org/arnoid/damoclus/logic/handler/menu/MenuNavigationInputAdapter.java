@@ -1,4 +1,4 @@
-package org.arnoid.damoclus;
+package org.arnoid.damoclus.logic.handler.menu;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -7,20 +7,29 @@ import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
+import org.arnoid.damoclus.component.MainComponent;
+import org.arnoid.damoclus.controller.persistent.ConfigurationController;
+import org.arnoid.damoclus.data.configuration.UserControllerMap;
 import org.arnoid.damoclus.ui.scene.AbstractScene;
 import org.arnoid.damoclus.ui.scene.menu.AbstractMenuScene;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 
 public class MenuNavigationInputAdapter extends InputAdapter implements ControllerListener {
 
-    public ArrayList<AbstractMenuScene> listeners = new ArrayList<>();
+    @Inject
+    ConfigurationController controllersConfigurationController;
+    private ArrayList<AbstractMenuScene> listeners = new ArrayList<>();
 
-    public MenuNavigationInputAdapter() {
+    public MenuNavigationInputAdapter(MainComponent component) {
+        component.inject(this);
+
         Controllers.addListener(this);
+        controllersConfigurationController.read();
     }
 
-    public void addListner(AbstractMenuScene listener) {
+    public void addListener(AbstractMenuScene listener) {
         listeners.add(listener);
     }
 
@@ -30,7 +39,7 @@ public class MenuNavigationInputAdapter extends InputAdapter implements Controll
 
     public void registerMenuNavigation(AbstractScene scene) {
         if (scene != null && scene instanceof AbstractMenuScene) {
-            addListner((AbstractMenuScene) scene);
+            addListener((AbstractMenuScene) scene);
         }
     }
 
@@ -42,21 +51,23 @@ public class MenuNavigationInputAdapter extends InputAdapter implements Controll
 
     @Override
     public boolean keyDown(int keycode) {
-        switch (keycode) {
-            case Input.Keys.UP:
-            case Input.Keys.W:
-                previous();
-                break;
-            case Input.Keys.DOWN:
-            case Input.Keys.S:
-                next();
-                break;
-            case Input.Keys.ENTER:
-            case Input.Keys.BUTTON_A:
-                interact();
-                break;
+        UserControllerMap keyboardMap = getKeyboardMap();
+
+        if (keycode == Input.Keys.UP || keycode == keyboardMap.getUp()) {
+            previous();
+        } else if (keycode == Input.Keys.DOWN || keycode == keyboardMap.getDown()) {
+            next();
+        } else if (keycode == Input.Keys.ENTER || keycode == keyboardMap.getInteract()) {
+            interact();
+        } else {
+
         }
+
         return true;
+    }
+
+    private UserControllerMap getKeyboardMap() {
+        return controllersConfigurationController.read().getKeyboardMap();
     }
 
     private void previous() {
@@ -135,4 +146,5 @@ public class MenuNavigationInputAdapter extends InputAdapter implements Controll
 
         void onInteract();
     }
+
 }
