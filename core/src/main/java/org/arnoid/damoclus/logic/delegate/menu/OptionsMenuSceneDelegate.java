@@ -1,24 +1,24 @@
-package org.arnoid.damoclus.logic.handler.menu;
+package org.arnoid.damoclus.logic.delegate.menu;
 
 import com.badlogic.gdx.Gdx;
 import org.arnoid.damoclus.DamoclusGdxGame;
 import org.arnoid.damoclus.SceneNavigator;
 import org.arnoid.damoclus.ui.scene.AbstractScene;
 
-public class OptionsMenuSceneController extends AbstractScene.SceneController {
+public class OptionsMenuSceneDelegate extends AbstractScene.SceneDelegate {
 
-    private static final String TAG = OptionsMenuSceneController.class.getSimpleName();
+    private static final String TAG = OptionsMenuSceneDelegate.class.getSimpleName();
 
-    public OptionsMenuSceneController(DamoclusGdxGame game) {
+    public OptionsMenuSceneDelegate(DamoclusGdxGame game) {
         super(game);
     }
 
     public void onAudio() {
-        Gdx.app.log(TAG, "Audio clicked");
+        getGame().loadScene(SceneNavigator.SceneType.MENU_AUDIO);
     }
 
     public void onVideo() {
-        Gdx.app.log(TAG, "Video clicked");
+        getGame().loadScene(SceneNavigator.SceneType.MENU_VIDEO);
     }
 
     public void onControllers() {
@@ -30,7 +30,6 @@ public class OptionsMenuSceneController extends AbstractScene.SceneController {
     }
 
     public void onBack() {
-        Gdx.app.log(TAG, "Back clicked");
         getGame().popScene();
     }
 }

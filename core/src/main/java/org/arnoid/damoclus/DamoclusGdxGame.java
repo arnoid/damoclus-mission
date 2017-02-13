@@ -9,12 +9,12 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import org.arnoid.damoclus.component.ControllerModule;
 import org.arnoid.damoclus.component.DaggerMainComponent;
 import org.arnoid.damoclus.component.MainComponent;
-import org.arnoid.damoclus.component.SceneControllerModule;
+import org.arnoid.damoclus.component.SceneDelegateModule;
 import org.arnoid.damoclus.component.SceneModule;
 import org.arnoid.damoclus.controller.persistent.ConfigurationController;
 import org.arnoid.damoclus.controller.skin.SkinController;
 import org.arnoid.damoclus.controller.strings.StringsController;
-import org.arnoid.damoclus.logic.handler.menu.MenuNavigationInputAdapter;
+import org.arnoid.damoclus.logic.input.MenuNavigationInputAdapter;
 import org.arnoid.damoclus.ui.SceneContainer;
 import org.arnoid.damoclus.ui.scene.AbstractScene;
 
@@ -34,7 +34,8 @@ public class DamoclusGdxGame implements ApplicationListener, SceneNavigator {
     @Inject
     SkinController skinController;
 
-    private MenuNavigationInputAdapter menuNavigationInputAdapter;
+    @Inject
+    MenuNavigationInputAdapter menuNavigationInputAdapter;
 
     public static MainComponent mainComponent;
 
@@ -47,12 +48,10 @@ public class DamoclusGdxGame implements ApplicationListener, SceneNavigator {
         mainComponent = DaggerMainComponent.builder()
                 .controllerModule(new ControllerModule())
                 .sceneModule(new SceneModule(stage))
-                .sceneControllerModule(new SceneControllerModule(this))
+                .sceneDelegateModule(new SceneDelegateModule(this))
                 .build();
 
         mainComponent.inject(this);
-
-        menuNavigationInputAdapter = new MenuNavigationInputAdapter(mainComponent);
 
         sceneContainer = new SceneContainer();
 
@@ -64,20 +63,28 @@ public class DamoclusGdxGame implements ApplicationListener, SceneNavigator {
     public void loadScene(SceneType sceneType) {
 
         AbstractScene scene;
-        AbstractScene.SceneController sceneController;
+        AbstractScene.SceneDelegate sceneDelegate;
 
         switch (sceneType) {
             case MENU_MAIN:
                 scene = mainComponent.provideMainMenu();
-                sceneController = mainComponent.provideMainMenuController();
+                sceneDelegate = mainComponent.provideMainMenuController();
                 break;
             case MENU_OPTIONS:
                 scene = mainComponent.provideOptionsMenu();
-                sceneController = mainComponent.provideOptionsMenuController();
+                sceneDelegate = mainComponent.provideOptionsMenuController();
                 break;
             case MENU_LANGUAGE:
                 scene = mainComponent.provideLanguageMenu();
-                sceneController = mainComponent.provideLanguageMenuController();
+                sceneDelegate = mainComponent.provideLanguageMenuController();
+                break;
+            case MENU_AUDIO:
+                scene = mainComponent.provideAudioMenu();
+                sceneDelegate = mainComponent.provideAudioMenuController();
+                break;
+            case MENU_VIDEO:
+                scene = mainComponent.provideVideoMenu();
+                sceneDelegate = mainComponent.provideVideoMenuController();
                 break;
             default:
                 String sceneName;
@@ -91,10 +98,17 @@ public class DamoclusGdxGame implements ApplicationListener, SceneNavigator {
                 throw new RuntimeException(message);
         }
 
-        scene.setSceneController(sceneController);
+        scene.setSceneDelegate(sceneDelegate);
+        scene.onSceneDelegate();
 
-        menuNavigationInputAdapter.unregisterMenuNavigation(sceneContainer.peek());
-        menuNavigationInputAdapter.registerMenuNavigation(scene);
+        AbstractScene peekedScene = sceneContainer.peek();
+        if (peekedScene != null && peekedScene instanceof MenuNavigationInputAdapter.MenuNavigationListener) {
+            menuNavigationInputAdapter.unregisterMenuNavigation((MenuNavigationInputAdapter.MenuNavigationListener) peekedScene);
+        }
+
+        if (scene != null && scene instanceof MenuNavigationInputAdapter.MenuNavigationListener) {
+            menuNavigationInputAdapter.registerMenuNavigation((MenuNavigationInputAdapter.MenuNavigationListener) scene);
+        }
 
         sceneContainer.push(scene);
 
@@ -106,10 +120,20 @@ public class DamoclusGdxGame implements ApplicationListener, SceneNavigator {
     public void popScene() {
         AbstractScene scene = sceneContainer.pop();
 
-        menuNavigationInputAdapter.unregisterMenuNavigation(scene);
-        menuNavigationInputAdapter.registerMenuNavigation(sceneContainer.peek());
+        if (scene != null && scene instanceof MenuNavigationInputAdapter.MenuNavigationListener) {
+            menuNavigationInputAdapter.unregisterMenuNavigation((MenuNavigationInputAdapter.MenuNavigationListener) scene);
+        }
+
+        AbstractScene peekedScene = sceneContainer.peek();
+        if (peekedScene != null && peekedScene instanceof MenuNavigationInputAdapter.MenuNavigationListener) {
+            menuNavigationInputAdapter.registerMenuNavigation((MenuNavigationInputAdapter.MenuNavigationListener) peekedScene);
+        }
 
         Gdx.graphics.requestRendering();
+    }
+
+    public MenuNavigationInputAdapter getMenuNavigationInputAdapter() {
+        return menuNavigationInputAdapter;
     }
 
     @Override

@@ -2,25 +2,29 @@ package org.arnoid.damoclus.ui.scene.menu;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import org.arnoid.damoclus.controller.skin.SkinController;
 import org.arnoid.damoclus.controller.strings.StringsController;
-import org.arnoid.damoclus.logic.handler.menu.MenuNavigationInputAdapter;
+import org.arnoid.damoclus.logic.input.MenuNavigationInputAdapter;
 import org.arnoid.damoclus.ui.scene.AbstractScene;
 
 import javax.inject.Inject;
 import java.util.LinkedList;
 
-public abstract class AbstractMenuScene<M extends AbstractScene.SceneController> extends AbstractScene<M> implements MenuNavigationInputAdapter.MenuNavigationListener {
+public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> extends AbstractScene<M> implements MenuNavigationInputAdapter.MenuNavigationListener {
 
     private static final String TAG = AbstractMenuScene.class.getSimpleName();
 
@@ -33,30 +37,71 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneController>
     private SpriteBatch spriteBatch;
     private ClickListener clickListener;
 
-    private LinkedList<TextButton> menuItems = new LinkedList<>();
+    private LinkedList<Actor> menuItems = new LinkedList<>();
+    private LinkedList<Actor> labelItems = new LinkedList<>();
+    private ChangeListener changeListener;
+
+    private boolean paused = false;
 
     public AbstractMenuScene(Stage stage) {
         super(stage);
     }
 
-    protected void init() {
+    void init() {
         spriteBatch = new SpriteBatch();
 
         Skin skin = skinController.getSkin();
 
         window = new Window(getWindowTitle(), skin);
-        window.getTitleTable().padLeft(5);
+        window.getTitleTable().padLeft(5).align(Align.left);
+        window.align(Align.topLeft);
 
         window.setPosition(0, 0);
 
         clickListener = new ClickListener() {
+
+            boolean mouseMode = false;
+
+            @Override
+            public boolean mouseMoved(InputEvent event, float x, float y) {
+                if (mouseMode) {
+                    return true;
+                } else {
+                    mouseMode = true;
+
+                    for (Actor actor : menuItems) {
+                        markNotSelected(actor);
+                    }
+                    return super.mouseMoved(event, x, y);
+                }
+            }
+
             public void clicked(InputEvent event, float x, float y) {
                 Actor listenerActor = event.getListenerActor();
                 if (listenerActor != null && listenerActor.getName() != null) {
                     AbstractMenuScene.this.clicked(listenerActor, event);
                 }
             }
+
+            @Override
+            public boolean keyTyped(InputEvent event, char character) {
+                mouseMode = false;
+                return super.keyTyped(event, character);
+            }
+
         };
+
+        changeListener = new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Actor listenerActor = event.getListenerActor();
+                if (listenerActor != null && listenerActor.getName() != null) {
+                    AbstractMenuScene.this.changed(listenerActor, event);
+                }
+            }
+        };
+
+        window.addListener(clickListener);
 
         produceMenuContent(window, skin);
 
@@ -66,12 +111,28 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneController>
         }
     }
 
+    @Override
+    public void pause() {
+        super.pause();
+        paused = true;
+    }
+
+    @Override
+    public void resume() {
+        super.resume();
+        paused = false;
+    }
+
+    public boolean isPaused() {
+        return paused;
+    }
+
     public Window getWindow() {
         return window;
     }
 
     protected void produceMenuContent(Window window, Skin skin) {
-        produceMenuButtons();
+        produceMenuItems();
     }
 
     @Override
@@ -80,15 +141,39 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneController>
 
         window.getTitleLabel().setText(getWindowTitle());
 
-        for (TextButton button : menuItems) {
-            button.setText(getButtonLabel(button.getName()));
+        for (Actor actor : menuItems) {
+            if (actor instanceof TextButton) {
+                TextButton button = (TextButton) actor;
+                button.setText(getText(button.getName()));
+            }
+        }
+
+        for (Actor actor : labelItems) {
+            if (actor instanceof TextButton) {
+                ((TextButton) actor).setText(getText(actor.getName()));
+            } else if (actor instanceof Label) {
+                ((Label) actor).setText(getText(actor.getName()));
+            } else if (actor instanceof SelectBox) {
+                Object[] selectBoxArray = getSelectBoxArray(actor.getName());
+                if (selectBoxArray != null) {
+                    SelectBox selectBox = (SelectBox) actor;
+                    selectBox.setItems(selectBoxArray);
+                    if (selectBoxArray.length > 0) {
+                        selectBox.setSelectedIndex(0);
+                    }
+                }
+            }
         }
 
         getStage().addActor(window);
     }
 
-    protected String getButtonLabel(String name) {
+    protected String getText(String name) {
         return getStringsController().string(name);
+    }
+
+    protected Object[] getSelectBoxArray(String name) {
+        return new String[]{};
     }
 
     @Override
@@ -99,53 +184,35 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneController>
 
     protected abstract void clicked(Actor actor, InputEvent event);
 
+    protected abstract void changed(Actor actor, ChangeListener.ChangeEvent event);
+
     protected abstract String getWindowTitle();
 
-    protected abstract void produceMenuButtons();
+    protected abstract void produceMenuItems();
 
-    protected float getButtonsWidth() {
+    protected float getCellWidth(int column) {
         return 0;
     }
 
-    protected float getButtonsHeight() {
+    protected float getCellHeight(int column) {
         return 0;
     }
 
-    protected float getButtonsSpacing() {
-        return 0;
+    protected void registerMenuItemListeners(Actor actor) {
+        actor.addListener(clickListener);
+        actor.addListener(changeListener);
     }
 
-    protected TextButton appendMenuButton(TextButton button) {
-        return appendMenuButton(button, Align.topLeft);
-    }
-
-    protected TextButton appendMenuButton(TextButton button, int align) {
-        Cell<Button> cell = window.align(align).add(button);
-
-        float buttonsWidth = getButtonsWidth();
-
-        if (buttonsWidth > 0) {
-            cell.width(buttonsWidth);
-        }
-
-        float buttonsHeight = getButtonsHeight();
-
-        if (buttonsHeight > 0) {
-            cell.height(buttonsHeight);
-        }
-
-        window.row();
-        window.add().height(getButtonsSpacing()).row();
-
-        menuItems.add(button);
+    protected void registerInMenuItems(Actor actor) {
+        menuItems.add(actor);
 
         if (menuItems.size() == 1) {
             markSelected(menuItems.peek());
         }
+    }
 
-        button.addListener(clickListener);
-
-        return button;
+    public void registerLabeledActor(Actor producedActor) {
+        labelItems.add(producedActor);
     }
 
     public StringsController getStringsController() {
@@ -157,10 +224,35 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneController>
     }
 
     protected TextButton produceButton(String name) {
-        TextButton button = new TextButton(getButtonLabel(name), getSkinController().getSkin());
+        TextButton button = new TextButton(getText(name), getSkinController().getSkin());
         button.setName(name);
         return button;
     }
+
+    protected Label produceLabel(String name) {
+        Label label = new Label(getText(name), getSkinController().getSkin());
+        label.setName(name);
+        return label;
+    }
+
+    protected <T> SelectBox<T> produceSelectBox(String name) {
+        final SelectBox<T> selectBox = new SelectBox<>(getSkinController().getSkin());
+
+        selectBox.setName(name);
+
+        selectBox.addListener(changeListener);
+        return selectBox;
+    }
+
+    protected ImageButton produceCheckBox(String name) {
+        final ImageButton checkBox = new ImageButton(getSkinController().getSkin(), getSkinController().getImgByttonCheckBoxStyle());
+
+        checkBox.setName(name);
+
+        checkBox.addListener(changeListener);
+        return checkBox;
+    }
+
 
     @Override
     public void resize(int width, int height) {
@@ -187,48 +279,63 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneController>
         spriteBatch.dispose();
     }
 
-    public void selectNextButton() {
-        TextButton button = menuItems.removeFirst();
-
-        menuItems.addLast(button);
-
-        markNotSelected(button);
-
-        markSelected(menuItems.peek());
-    }
-
-    public void selectPreviousButton() {
-        markNotSelected(menuItems.peek());
-
-        TextButton button = menuItems.removeLast();
-
-        markSelected(button);
-
-        menuItems.addFirst(button);
-    }
-
-    private void markNotSelected(Button button) {
+    private void markNotSelected(Actor actor) {
         InputEvent inputEvent = new InputEvent();
-        inputEvent.setListenerActor(button);
-        button.getClickListener().exit(inputEvent, 0, 0, -1, button);
+        inputEvent.setListenerActor(actor);
+
+        for (EventListener listener : actor.getListeners()) {
+            if (listener instanceof InputListener) {
+                ((InputListener) listener).exit(null, 0, 0, -1, actor);
+            }
+        }
     }
 
-    private void markSelected(Button button) {
-        button.getClickListener().enter(null, 0, 0, -1, button);
+    private void markSelected(Actor actor) {
+        for (EventListener listener : actor.getListeners()) {
+            if (listener instanceof InputListener) {
+                ((InputListener) listener).enter(null, 0, 0, -1, actor);
+            }
+        }
     }
 
     @Override
     public void onNext() {
-        selectNextButton();
+        if(isPaused()) {
+            return;
+        }
+        Actor actor = menuItems.removeFirst();
+
+        menuItems.addLast(actor);
+
+        markNotSelected(actor);
+
+        markSelected(menuItems.peek());
     }
 
     @Override
     public void onPrev() {
-        selectPreviousButton();
+        if(isPaused()) {
+            return;
+        }
+        markNotSelected(menuItems.peek());
+
+        Actor actor = menuItems.removeLast();
+
+        markSelected(actor);
+
+        menuItems.addFirst(actor);
     }
 
     @Override
     public void onInteract() {
+        if(isPaused()) {
+            return;
+        }
         clicked(menuItems.peek(), new InputEvent());
     }
+
+    public void onActorProduced(String name, Actor producedActor) {
+
+    }
+
 }

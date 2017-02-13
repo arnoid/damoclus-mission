@@ -5,8 +5,8 @@ import java.util.Locale;
 public class Configuration {
 
     Locale locale;
-
     UserControllerMap keyboardMap;
+    DisplayConfiguration displayConfiguration;
 
     public UserControllerMap getKeyboardMap() {
         return keyboardMap;
@@ -22,5 +22,13 @@ public class Configuration {
 
     public void setLocale(Locale locale) {
         this.locale = locale;
+    }
+
+    public DisplayConfiguration getDisplayConfiguration() {
+        return displayConfiguration;
+    }
+
+    public void setDisplayConfiguration(DisplayConfiguration displayConfiguration) {
+        this.displayConfiguration = displayConfiguration;
     }
 }

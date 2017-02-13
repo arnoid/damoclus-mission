@@ -1,4 +1,4 @@
-package org.arnoid.damoclus.logic.handler.menu;
+package org.arnoid.damoclus.logic.input;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -7,11 +7,8 @@ import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
-import org.arnoid.damoclus.component.MainComponent;
 import org.arnoid.damoclus.controller.persistent.ConfigurationController;
 import org.arnoid.damoclus.data.configuration.UserControllerMap;
-import org.arnoid.damoclus.ui.scene.AbstractScene;
-import org.arnoid.damoclus.ui.scene.menu.AbstractMenuScene;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -19,33 +16,33 @@ import java.util.ArrayList;
 public class MenuNavigationInputAdapter extends InputAdapter implements ControllerListener {
 
     @Inject
-    ConfigurationController controllersConfigurationController;
-    private ArrayList<AbstractMenuScene> listeners = new ArrayList<>();
+    ConfigurationController configurationController;
+    private ArrayList<MenuNavigationListener> listeners = new ArrayList<>();
 
-    public MenuNavigationInputAdapter(MainComponent component) {
-        component.inject(this);
+    public MenuNavigationInputAdapter(ConfigurationController configurationController) {
+        this.configurationController = configurationController;
 
         Controllers.addListener(this);
-        controllersConfigurationController.read();
+        configurationController.read();
     }
 
-    public void addListener(AbstractMenuScene listener) {
+    public void addListener(MenuNavigationListener listener) {
         listeners.add(listener);
     }
 
-    public void removeListener(AbstractMenuScene listener) {
+    public void removeListener(MenuNavigationListener listener) {
         listeners.remove(listener);
     }
 
-    public void registerMenuNavigation(AbstractScene scene) {
-        if (scene != null && scene instanceof AbstractMenuScene) {
-            addListener((AbstractMenuScene) scene);
+    public void registerMenuNavigation(MenuNavigationListener scene) {
+        if (scene != null) {
+            addListener(scene);
         }
     }
 
-    public void unregisterMenuNavigation(AbstractScene scene) {
-        if (scene != null && scene instanceof AbstractMenuScene) {
-            removeListener((AbstractMenuScene) scene);
+    public void unregisterMenuNavigation(MenuNavigationListener listener) {
+        if (listener != null) {
+            removeListener(listener);
         }
     }
 
@@ -67,23 +64,23 @@ public class MenuNavigationInputAdapter extends InputAdapter implements Controll
     }
 
     private UserControllerMap getKeyboardMap() {
-        return controllersConfigurationController.read().getKeyboardMap();
+        return configurationController.read().getKeyboardMap();
     }
 
     private void previous() {
-        for (AbstractMenuScene listener : new ArrayList<>(listeners)) {
+        for (MenuNavigationListener listener : new ArrayList<>(listeners)) {
             listener.onPrev();
         }
     }
 
     private void next() {
-        for (AbstractMenuScene listener : new ArrayList<>(listeners)) {
+        for (MenuNavigationListener listener : new ArrayList<>(listeners)) {
             listener.onNext();
         }
     }
 
     private void interact() {
-        for (AbstractMenuScene listener : new ArrayList<>(listeners)) {
+        for (MenuNavigationListener listener : new ArrayList<>(listeners)) {
             listener.onInteract();
         }
     }

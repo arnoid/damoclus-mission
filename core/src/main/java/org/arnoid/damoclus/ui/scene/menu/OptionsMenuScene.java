@@ -4,12 +4,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import org.arnoid.damoclus.component.MainComponent;
 import org.arnoid.damoclus.controller.strings.Strings;
-import org.arnoid.damoclus.logic.handler.menu.OptionsMenuSceneController;
+import org.arnoid.damoclus.logic.delegate.menu.OptionsMenuSceneDelegate;
 
-public class OptionsMenuScene extends AbstractMenuScene<OptionsMenuSceneController> {
-
+public class OptionsMenuScene extends AbstractMenuScene<OptionsMenuSceneDelegate> {
 
     private static final String TAG = LanguageMenuScene.class.getSimpleName();
 
@@ -25,43 +25,45 @@ public class OptionsMenuScene extends AbstractMenuScene<OptionsMenuSceneControll
     }
 
     @Override
-    protected void produceMenuButtons() {
-        final TextButton btnAudio = produceButton(Strings.OptionsMenuWindow.btn_audio);
-        final TextButton btnVideo = produceButton(Strings.OptionsMenuWindow.btn_video);
-        final TextButton btnLanguage = produceButton(Strings.OptionsMenuWindow.btn_language);
-        final TextButton btnControllers = produceButton(Strings.OptionsMenuWindow.btn_controllers);
-        final TextButton btnBack = produceButton(Strings.OptionsMenuWindow.btn_back);
-
-        appendMenuButton(btnAudio);
-        appendMenuButton(btnVideo);
-        appendMenuButton(btnLanguage);
-        appendMenuButton(btnControllers);
-        appendMenuButton(btnBack);
+    protected void produceMenuItems() {
+        new MenuSceneBuilder(150)
+                .textButton(Strings.OptionsMenuWindow.btn_audio)
+                .textButton(Strings.OptionsMenuWindow.btn_video)
+                .textButton(Strings.OptionsMenuWindow.btn_language)
+                .textButton(Strings.OptionsMenuWindow.btn_controllers)
+                .textButton(Strings.OptionsMenuWindow.btn_back)
+                .build(this);
     }
 
     @Override
     protected void clicked(Actor actor, InputEvent event) {
         switch (actor.getName()) {
             case Strings.OptionsMenuWindow.btn_audio:
-                getSceneController().onAudio();
+                getSceneDelegate().onAudio();
                 break;
             case Strings.OptionsMenuWindow.btn_video:
-                getSceneController().onVideo();
+                getSceneDelegate().onVideo();
                 break;
             case Strings.OptionsMenuWindow.btn_controllers:
-                getSceneController().onControllers();
+                getSceneDelegate().onControllers();
                 break;
             case Strings.OptionsMenuWindow.btn_language:
-                getSceneController().onLanguage();
+                getSceneDelegate().onLanguage();
                 break;
             case Strings.OptionsMenuWindow.btn_back:
-                getSceneController().onBack();
+                getSceneDelegate().onBack();
                 break;
         }
     }
 
     @Override
-    protected float getButtonsWidth() {
+    protected void changed(Actor actor, ChangeListener.ChangeEvent event) {
+
+    }
+
+    @Override
+    protected float getCellWidth(int column) {
         return 150;
     }
+
 }

@@ -5,6 +5,7 @@ import dagger.Provides;
 import org.arnoid.damoclus.controller.persistent.ConfigurationController;
 import org.arnoid.damoclus.controller.skin.SkinController;
 import org.arnoid.damoclus.controller.strings.StringsController;
+import org.arnoid.damoclus.logic.input.MenuNavigationInputAdapter;
 
 import javax.inject.Singleton;
 
@@ -27,5 +28,11 @@ public class ControllerModule {
     @Provides
     public ConfigurationController provideControlMapConfigurationController() {
         return new ConfigurationController();
+    }
+
+    @Singleton
+    @Provides
+    public MenuNavigationInputAdapter provideMenuNavigationInputAdapter(ConfigurationController configurationController) {
+        return new MenuNavigationInputAdapter(configurationController);
     }
 }

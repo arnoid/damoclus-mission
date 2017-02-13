@@ -4,11 +4,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import org.arnoid.damoclus.component.MainComponent;
 import org.arnoid.damoclus.controller.strings.Strings;
-import org.arnoid.damoclus.logic.handler.menu.MainMenuSceneController;
+import org.arnoid.damoclus.logic.delegate.menu.MainMenuSceneDelegate;
 
-public class MainMenuScene extends AbstractMenuScene<MainMenuSceneController> {
+public class MainMenuScene extends AbstractMenuScene<MainMenuSceneDelegate> {
 
     private static final String TAG = MainMenuScene.class.getSimpleName();
 
@@ -29,33 +30,37 @@ public class MainMenuScene extends AbstractMenuScene<MainMenuSceneController> {
     }
 
     @Override
-    protected void produceMenuButtons() {
-        TextButton btnNewGame = produceButton(Strings.MainMenuWindow.btn_new_game);
-        TextButton btnOptions = produceButton(Strings.MainMenuWindow.btn_options);
-        TextButton btnQuit = produceButton(Strings.MainMenuWindow.btn_quit);
+    protected void produceMenuItems() {
+        new MenuSceneBuilder(150)
+                .textButton(Strings.MainMenuWindow.btn_new_game)
+                .textButton(Strings.MainMenuWindow.btn_options)
+                .textButton(Strings.MainMenuWindow.btn_quit)
+                .build(this);
+    }
 
-        appendMenuButton(btnNewGame);
-        appendMenuButton(btnOptions);
-        appendMenuButton(btnQuit);
+    @Override
+    public void onActorProduced(String name, Actor producedActor) {
+
     }
 
     @Override
     protected void clicked(Actor actor, InputEvent event) {
         switch (actor.getName()) {
             case Strings.MainMenuWindow.btn_new_game:
-                getSceneController().onNewGame();
+                getSceneDelegate().onNewGame();
                 break;
             case Strings.MainMenuWindow.btn_options:
-                getSceneController().onOptions();
+                getSceneDelegate().onOptions();
                 break;
             case Strings.MainMenuWindow.btn_quit:
-                getSceneController().onQuit();
+                getSceneDelegate().onQuit();
                 break;
         }
     }
 
     @Override
-    protected float getButtonsWidth() {
-        return 150;
+    protected void changed(Actor actor, ChangeListener.ChangeEvent event) {
+
     }
+
 }

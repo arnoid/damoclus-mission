@@ -16,6 +16,16 @@
   "language_menu_window_title":"Language",
   "language_menu_en":"English",
   "language_menu_ru":"Russian",
-  "language_menu_btn_back": "Back"
+  "language_menu_btn_back": "Back",
+
+  "video_menu_window_title":"Video",
+  "video_menu_label_resolution": "Resolution",
+  "video_menu_chk_fullscreen": "Fullscreen",
+  "video_menu_label_fullscreen": "Fullscreen",
+  "video_menu_btn_back": "Back",
+  "video_menu_btn_apply": "Apply",
+
+  "audio_menu_window_title":"Audio",
+  "audio_menu_btn_back": "Back"
 
 }

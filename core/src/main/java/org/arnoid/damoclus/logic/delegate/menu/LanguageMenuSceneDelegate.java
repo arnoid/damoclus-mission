@@ -1,6 +1,5 @@
-package org.arnoid.damoclus.logic.handler.menu;
+package org.arnoid.damoclus.logic.delegate.menu;
 
-import com.badlogic.gdx.Gdx;
 import org.arnoid.damoclus.DamoclusGdxGame;
 import org.arnoid.damoclus.controller.persistent.ConfigurationController;
 import org.arnoid.damoclus.controller.strings.StringsController;
@@ -10,16 +9,16 @@ import org.arnoid.damoclus.ui.scene.AbstractScene;
 import javax.inject.Inject;
 import java.util.Locale;
 
-public class LanguageMenuSceneController extends AbstractScene.SceneController {
+public class LanguageMenuSceneDelegate extends AbstractScene.SceneDelegate {
 
-    private static final String TAG = LanguageMenuSceneController.class.getSimpleName();
+    private static final String TAG = LanguageMenuSceneDelegate.class.getSimpleName();
 
     @Inject
     ConfigurationController configurationController;
     @Inject
     StringsController stringsController;
 
-    public LanguageMenuSceneController(DamoclusGdxGame game) {
+    public LanguageMenuSceneDelegate(DamoclusGdxGame game) {
         super(game);
         game.mainComponent.inject(this);
     }
@@ -33,7 +32,6 @@ public class LanguageMenuSceneController extends AbstractScene.SceneController {
     }
 
     public void onBack() {
-        Gdx.app.log(TAG, "Back clicked");
         getGame().popScene();
     }
 

@@ -8,6 +8,8 @@ public class SkinController implements Disposable {
 
     Skin skin;
 
+    private static final String IMG_BYTTON_CHECK_BOX_STYLE = "checkbox";
+
     public SkinController() {
         skin = new Skin(Gdx.files.internal("data/skin/skin.json"));
     }
@@ -19,5 +21,9 @@ public class SkinController implements Disposable {
 
     public Skin getSkin() {
         return skin;
+    }
+
+    public String getImgByttonCheckBoxStyle() {
+        return IMG_BYTTON_CHECK_BOX_STYLE;
     }
 }

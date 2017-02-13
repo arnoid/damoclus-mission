@@ -1,15 +1,15 @@
-package org.arnoid.damoclus.logic.handler.menu;
+package org.arnoid.damoclus.logic.delegate.menu;
 
 import com.badlogic.gdx.Gdx;
 import org.arnoid.damoclus.DamoclusGdxGame;
 import org.arnoid.damoclus.SceneNavigator;
 import org.arnoid.damoclus.ui.scene.AbstractScene;
 
-public class MainMenuSceneController extends AbstractScene.SceneController {
+public class MainMenuSceneDelegate extends AbstractScene.SceneDelegate {
 
-    private static final String TAG = MainMenuSceneController.class.getSimpleName();
+    private static final String TAG = MainMenuSceneDelegate.class.getSimpleName();
 
-    public MainMenuSceneController(DamoclusGdxGame game) {
+    public MainMenuSceneDelegate(DamoclusGdxGame game) {
         super(game);
     }
 
@@ -18,13 +18,11 @@ public class MainMenuSceneController extends AbstractScene.SceneController {
     }
 
     public void onOptions() {
-        Gdx.app.log(TAG, "Options clicked");
 
         getGame().loadScene(SceneNavigator.SceneType.MENU_OPTIONS);
     }
 
     public void onQuit() {
-        Gdx.app.log(TAG, "Quit clicked");
         Gdx.app.exit();
     }
 }

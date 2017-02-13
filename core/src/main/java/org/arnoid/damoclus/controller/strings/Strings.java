@@ -27,4 +27,21 @@ public interface Strings {
         String ru = "language_menu_ru";
         String btn_back = "language_menu_btn_back";
     }
+
+    interface VideoMenuWindow {
+        String title = "video_menu_window_title";
+        String lbl_resolution = "video_menu_label_resolution";
+        String select_resolution = "video_menu_selectbox_resolution";
+        String chk_fullscreen = "video_menu_chk_fullscreen";
+        String lbl_fullscreen = "video_menu_label_fullscreen";
+        String btn_back = "video_menu_btn_back";
+        String btn_apply = "video_menu_btn_apply";
+        String btn_cancel = "video_menu_btn_cancel";
+
+    }
+
+    interface AudioMenuWindow {
+        String title = "audio_menu_window_title";
+        String btn_back = "audio_menu_btn_back";
+    }
 }

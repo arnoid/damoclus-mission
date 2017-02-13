@@ -1,20 +1,23 @@
 package org.arnoid.damoclus.ui.scene;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import org.arnoid.damoclus.DamoclusGdxGame;
 
-public abstract class AbstractScene<T extends AbstractScene.SceneController> extends ScreenAdapter {
+public abstract class AbstractScene<T extends AbstractScene.SceneDelegate> extends ScreenAdapter {
 
-    private T sceneController;
+    private static final String TAG = AbstractScene.class.getSimpleName();
+
+    private T sceneDelegate;
     private Stage stage;
 
     public AbstractScene(Stage stage) {
         this(stage, null);
     }
 
-    public AbstractScene(Stage stage, T sceneController) {
-        this.sceneController = sceneController;
+    public AbstractScene(Stage stage, T sceneDelegate) {
+        this.sceneDelegate = sceneDelegate;
         this.stage = stage;
     }
 
@@ -22,19 +25,23 @@ public abstract class AbstractScene<T extends AbstractScene.SceneController> ext
         return stage;
     }
 
-    public void setSceneController(T sceneController) {
-        this.sceneController = sceneController;
+    public void setSceneDelegate(T sceneDelegate) {
+        this.sceneDelegate = sceneDelegate;
     }
 
-    public T getSceneController() {
-        return sceneController;
+    public T getSceneDelegate() {
+        return sceneDelegate;
     }
 
-    public static class SceneController {
+    public void onSceneDelegate() {
+
+    }
+
+    public static class SceneDelegate {
 
         private final DamoclusGdxGame game;
 
-        public SceneController(DamoclusGdxGame game) {
+        public SceneDelegate(DamoclusGdxGame game) {
             this.game = game;
         }
 

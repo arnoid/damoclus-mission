@@ -8,6 +8,18 @@ com.badlogic.gdx.graphics.g2d.BitmapFont: {
 	}
 }
 com.badlogic.gdx.graphics.Color: {
+	accent: {
+		r: 1
+		g: 0.34117648
+		b: 0.13333334
+		a: 1
+	}
+	black: {
+		r: 0
+		g: 0
+		b: 0
+		a: 1
+	}
 	primary: {
 		r: 1
 		g: 0.59607846
@@ -45,15 +57,125 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 	default: {
 		checkboxOn: skin_btn_check_on_holo_dark
 		checkboxOff: skin_btn_check_off_holo_dark
-		checkboxOver: skin_btn_check_off_focused_holo_dark
 		checkboxOnDisabled: skin_btn_check_on_disabled_holo_dark
 		checkboxOffDisabled: skin_btn_check_off_disabled_holo_dark
 		font: roboto-regular-medium
+		fontColor: white
+		overFontColor: primary
 	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
+	default: {
+		imageUp: skin_btn_radio_off_holo_dark
+		imageDown: skin_btn_radio_on_pressed_holo_dark
+		imageOver: skin_btn_radio_off_focused_holo_dark
+		imageChecked: skin_btn_radio_on_holo_dark
+		imageCheckedOver: skin_btn_radio_on_focused_holo_dark
+		font: roboto-regular-medium
+		fontColor: white
+		overFontColor: primary
+	}
+	checkbox: {
+		imageUp: skin_btn_check_off_holo_dark
+		imageDown: skin_btn_check_on_pressed_holo_dark
+		imageOver: skin_btn_check_off_focused_holo_dark
+		imageChecked: skin_btn_check_on_holo_dark
+		imageCheckedOver: skin_btn_check_on_focused_holo_dark
+		font: roboto-regular-medium
+		fontColor: white
+		overFontColor: primary
+	}
+	radio: {
+		imageUp: skin_btn_radio_off_holo_dark
+		imageDown: skin_btn_radio_on_pressed_holo_dark
+		imageOver: skin_btn_radio_off_focused_holo_dark
+		imageChecked: skin_btn_radio_on_holo_dark
+		imageCheckedOver: skin_btn_radio_on_focused_holo_dark
+		font: roboto-regular-medium
+		fontColor: white
+		overFontColor: primary
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
+  checkbox: {
+    imageUp: skin_btn_check_off_holo_dark
+    imageDown: skin_btn_check_on_pressed_holo_dark
+    imageOver: skin_btn_check_off_focused_holo_dark
+    imageChecked: skin_btn_check_on_holo_dark
+    imageCheckedOver: skin_btn_check_on_focused_holo_dark
+  }
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
 		font: roboto-regular-medium
+		fontColor: white
+		background: skin_textfield_disabled_focused_holo_dark
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
+	default: {
+		font: roboto-regular-medium
+		fontColorSelected: black
+		fontColorUnselected: white
+		selection: skin_list_activated_holo
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
+	default-horizontal: {
+		background: skin_scrubber_secondary_holo
+		disabledBackground: skin_scrubber_track_holo_dark
+		knob: skin_scrubber_control_normal_holo
+		disabledKnob: skin_scrubber_control_disabled_holo
+	}
+	default-vertical: {
+		background: skin_scrubber_secondary_holo_vertical
+		disabledBackground: skin_scrubber_track_holo_dark_vertical
+		knob: skin_scrubber_control_normal_holo
+		disabledKnob: skin_scrubber_control_disabled_holo
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
+	default: {
+		hScroll: skin_scrubber_track_holo_dark
+		hScrollKnob: skin_scrubber_primary_holo
+		vScroll: skin_scrubber_track_holo_dark_vertical
+		vScrollKnob: skin_scrubber_primary_holo_vertical
+	}
+	selectbox: {
+		background: skin_list_dark
+		hScroll: skin_scrubber_track_holo_dark
+		hScrollKnob: skin_scrubber_primary_holo
+		vScroll: skin_scrubber_track_holo_dark_vertical
+		vScrollKnob: skin_scrubber_primary_holo_vertical
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
+	default: {
+		font: roboto-regular-medium
+		fontColor: white
+		background: skin_spinner_default_holo_dark
+		scrollStyle: selectbox
+		listStyle: default
+		backgroundOver: skin_spinner_focused_holo_dark
+		backgroundOpen: skin_spinner_focused_holo_dark
+		backgroundDisabled: skin_spinner_disabled_holo_dark
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
+	default-horizontal: {
+		knobOver: skin_scrubber_control_pressed_holo
+		background: skin_scrubber_primary_holo
+		disabledBackground: skin_scrubber_track_holo_dark
+		knob: skin_scrubber_control_normal_holo
+		disabledKnob: skin_scrubber_control_disabled_holo
+	}
+	default-vertical: {
+		knobOver: skin_scrubber_control_pressed_holo
+		knobDown: skin_scrubber_control_pressed_holo
+		background: skin_scrubber_primary_holo_vertical
+		disabledBackground: skin_scrubber_track_holo_dark_vertical
+		knob: skin_scrubber_control_normal_holo
+		disabledKnob: skin_scrubber_control_disabled_holo
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
@@ -69,20 +191,23 @@ com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
 		font: roboto-regular-medium
 		fontColor: white
+		focusedFontColor: primary
 		background: skin_textfield_default_holo_dark
-		focusedBackground: skin_textfield_activated_holo_dark
+		focusedBackground: skin_textfield_focused_holo_dark
 		disabledBackground: skin_textfield_disabled_holo_dark
+		selection: skin_list_pressed_holo_dark
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 	default: {
 		label: default
+		background: skin_list_pressed_holo_dark
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
 		background: window
-		titleFont: roboto-regular-large
+		titleFont: roboto-regular-medium
 		titleFontColor: primary
 	}
 }
