@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.Align;
 import org.arnoid.damoclus.ui.scene.menu.AbstractMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.ActorHolder;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.RowHolder;
-import org.arnoid.damoclus.ui.scene.menu.builder.holder.SimpleActorHolder;
+import org.arnoid.damoclus.ui.scene.menu.builder.holder.SingleActorHolder;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.TableHolder;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, RowH
         return this;
     }
 
-    public MenuSceneBuilder add(SimpleActorHolder actorHolder) {
+    public MenuSceneBuilder add(SingleActorHolder actorHolder) {
         return add(new RowHolder().add(actorHolder));
     }
 

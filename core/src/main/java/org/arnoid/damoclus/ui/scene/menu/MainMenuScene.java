@@ -8,8 +8,7 @@ import org.arnoid.damoclus.component.MainComponent;
 import org.arnoid.damoclus.controller.strings.Strings;
 import org.arnoid.damoclus.logic.delegate.menu.MainMenuSceneDelegate;
 import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
-import org.arnoid.damoclus.ui.scene.menu.builder.holder.ActorHolder;
-import org.arnoid.damoclus.ui.scene.menu.builder.holder.SimpleActorHolder;
+import org.arnoid.damoclus.ui.scene.menu.builder.holder.SingleActorHolder;
 
 public class MainMenuScene extends AbstractMenuScene<MainMenuSceneDelegate> {
 
@@ -35,9 +34,9 @@ public class MainMenuScene extends AbstractMenuScene<MainMenuSceneDelegate> {
     protected void produceMenuItems() {
         MenuSceneBuilder.with(this)
                 .prefWidth(150)
-                .add(SimpleActorHolder.textButton(Strings.MainMenuWindow.btn_new_game))
-                .add(SimpleActorHolder.textButton(Strings.MainMenuWindow.btn_options))
-                .add(SimpleActorHolder.textButton(Strings.MainMenuWindow.btn_quit))
+                .add(SingleActorHolder.textButton(Strings.MainMenuWindow.btn_new_game))
+                .add(SingleActorHolder.textButton(Strings.MainMenuWindow.btn_options))
+                .add(SingleActorHolder.textButton(Strings.MainMenuWindow.btn_quit))
                 .build();
     }
 

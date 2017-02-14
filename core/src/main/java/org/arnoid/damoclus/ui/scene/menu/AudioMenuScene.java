@@ -8,7 +8,7 @@ import org.arnoid.damoclus.component.MainComponent;
 import org.arnoid.damoclus.controller.strings.Strings;
 import org.arnoid.damoclus.logic.delegate.menu.AudioMenuSceneDelegate;
 import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
-import org.arnoid.damoclus.ui.scene.menu.builder.holder.SimpleActorHolder;
+import org.arnoid.damoclus.ui.scene.menu.builder.holder.SingleActorHolder;
 
 public class AudioMenuScene extends AbstractMenuScene<AudioMenuSceneDelegate> {
     private static final String TAG = AudioMenuScene.class.getSimpleName();
@@ -28,7 +28,7 @@ public class AudioMenuScene extends AbstractMenuScene<AudioMenuSceneDelegate> {
     protected void produceMenuItems() {
         MenuSceneBuilder.with(this)
                 .prefWidth(150)
-                .add(SimpleActorHolder.textButton(Strings.AudioMenuWindow.btn_back))
+                .add(SingleActorHolder.textButton(Strings.AudioMenuWindow.btn_back))
                 .build();
     }
 

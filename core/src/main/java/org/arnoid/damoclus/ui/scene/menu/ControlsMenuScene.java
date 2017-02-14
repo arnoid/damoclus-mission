@@ -8,9 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import org.arnoid.damoclus.component.MainComponent;
 import org.arnoid.damoclus.logic.delegate.menu.ControlsMenuSceneDelegate;
 import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
-import org.arnoid.damoclus.ui.scene.menu.builder.holder.ActorHolder;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.RowHolder;
-import org.arnoid.damoclus.ui.scene.menu.builder.holder.SimpleActorHolder;
+import org.arnoid.damoclus.ui.scene.menu.builder.holder.SingleActorHolder;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.TableHolder;
 
 public class ControlsMenuScene extends AbstractMenuScene<ControlsMenuSceneDelegate> {
@@ -45,37 +44,37 @@ public class ControlsMenuScene extends AbstractMenuScene<ControlsMenuSceneDelega
                 .add(
                         new TableHolder().add(
                                 new RowHolder()
-                                        .add(SimpleActorHolder.textButton("1"))
-                                        .add(SimpleActorHolder.textButton("2")),
+                                        .add(SingleActorHolder.textButton("1"))
+                                        .add(SingleActorHolder.textButton("2")),
                                 new RowHolder()
-                                        .add(SimpleActorHolder.textButton("2"))
-                                        .add(SimpleActorHolder.textButton("3")),
+                                        .add(SingleActorHolder.textButton("2"))
+                                        .add(SingleActorHolder.textButton("3")),
                                 new RowHolder()
-                                        .add(SimpleActorHolder.textButton("4"))
-                                        .add(SimpleActorHolder.textButton("5")),
+                                        .add(SingleActorHolder.textButton("4"))
+                                        .add(SingleActorHolder.textButton("5")),
                                 new RowHolder()
-                                        .add(SimpleActorHolder.textButton("6"))
-                                        .add(SimpleActorHolder.textButton("7")),
+                                        .add(SingleActorHolder.textButton("6"))
+                                        .add(SingleActorHolder.textButton("7")),
                                 new RowHolder()
                                         .add(
                                                 new TableHolder().add(
                                                         new RowHolder()
-                                                                .add(SimpleActorHolder.textButton("8"))
-                                                                .add(SimpleActorHolder.textButton("9")),
+                                                                .add(SingleActorHolder.textButton("8"))
+                                                                .add(SingleActorHolder.textButton("9")),
                                                         new RowHolder()
-                                                                .add(SimpleActorHolder.textButton("10"))
-                                                                .add(SimpleActorHolder.textButton("11")),
+                                                                .add(SingleActorHolder.textButton("10"))
+                                                                .add(SingleActorHolder.textButton("11")),
                                                         new RowHolder()
-                                                                .add(SimpleActorHolder.textButton("12"))
-                                                                .add(SimpleActorHolder.textButton("13")),
+                                                                .add(SingleActorHolder.textButton("12"))
+                                                                .add(SingleActorHolder.textButton("13")),
                                                         new RowHolder()
-                                                                .add(SimpleActorHolder.textButton("14"))
-                                                                .add(SimpleActorHolder.textButton("15")),
+                                                                .add(SingleActorHolder.textButton("14"))
+                                                                .add(SingleActorHolder.textButton("15")),
                                                         new RowHolder()
-                                                                .add(SimpleActorHolder.textButton("16"))
-                                                                .add(SimpleActorHolder.textButton("17"))
+                                                                .add(SingleActorHolder.textButton("16"))
+                                                                .add(SingleActorHolder.textButton("17"))
                                                 ))
-                                        .add(SimpleActorHolder.textButton("18"))
+                                        .add(SingleActorHolder.textButton("18"))
                         )
                 )
                 .build();

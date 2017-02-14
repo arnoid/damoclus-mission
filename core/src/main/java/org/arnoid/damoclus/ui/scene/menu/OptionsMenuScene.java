@@ -8,8 +8,7 @@ import org.arnoid.damoclus.component.MainComponent;
 import org.arnoid.damoclus.controller.strings.Strings;
 import org.arnoid.damoclus.logic.delegate.menu.OptionsMenuSceneDelegate;
 import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
-import org.arnoid.damoclus.ui.scene.menu.builder.holder.ActorHolder;
-import org.arnoid.damoclus.ui.scene.menu.builder.holder.SimpleActorHolder;
+import org.arnoid.damoclus.ui.scene.menu.builder.holder.SingleActorHolder;
 
 public class OptionsMenuScene extends AbstractMenuScene<OptionsMenuSceneDelegate> {
 
@@ -30,11 +29,11 @@ public class OptionsMenuScene extends AbstractMenuScene<OptionsMenuSceneDelegate
     protected void produceMenuItems() {
         MenuSceneBuilder.with(this)
                 .prefWidth(150)
-                .add(SimpleActorHolder.textButton(Strings.OptionsMenuWindow.btn_audio))
-                .add(SimpleActorHolder.textButton(Strings.OptionsMenuWindow.btn_video))
-                .add(SimpleActorHolder.textButton(Strings.OptionsMenuWindow.btn_language))
-                .add(SimpleActorHolder.textButton(Strings.OptionsMenuWindow.btn_controllers))
-                .add(SimpleActorHolder.textButton(Strings.OptionsMenuWindow.btn_back))
+                .add(SingleActorHolder.textButton(Strings.OptionsMenuWindow.btn_audio))
+                .add(SingleActorHolder.textButton(Strings.OptionsMenuWindow.btn_video))
+                .add(SingleActorHolder.textButton(Strings.OptionsMenuWindow.btn_language))
+                .add(SingleActorHolder.textButton(Strings.OptionsMenuWindow.btn_controllers))
+                .add(SingleActorHolder.textButton(Strings.OptionsMenuWindow.btn_back))
                 .build();
     }
 

@@ -8,8 +8,7 @@ import org.arnoid.damoclus.component.MainComponent;
 import org.arnoid.damoclus.controller.strings.Strings;
 import org.arnoid.damoclus.logic.delegate.menu.LanguageMenuSceneDelegate;
 import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
-import org.arnoid.damoclus.ui.scene.menu.builder.holder.ActorHolder;
-import org.arnoid.damoclus.ui.scene.menu.builder.holder.SimpleActorHolder;
+import org.arnoid.damoclus.ui.scene.menu.builder.holder.SingleActorHolder;
 
 public class LanguageMenuScene extends AbstractMenuScene<LanguageMenuSceneDelegate> {
     private static final String TAG = OptionsMenuScene.class.getSimpleName();
@@ -29,9 +28,9 @@ public class LanguageMenuScene extends AbstractMenuScene<LanguageMenuSceneDelega
     protected void produceMenuItems() {
         MenuSceneBuilder.with(this)
                 .prefWidth(150)
-                .add(SimpleActorHolder.textButton(Strings.LanguageMenuWindow.en))
-                .add(SimpleActorHolder.textButton(Strings.LanguageMenuWindow.ru))
-                .add(SimpleActorHolder.textButton(Strings.LanguageMenuWindow.btn_back))
+                .add(SingleActorHolder.textButton(Strings.LanguageMenuWindow.en))
+                .add(SingleActorHolder.textButton(Strings.LanguageMenuWindow.ru))
+                .add(SingleActorHolder.textButton(Strings.LanguageMenuWindow.btn_back))
                 .build();
     }
 
