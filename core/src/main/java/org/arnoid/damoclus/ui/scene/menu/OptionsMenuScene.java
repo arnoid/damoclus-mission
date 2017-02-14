@@ -3,11 +3,13 @@ package org.arnoid.damoclus.ui.scene.menu;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import org.arnoid.damoclus.component.MainComponent;
 import org.arnoid.damoclus.controller.strings.Strings;
 import org.arnoid.damoclus.logic.delegate.menu.OptionsMenuSceneDelegate;
+import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
+import org.arnoid.damoclus.ui.scene.menu.builder.holder.ActorHolder;
+import org.arnoid.damoclus.ui.scene.menu.builder.holder.SimpleActorHolder;
 
 public class OptionsMenuScene extends AbstractMenuScene<OptionsMenuSceneDelegate> {
 
@@ -26,13 +28,14 @@ public class OptionsMenuScene extends AbstractMenuScene<OptionsMenuSceneDelegate
 
     @Override
     protected void produceMenuItems() {
-        new MenuSceneBuilder(150)
-                .textButton(Strings.OptionsMenuWindow.btn_audio)
-                .textButton(Strings.OptionsMenuWindow.btn_video)
-                .textButton(Strings.OptionsMenuWindow.btn_language)
-                .textButton(Strings.OptionsMenuWindow.btn_controllers)
-                .textButton(Strings.OptionsMenuWindow.btn_back)
-                .build(this);
+        MenuSceneBuilder.with(this)
+                .prefWidth(150)
+                .add(SimpleActorHolder.textButton(Strings.OptionsMenuWindow.btn_audio))
+                .add(SimpleActorHolder.textButton(Strings.OptionsMenuWindow.btn_video))
+                .add(SimpleActorHolder.textButton(Strings.OptionsMenuWindow.btn_language))
+                .add(SimpleActorHolder.textButton(Strings.OptionsMenuWindow.btn_controllers))
+                .add(SimpleActorHolder.textButton(Strings.OptionsMenuWindow.btn_back))
+                .build();
     }
 
     @Override

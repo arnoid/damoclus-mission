@@ -53,11 +53,6 @@ public class VideoMenuSceneDelegate extends AbstractScene.SceneDelegate {
         return Gdx.graphics.getDisplayMode();
     }
 
-    public int getDisplayModeIndex() {
-        Graphics.DisplayMode selectedDisplayMode = getDisplayMode();
-        return getDisplayModeIndex(selectedDisplayMode);
-    }
-
     public int getDisplayModeIndex(Graphics.DisplayMode selectedDisplayMode) {
         Graphics.DisplayMode[] displayModes = getDisplayModes();
 
@@ -68,10 +63,6 @@ public class VideoMenuSceneDelegate extends AbstractScene.SceneDelegate {
         }
 
         return 0;
-    }
-
-    public boolean isFullscreen() {
-        return Gdx.graphics.isFullscreen();
     }
 
     public void apply(boolean fullScreen, Graphics.DisplayMode selectedMode) {

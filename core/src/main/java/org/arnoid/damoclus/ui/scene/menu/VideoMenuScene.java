@@ -15,6 +15,10 @@ import org.arnoid.damoclus.controller.strings.Strings;
 import org.arnoid.damoclus.data.configuration.DisplayConfiguration;
 import org.arnoid.damoclus.logic.delegate.menu.VideoMenuSceneDelegate;
 import org.arnoid.damoclus.logic.input.MenuNavigationInputAdapter;
+import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
+import org.arnoid.damoclus.ui.scene.menu.builder.holder.ActorHolder;
+import org.arnoid.damoclus.ui.scene.menu.builder.holder.RowHolder;
+import org.arnoid.damoclus.ui.scene.menu.builder.holder.SimpleActorHolder;
 
 import javax.inject.Inject;
 
@@ -40,20 +44,36 @@ public class VideoMenuScene extends AbstractMenuScene<VideoMenuSceneDelegate> {
 
     @Override
     protected void produceMenuItems() {
-        new MenuSceneBuilder(150)
-                .row()
-                .label(Strings.VideoMenuWindow.lbl_fullscreen)
-                .checkBox(Strings.VideoMenuWindow.chk_fullscreen)
-                .endRow()
-                .row()
-                .label(Strings.VideoMenuWindow.lbl_resolution)
-                .selectBox(Strings.VideoMenuWindow.select_resolution)
-                .endRow()
-                .row()
-                .textButton(Strings.VideoMenuWindow.btn_back)
-                .textButton(Strings.VideoMenuWindow.btn_apply)
-                .endRow()
-                .build(this);
+//        new MenuSceneBuilder(150)
+//                .row()
+//                .label(Strings.VideoMenuWindow.lbl_fullscreen)
+//                .checkBox(Strings.VideoMenuWindow.chk_fullscreen)
+//                .endRow()
+//                .row()
+//                .label(Strings.VideoMenuWindow.lbl_resolution)
+//                .selectBox(Strings.VideoMenuWindow.select_resolution)
+//                .endRow()
+//                .row()
+//                .textButton(Strings.VideoMenuWindow.btn_back)
+//                .textButton(Strings.VideoMenuWindow.btn_apply)
+//                .endRow()
+//                .build(this);
+
+        MenuSceneBuilder.with(this)
+                .prefWidth(150)
+                .add(new RowHolder()
+                        .add(SimpleActorHolder.label(Strings.VideoMenuWindow.lbl_fullscreen))
+                        .add(SimpleActorHolder.checkBox(Strings.VideoMenuWindow.chk_fullscreen))
+                )
+                .add(new RowHolder()
+                        .add(SimpleActorHolder.label(Strings.VideoMenuWindow.lbl_resolution))
+                        .add(SimpleActorHolder.label(Strings.VideoMenuWindow.select_resolution))
+                )
+                .add(new RowHolder()
+                        .add(SimpleActorHolder.textButton(Strings.VideoMenuWindow.btn_back))
+                        .add(SimpleActorHolder.textButton(Strings.VideoMenuWindow.btn_apply))
+                )
+                .build();
     }
 
     @Override

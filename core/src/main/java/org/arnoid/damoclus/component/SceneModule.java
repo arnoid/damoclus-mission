@@ -6,6 +6,7 @@ import dagger.Provides;
 import org.arnoid.damoclus.SceneNavigator;
 import org.arnoid.damoclus.ui.scene.menu.AbstractMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.AudioMenuScene;
+import org.arnoid.damoclus.ui.scene.menu.ControlsMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.LanguageMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.MainMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.OptionsMenuScene;
@@ -21,6 +22,7 @@ public class SceneModule {
     public static final String SCENE_MENU_LANGUAGE = "SCENE_MENU_LANGUAGE";
     public static final String SCENE_MENU_VIDEO = "SCENE_MENU_VIDEO";
     public static final String SCENE_MENU_AUDIO = "SCENE_MENU_AUDIO";
+    public static final String SCENE_MENU_CONTROLS = "SCENE_MENU_CONTROLS";
 
     private final Stage stage;
 
@@ -57,4 +59,12 @@ public class SceneModule {
     public AbstractMenuScene produceVideoMenuScene(MainComponent component) {
         return new VideoMenuScene(component, stage);
     }
+
+    @Named(value = SceneModule.SCENE_MENU_CONTROLS)
+    @Provides
+    public AbstractMenuScene produceControlsMenuScene(MainComponent component) {
+        return new ControlsMenuScene(component, stage);
+    }
+
+
 }

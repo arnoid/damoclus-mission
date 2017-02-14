@@ -22,7 +22,7 @@ public class OptionsMenuSceneDelegate extends AbstractScene.SceneDelegate {
     }
 
     public void onControllers() {
-        Gdx.app.log(TAG, "Controllers clicked");
+        getGame().loadScene(SceneNavigator.SceneType.MENU_CONTROLS);
     }
 
     public void onLanguage() {

@@ -7,11 +7,14 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -53,6 +56,7 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
         Skin skin = skinController.getSkin();
 
         window = new Window(getWindowTitle(), skin);
+        window.setDebug(true);
         window.getTitleTable().padLeft(5).align(Align.left);
         window.align(Align.topLeft);
 
@@ -194,16 +198,16 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
         return 0;
     }
 
-    protected float getCellHeight(int column) {
+    public float getCellHeight(int column) {
         return 0;
     }
 
-    protected void registerMenuItemListeners(Actor actor) {
+    public void registerMenuItemListeners(Actor actor) {
         actor.addListener(clickListener);
         actor.addListener(changeListener);
     }
 
-    protected void registerInMenuItems(Actor actor) {
+    public void registerInMenuItems(Actor actor) {
         menuItems.add(actor);
 
         if (menuItems.size() == 1) {
@@ -223,19 +227,37 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
         return skinController;
     }
 
-    protected TextButton produceButton(String name) {
+    public Table produceGroupTable(String name) {
+        Table table = new Table();
+        table.setName(name);
+        return table;
+    }
+
+    public VerticalGroup produceGroupVertical(String name) {
+        VerticalGroup verticalGroup = new VerticalGroup();
+        verticalGroup.setName(name);
+        return verticalGroup;
+    }
+
+    public HorizontalGroup produceGroupHorizontal(String name) {
+        HorizontalGroup horizontalGroup = new HorizontalGroup();
+        horizontalGroup.setName(name);
+        return horizontalGroup;
+    }
+
+    public TextButton produceButton(String name) {
         TextButton button = new TextButton(getText(name), getSkinController().getSkin());
         button.setName(name);
         return button;
     }
 
-    protected Label produceLabel(String name) {
+    public Label produceLabel(String name) {
         Label label = new Label(getText(name), getSkinController().getSkin());
         label.setName(name);
         return label;
     }
 
-    protected <T> SelectBox<T> produceSelectBox(String name) {
+    public <T> SelectBox<T> produceSelectBox(String name) {
         final SelectBox<T> selectBox = new SelectBox<>(getSkinController().getSkin());
 
         selectBox.setName(name);
@@ -244,7 +266,7 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
         return selectBox;
     }
 
-    protected ImageButton produceCheckBox(String name) {
+    public ImageButton produceCheckBox(String name) {
         final ImageButton checkBox = new ImageButton(getSkinController().getSkin(), getSkinController().getImgByttonCheckBoxStyle());
 
         checkBox.setName(name);
@@ -300,7 +322,7 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
 
     @Override
     public void onNext() {
-        if(isPaused()) {
+        if (isPaused()) {
             return;
         }
         Actor actor = menuItems.removeFirst();
@@ -314,7 +336,7 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
 
     @Override
     public void onPrev() {
-        if(isPaused()) {
+        if (isPaused()) {
             return;
         }
         markNotSelected(menuItems.peek());
@@ -328,7 +350,7 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
 
     @Override
     public void onInteract() {
-        if(isPaused()) {
+        if (isPaused()) {
             return;
         }
         clicked(menuItems.peek(), new InputEvent());
@@ -338,4 +360,11 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
 
     }
 
+    public void produceGrowYCell() {
+        window.add().growY();
+    }
+
+    public void produceSpace() {
+        window.add().height(getCellHeight(0));
+    }
 }

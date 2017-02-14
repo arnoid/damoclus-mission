@@ -7,7 +7,8 @@ public interface SceneNavigator {
         MENU_OPTIONS,
         MENU_LANGUAGE,
         MENU_AUDIO,
-        MENU_VIDEO
+        MENU_VIDEO,
+        MENU_CONTROLS
     }
 
     void loadScene(SceneType sceneType);

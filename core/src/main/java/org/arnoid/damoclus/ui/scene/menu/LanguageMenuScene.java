@@ -3,11 +3,13 @@ package org.arnoid.damoclus.ui.scene.menu;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import org.arnoid.damoclus.component.MainComponent;
 import org.arnoid.damoclus.controller.strings.Strings;
 import org.arnoid.damoclus.logic.delegate.menu.LanguageMenuSceneDelegate;
+import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
+import org.arnoid.damoclus.ui.scene.menu.builder.holder.ActorHolder;
+import org.arnoid.damoclus.ui.scene.menu.builder.holder.SimpleActorHolder;
 
 public class LanguageMenuScene extends AbstractMenuScene<LanguageMenuSceneDelegate> {
     private static final String TAG = OptionsMenuScene.class.getSimpleName();
@@ -25,11 +27,12 @@ public class LanguageMenuScene extends AbstractMenuScene<LanguageMenuSceneDelega
 
     @Override
     protected void produceMenuItems() {
-        new MenuSceneBuilder(150)
-                .textButton(Strings.LanguageMenuWindow.en)
-                .textButton(Strings.LanguageMenuWindow.ru)
-                .textButton(Strings.LanguageMenuWindow.btn_back)
-                .build(this);
+        MenuSceneBuilder.with(this)
+                .prefWidth(150)
+                .add(SimpleActorHolder.textButton(Strings.LanguageMenuWindow.en))
+                .add(SimpleActorHolder.textButton(Strings.LanguageMenuWindow.ru))
+                .add(SimpleActorHolder.textButton(Strings.LanguageMenuWindow.btn_back))
+                .build();
     }
 
     @Override

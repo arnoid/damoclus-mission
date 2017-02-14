@@ -8,6 +8,7 @@ import org.arnoid.damoclus.logic.input.MenuNavigationInputAdapter;
 import org.arnoid.damoclus.ui.scene.AbstractScene;
 import org.arnoid.damoclus.ui.scene.menu.AbstractMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.AudioMenuScene;
+import org.arnoid.damoclus.ui.scene.menu.ControlsMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.LanguageMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.MainMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.OptionsMenuScene;
@@ -30,31 +31,37 @@ public interface MainComponent {
     AbstractMenuScene provideMainMenu();
 
     @Named(value = SceneModule.SCENE_MENU_MAIN)
-    AbstractScene.SceneDelegate provideMainMenuController();
+    AbstractScene.SceneDelegate provideMainMenuDelegate();
 
     @Named(value = SceneModule.SCENE_MENU_OPTIONS)
     AbstractMenuScene provideOptionsMenu();
 
     @Named(value = SceneModule.SCENE_MENU_OPTIONS)
-    AbstractScene.SceneDelegate provideOptionsMenuController();
+    AbstractScene.SceneDelegate provideOptionsMenuDelegate();
 
     @Named(value = SceneModule.SCENE_MENU_LANGUAGE)
     AbstractMenuScene provideLanguageMenu();
 
     @Named(value = SceneModule.SCENE_MENU_LANGUAGE)
-    AbstractScene.SceneDelegate provideLanguageMenuController();
+    AbstractScene.SceneDelegate provideLanguageMenuDelegate();
 
     @Named(value = SceneModule.SCENE_MENU_AUDIO)
     AbstractMenuScene provideAudioMenu();
 
     @Named(value = SceneModule.SCENE_MENU_AUDIO)
-    AbstractScene.SceneDelegate provideAudioMenuController();
+    AbstractScene.SceneDelegate provideAudioMenuDelegate();
 
     @Named(value = SceneModule.SCENE_MENU_VIDEO)
     AbstractMenuScene provideVideoMenu();
 
     @Named(value = SceneModule.SCENE_MENU_VIDEO)
-    AbstractScene.SceneDelegate provideVideoMenuController();
+    AbstractScene.SceneDelegate provideVideoMenuDelegate();
+
+    @Named(value = SceneModule.SCENE_MENU_CONTROLS)
+    AbstractMenuScene provideControlsMenu();
+
+    @Named(value = SceneModule.SCENE_MENU_CONTROLS)
+    AbstractScene.SceneDelegate provideControlsMenuDelegate();
 
 
     void inject(DamoclusGdxGame game);
@@ -74,4 +81,6 @@ public interface MainComponent {
     void inject(VideoMenuSceneDelegate videoMenuSceneDelegate);
 
     void inject(AudioMenuScene audioMenuScene);
+
+    void inject(ControlsMenuScene controlsMenuScene);
 }

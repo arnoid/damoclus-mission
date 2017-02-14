@@ -3,11 +3,13 @@ package org.arnoid.damoclus.ui.scene.menu;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import org.arnoid.damoclus.component.MainComponent;
 import org.arnoid.damoclus.controller.strings.Strings;
 import org.arnoid.damoclus.logic.delegate.menu.MainMenuSceneDelegate;
+import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
+import org.arnoid.damoclus.ui.scene.menu.builder.holder.ActorHolder;
+import org.arnoid.damoclus.ui.scene.menu.builder.holder.SimpleActorHolder;
 
 public class MainMenuScene extends AbstractMenuScene<MainMenuSceneDelegate> {
 
@@ -31,11 +33,12 @@ public class MainMenuScene extends AbstractMenuScene<MainMenuSceneDelegate> {
 
     @Override
     protected void produceMenuItems() {
-        new MenuSceneBuilder(150)
-                .textButton(Strings.MainMenuWindow.btn_new_game)
-                .textButton(Strings.MainMenuWindow.btn_options)
-                .textButton(Strings.MainMenuWindow.btn_quit)
-                .build(this);
+        MenuSceneBuilder.with(this)
+                .prefWidth(150)
+                .add(SimpleActorHolder.textButton(Strings.MainMenuWindow.btn_new_game))
+                .add(SimpleActorHolder.textButton(Strings.MainMenuWindow.btn_options))
+                .add(SimpleActorHolder.textButton(Strings.MainMenuWindow.btn_quit))
+                .build();
     }
 
     @Override

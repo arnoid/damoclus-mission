@@ -68,23 +68,27 @@ public class DamoclusGdxGame implements ApplicationListener, SceneNavigator {
         switch (sceneType) {
             case MENU_MAIN:
                 scene = mainComponent.provideMainMenu();
-                sceneDelegate = mainComponent.provideMainMenuController();
+                sceneDelegate = mainComponent.provideMainMenuDelegate();
                 break;
             case MENU_OPTIONS:
                 scene = mainComponent.provideOptionsMenu();
-                sceneDelegate = mainComponent.provideOptionsMenuController();
+                sceneDelegate = mainComponent.provideOptionsMenuDelegate();
                 break;
             case MENU_LANGUAGE:
                 scene = mainComponent.provideLanguageMenu();
-                sceneDelegate = mainComponent.provideLanguageMenuController();
+                sceneDelegate = mainComponent.provideLanguageMenuDelegate();
                 break;
             case MENU_AUDIO:
                 scene = mainComponent.provideAudioMenu();
-                sceneDelegate = mainComponent.provideAudioMenuController();
+                sceneDelegate = mainComponent.provideAudioMenuDelegate();
                 break;
             case MENU_VIDEO:
                 scene = mainComponent.provideVideoMenu();
-                sceneDelegate = mainComponent.provideVideoMenuController();
+                sceneDelegate = mainComponent.provideVideoMenuDelegate();
+                break;
+            case MENU_CONTROLS:
+                scene = mainComponent.provideControlsMenu();
+                sceneDelegate = mainComponent.provideControlsMenuDelegate();
                 break;
             default:
                 String sceneName;
