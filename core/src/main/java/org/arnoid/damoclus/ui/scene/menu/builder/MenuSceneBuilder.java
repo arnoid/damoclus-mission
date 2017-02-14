@@ -79,11 +79,9 @@ public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, RowH
     }
 
     private void buildRow(AbstractMenuScene scene, Table table, ActorHolder actorHolder, int column) {
-        Cell row = table.row();
-
-        Actor producedActor = produceActor(scene, actorHolder);
-
         if (ActorType.TableRow.equals(actorHolder.actorType)) {
+            Cell row = table.row();
+
             for (ActorHolder innerActorHolder : ((RowHolder) actorHolder).actorHolders) {
 
                 Actor innerActor = produceActor(scene, innerActorHolder);
@@ -96,12 +94,13 @@ public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, RowH
 
                 registerLabeledActor(scene, innerActorHolder, innerActor);
                 registerListeners(scene, innerActorHolder, innerActor);
+
+                scene.onActorProduced(innerActor.getName(), innerActor);
             }
         } else if (ActorType.Table.equals(actorHolder.actorType)) {
-            table.add(producedActor).align(Align.left).prefWidth(getColumnWidth(column));
-
             handleTableActor(scene, table, (TableHolder) actorHolder);
         }
+
     }
 
     private void handleTableActor(AbstractMenuScene scene, Table table, TableHolder actorHolder) {
@@ -109,33 +108,6 @@ public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, RowH
         for (ActorHolder innerActorHolder : actorHolder.actorHolders) {
             buildRow(scene, table, innerActorHolder, column);
             column++;
-        }
-    }
-
-    private void handleProducedActor(AbstractMenuScene scene, ActorHolder actorHolder, Actor producedActor) {
-
-        registerListeners(scene, actorHolder, producedActor);
-        registerLabeledActor(scene, actorHolder, producedActor);
-
-        if (actorHolder.actorType == ActorType.Table) {
-
-            handleTable(scene, (Table) producedActor, (TableHolder) actorHolder);
-        }
-
-        scene.onActorProduced(actorHolder.name, producedActor);
-    }
-
-    private void handleTable(AbstractMenuScene scene, Table tableActor, TableHolder tableHolder) {
-        for (RowHolder rowHolder : tableHolder.actorHolders) {
-            for (ActorHolder actorHolder : rowHolder.actorHolders) {
-                Actor producedActor = produceActor(scene, actorHolder);
-
-                tableActor.add(producedActor);
-
-                handleProducedActor(scene, actorHolder, producedActor);
-            }
-
-            tableActor.row();
         }
     }
 

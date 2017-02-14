@@ -66,7 +66,7 @@ public class VideoMenuScene extends AbstractMenuScene<VideoMenuSceneDelegate> {
                 )
                 .add(new RowHolder()
                         .add(SingleActorHolder.label(Strings.VideoMenuWindow.lbl_resolution))
-                        .add(SingleActorHolder.label(Strings.VideoMenuWindow.select_resolution))
+                        .add(SingleActorHolder.selectBox(Strings.VideoMenuWindow.select_resolution))
                 )
                 .add(new RowHolder()
                         .add(SingleActorHolder.textButton(Strings.VideoMenuWindow.btn_back))
