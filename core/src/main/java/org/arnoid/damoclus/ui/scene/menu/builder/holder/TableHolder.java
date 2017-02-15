@@ -5,11 +5,11 @@ import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TableHolder extends RowHolder {
+public class TableHolder extends ActorHolder<RowHolder> {
     public List<RowHolder> actorHolders = new ArrayList<>();
 
     public TableHolder() {
-        super(MenuSceneBuilder.ActorType.Table);
+        super(MenuSceneBuilder.ActorType.Table, "");
     }
 
     public TableHolder add(RowHolder actorHolder) {
@@ -18,7 +18,7 @@ public class TableHolder extends RowHolder {
     }
 
     public TableHolder add(RowHolder... actorHolder) {
-        for(RowHolder rowHolder : actorHolder) {
+        for (RowHolder rowHolder : actorHolder) {
             actorHolders.add(rowHolder);
         }
         return this;

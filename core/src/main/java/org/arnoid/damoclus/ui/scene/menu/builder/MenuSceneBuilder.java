@@ -4,22 +4,20 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.utils.Align;
 import org.arnoid.damoclus.ui.scene.menu.AbstractMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.ActorHolder;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.RowHolder;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.ScrollPaneHolder;
-import org.arnoid.damoclus.ui.scene.menu.builder.holder.SingleActorHolder;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.TableHolder;
+import org.arnoid.damoclus.ui.scene.menu.builder.holder.WindowHolder;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, ActorHolder> {
+
+    private static final String TAG = MenuSceneBuilder.class.getSimpleName();
 
     public enum ActorType {
         TextButton,
@@ -27,99 +25,118 @@ public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, Acto
         CheckBox,
         SelectBox,
         Scroll,
-        Space,
-        GrowVertical,
         Table,
         TableRow,
+        Space,
+        Window,
     }
 
-    private float prefWidth = -1;
-    private Map<Integer, Float> columnWidthMap;
-    private List<ActorHolder> rowHolders;
+    private List<RowHolder> rowHolders;
 
-    private AbstractMenuScene scene;
+    private final AbstractMenuScene scene;
+    private final WindowHolder windowHolder;
 
-    private MenuSceneBuilder(AbstractMenuScene scene) {
+    private MenuSceneBuilder(AbstractMenuScene scene, WindowHolder windowHolder) {
         super();
 
         rowHolders = new ArrayList<>();
-        columnWidthMap = new HashMap<>();
 
         this.scene = scene;
+        this.windowHolder = windowHolder;
     }
 
     @Override
     public MenuSceneBuilder add(ActorHolder actorHolder) {
         switch (actorHolder.actorType) {
             case TableRow:
-                rowHolders.add(actorHolder);
+                rowHolders.add((RowHolder) actorHolder);
                 break;
             case Table:
             case CheckBox:
-            case GrowVertical:
             case Label:
             case Scroll:
             case SelectBox:
-            case Space:
             case TextButton:
             default:
-                add(new RowHolder().add(actorHolder));
+                add(RowHolder.row().add(actorHolder));
                 break;
         }
 
         return this;
     }
 
-    public static MenuSceneBuilder with(AbstractMenuScene scene) {
-        return new MenuSceneBuilder(scene);
-    }
-
-    public MenuSceneBuilder prefWidth(float prefWidth) {
-        this.prefWidth = prefWidth;
-        return this;
-    }
-
-    public MenuSceneBuilder columnWidth(int column, float prefWidth) {
-        this.columnWidthMap.put(column, prefWidth);
-        return this;
+    public static MenuSceneBuilder with(AbstractMenuScene scene, WindowHolder windowHolder) {
+        return new MenuSceneBuilder(scene, windowHolder);
     }
 
     public void build() {
         Window window = scene.getWindow();
 
-        int column = 0;
-        for (ActorHolder rowHolder : rowHolders) {
-            buildRow(scene, window, rowHolder, column);
-            column++;
+        window.setX(windowHolder.x);
+        window.setY(windowHolder.y);
+
+        window.setWidth(windowHolder.width);
+        window.setHeight(windowHolder.height);
+
+        window.pad(windowHolder.padTop, windowHolder.padLeft, windowHolder.padBottom, windowHolder.padRight);
+
+        window.setMovable(windowHolder.movable);
+        window.setModal(windowHolder.modal);
+
+        for (RowHolder rowHolder : rowHolders) {
+            handleTableRow(scene, rowHolder, window);
+        }
+
+        if (windowHolder.pack) {
+            window.pack();
         }
     }
 
-    private void buildRow(AbstractMenuScene scene, WidgetGroup parent, ActorHolder actorHolder, int column) {
-        if (ActorType.TableRow.equals(actorHolder.actorType)) {
+    private void handleTableRow(AbstractMenuScene scene, RowHolder actorHolder, Table table) {
+        handleCell(table.row(), actorHolder);
 
-            Table table = ((Table) parent);
+        for (ActorHolder innerActorHolder : actorHolder.actorHolders) {
 
-            Cell row = table.row();
+            Actor innerActor = produceAndRegisterActor(scene, innerActorHolder);
 
-            for (ActorHolder innerActorHolder : ((RowHolder) actorHolder).actorHolders) {
+            scene.onActorProduced(innerActorHolder.name, innerActor);
 
-                Actor innerActor = produceAndRegisterActor(scene, innerActorHolder);
+            handleCell(table.add(innerActor), innerActorHolder);
 
-                scene.onActorProduced(innerActor.getName(), innerActor);
-
-                table.add(innerActor).align(Align.left).prefWidth(getColumnWidth(column));
-
-                if (ActorType.Table.equals(innerActorHolder.actorType)) {
-                    handleTableActor(scene, (Table) innerActor, (TableHolder) innerActorHolder);
-                } else if (ActorType.Scroll.equals(innerActorHolder.actorType)) {
-                    handleScrollPaneActor(scene, (ScrollPane) innerActor, (ScrollPaneHolder) innerActorHolder);
-                }
+            if (ActorType.Table.equals(innerActorHolder.actorType)) {
+                handleTableActor(scene, (Table) innerActor, (TableHolder) innerActorHolder);
+            } else if (ActorType.Scroll.equals(innerActorHolder.actorType)) {
+                handleScrollPaneActor(scene, (ScrollPane) innerActor, (ScrollPaneHolder) innerActorHolder);
             }
-        } else if (ActorType.Table.equals(actorHolder.actorType)) {
-            handleTableActor(scene, parent, (TableHolder) actorHolder);
-        } else if (ActorType.Scroll.equals(actorHolder.actorType)) {
-            ScrollPane scrollPane = (ScrollPane) produceAndRegisterActor(scene, actorHolder);
-            handleScrollPaneActor(scene, scrollPane, (ScrollPaneHolder) actorHolder);
+        }
+    }
+
+    public void handleCell(Cell cell, ActorHolder actorHolder) {
+        if (actorHolder.width > 0) {
+            cell.width(actorHolder.width);
+        }
+
+        if (actorHolder.height > 0) {
+            cell.height(actorHolder.height);
+        }
+
+        cell.align(actorHolder.align);
+
+        cell.pad(actorHolder.padTop, actorHolder.padLeft, actorHolder.padBottom, actorHolder.padRight);
+
+        switch (actorHolder.grow) {
+            case Grow:
+                cell.grow();
+                break;
+            case GrowX:
+                cell.growX();
+                break;
+            case GrowY:
+                cell.growY();
+                break;
+            case None:
+            default:
+                break;
         }
     }
 
@@ -143,11 +160,9 @@ public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, Acto
         return innerActor;
     }
 
-    private void handleTableActor(AbstractMenuScene scene, WidgetGroup parent, TableHolder actorHolder) {
-        int column = 0;
-        for (ActorHolder innerActorHolder : actorHolder.actorHolders) {
-            buildRow(scene, parent, innerActorHolder, column);
-            column++;
+    private void handleTableActor(AbstractMenuScene scene, Table parent, TableHolder actorHolder) {
+        for (RowHolder innerActorHolder : actorHolder.actorHolders) {
+            handleTableRow(scene, innerActorHolder, parent);
         }
     }
 
@@ -158,9 +173,7 @@ public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, Acto
             case Label:
                 scene.registerLabeledActor(producedActor);
                 break;
-            case GrowVertical:
             case CheckBox:
-            case Space:
             case Table:
             default:
                 break;
@@ -176,8 +189,6 @@ public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, Acto
                 scene.registerInMenuItems(producedActor);
                 break;
             case Label:
-            case GrowVertical:
-            case Space:
             case Table:
                 break;
         }
@@ -186,9 +197,6 @@ public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, Acto
     private Actor produceActor(AbstractMenuScene scene, ActorHolder actorHolder) {
         Actor producedActor = null;
         switch (actorHolder.actorType) {
-            case GrowVertical:
-                scene.produceGrowYCell();
-                break;
             case CheckBox:
                 producedActor = scene.produceCheckBox(actorHolder.name);
                 break;
@@ -197,9 +205,6 @@ public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, Acto
                 break;
             case SelectBox:
                 producedActor = scene.produceSelectBox(actorHolder.name);
-                break;
-            case Space:
-                scene.produceSpace();
                 break;
             case TextButton:
                 producedActor = scene.produceButton(actorHolder.name);
@@ -218,14 +223,6 @@ public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, Acto
         }
 
         return producedActor;
-    }
-
-    private float getColumnWidth(int columnIndex) {
-        if (columnWidthMap.containsKey(columnIndex)) {
-            return columnWidthMap.get(columnIndex);
-        } else {
-            return prefWidth;
-        }
     }
 
 }

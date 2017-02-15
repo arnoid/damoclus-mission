@@ -4,11 +4,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import org.arnoid.damoclus.component.MainComponent;
 import org.arnoid.damoclus.controller.strings.Strings;
 import org.arnoid.damoclus.logic.delegate.menu.AudioMenuSceneDelegate;
 import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.SingleActorHolder;
+import org.arnoid.damoclus.ui.scene.menu.builder.holder.WindowHolder;
 
 public class AudioMenuScene extends AbstractMenuScene<AudioMenuSceneDelegate> {
     private static final String TAG = AudioMenuScene.class.getSimpleName();
@@ -26,9 +28,8 @@ public class AudioMenuScene extends AbstractMenuScene<AudioMenuSceneDelegate> {
 
     @Override
     protected void produceMenuItems() {
-        MenuSceneBuilder.with(this)
-                .prefWidth(150)
-                .add(SingleActorHolder.textButton(Strings.AudioMenuWindow.btn_back))
+        MenuSceneBuilder.with(this, new WindowHolder())
+                .add(SingleActorHolder.textButton(Strings.AudioMenuWindow.btn_back).align(Align.center).pad(5).width(250))
                 .build();
     }
 
@@ -44,11 +45,6 @@ public class AudioMenuScene extends AbstractMenuScene<AudioMenuSceneDelegate> {
     @Override
     protected void changed(Actor actor, ChangeListener.ChangeEvent event) {
 
-    }
-
-    @Override
-    protected float getCellWidth(int column) {
-        return 150;
     }
 
 }

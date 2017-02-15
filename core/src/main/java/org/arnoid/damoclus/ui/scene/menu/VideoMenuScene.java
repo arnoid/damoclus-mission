@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import org.arnoid.damoclus.component.MainComponent;
 import org.arnoid.damoclus.controller.strings.Strings;
 import org.arnoid.damoclus.data.configuration.DisplayConfiguration;
@@ -18,6 +19,7 @@ import org.arnoid.damoclus.logic.input.MenuNavigationInputAdapter;
 import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.RowHolder;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.SingleActorHolder;
+import org.arnoid.damoclus.ui.scene.menu.builder.holder.WindowHolder;
 
 import javax.inject.Inject;
 
@@ -43,34 +45,22 @@ public class VideoMenuScene extends AbstractMenuScene<VideoMenuSceneDelegate> {
 
     @Override
     protected void produceMenuItems() {
-//        new MenuSceneBuilder(150)
-//                .row()
-//                .label(Strings.VideoMenuWindow.lbl_fullscreen)
-//                .checkBox(Strings.VideoMenuWindow.chk_fullscreen)
-//                .endRow()
-//                .row()
-//                .label(Strings.VideoMenuWindow.lbl_resolution)
-//                .selectBox(Strings.VideoMenuWindow.select_resolution)
-//                .endRow()
-//                .row()
-//                .textButton(Strings.VideoMenuWindow.btn_back)
-//                .textButton(Strings.VideoMenuWindow.btn_apply)
-//                .endRow()
-//                .build(this);
-
-        MenuSceneBuilder.with(this)
-                .prefWidth(150)
-                .add(new RowHolder()
-                        .add(SingleActorHolder.label(Strings.VideoMenuWindow.lbl_fullscreen))
-                        .add(SingleActorHolder.checkBox(Strings.VideoMenuWindow.chk_fullscreen))
+        MenuSceneBuilder.with(this, new WindowHolder())
+                .add(RowHolder.row()
+                        .add(SingleActorHolder.label(Strings.VideoMenuWindow.lbl_fullscreen).align(Align.right))
+                        .add(SingleActorHolder.checkBox(Strings.VideoMenuWindow.chk_fullscreen).align(Align.left))
+                        .align(Align.center).pad(5).width(250)
                 )
-                .add(new RowHolder()
-                        .add(SingleActorHolder.label(Strings.VideoMenuWindow.lbl_resolution))
-                        .add(SingleActorHolder.selectBox(Strings.VideoMenuWindow.select_resolution))
+                .add(RowHolder.row()
+                        .add(SingleActorHolder.label(Strings.VideoMenuWindow.lbl_resolution).align(Align.right))
+                        .add(SingleActorHolder.selectBox(Strings.VideoMenuWindow.select_resolution).align(Align.left))
+                        .align(Align.center).pad(5).width(250)
                 )
-                .add(new RowHolder()
-                        .add(SingleActorHolder.textButton(Strings.VideoMenuWindow.btn_back))
-                        .add(SingleActorHolder.textButton(Strings.VideoMenuWindow.btn_apply))
+                .add(SingleActorHolder.space().height(50))
+                .add(RowHolder.row()
+                        .add(SingleActorHolder.textButton(Strings.VideoMenuWindow.btn_back).width(250))
+                        .add(SingleActorHolder.textButton(Strings.VideoMenuWindow.btn_apply).width(250))
+                        .align(Align.center).pad(5).width(250)
                 )
                 .build();
     }
@@ -149,21 +139,11 @@ public class VideoMenuScene extends AbstractMenuScene<VideoMenuSceneDelegate> {
 
     @Override
     protected void changed(Actor actor, ChangeListener.ChangeEvent event) {
-        Gdx.app.debug(TAG, actor.getName() + " changed");
-    }
-
-    @Override
-    protected float getCellWidth(int column) {
-        if (column == 0) {
-            return 150;
-        } else {
-            return 250;
-        }
-
     }
 
     @Override
     public void onActorProduced(String name, Actor producedActor) {
+        Gdx.app.log(TAG, name);
         if (Strings.VideoMenuWindow.chk_fullscreen.equals(name)) {
             fullscreenCheckBox = (ImageButton) producedActor;
         } else if (Strings.VideoMenuWindow.select_resolution.equals(name)) {

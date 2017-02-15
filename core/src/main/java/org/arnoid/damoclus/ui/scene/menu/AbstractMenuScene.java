@@ -57,11 +57,7 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
         Skin skin = skinController.getSkin();
 
         window = new Window(getWindowTitle(), skin);
-        window.setDebug(true);
         window.getTitleTable().padLeft(5).align(Align.left);
-        window.align(Align.topLeft);
-
-        window.setPosition(0, 0);
 
         clickListener = new ClickListener() {
 
@@ -195,14 +191,6 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
 
     protected abstract void produceMenuItems();
 
-    protected float getCellWidth(int column) {
-        return 0;
-    }
-
-    public float getCellHeight(int column) {
-        return 0;
-    }
-
     public void registerMenuItemListeners(Actor actor) {
         actor.addListener(clickListener);
         actor.addListener(changeListener);
@@ -232,18 +220,6 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
         Table table = new Table();
         table.setName(name);
         return table;
-    }
-
-    public VerticalGroup produceGroupVertical(String name) {
-        VerticalGroup verticalGroup = new VerticalGroup();
-        verticalGroup.setName(name);
-        return verticalGroup;
-    }
-
-    public HorizontalGroup produceGroupHorizontal(String name) {
-        HorizontalGroup horizontalGroup = new HorizontalGroup();
-        horizontalGroup.setName(name);
-        return horizontalGroup;
     }
 
     public TextButton produceButton(String name) {
@@ -288,6 +264,7 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
     public void resize(int width, int height) {
         super.resize(width, height);
 
+        window.setPosition(0, 0);
         window.setSize(width, height);
     }
 
@@ -366,14 +343,6 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
 
     public void onActorProduced(String name, Actor producedActor) {
 
-    }
-
-    public void produceGrowYCell() {
-        window.add().growY();
-    }
-
-    public void produceSpace() {
-        window.add().height(getCellHeight(0));
     }
 
 }

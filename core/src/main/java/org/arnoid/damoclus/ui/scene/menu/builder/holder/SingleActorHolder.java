@@ -2,7 +2,7 @@ package org.arnoid.damoclus.ui.scene.menu.builder.holder;
 
 import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
 
-public class SingleActorHolder extends ActorHolder {
+public class SingleActorHolder extends ActorHolder<SingleActorHolder> {
     public SingleActorHolder(MenuSceneBuilder.ActorType actorType, String name) {
         super(actorType, name);
     }
@@ -27,7 +27,4 @@ public class SingleActorHolder extends ActorHolder {
         return new SingleActorHolder(MenuSceneBuilder.ActorType.Space, "");
     }
 
-    public static ActorHolder growVertical() {
-        return new SingleActorHolder(MenuSceneBuilder.ActorType.GrowVertical, "");
-    }
 }

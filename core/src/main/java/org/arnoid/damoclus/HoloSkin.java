@@ -115,7 +115,7 @@ public class HoloSkin extends ApplicationAdapter {
 
         buttonMulti.addListener(new TextTooltip("This is a tooltip! This is a tooltip! This is a tooltip! This is a tooltip! This is a tooltip! This is a tooltip!", skin));
         Table tooltipTable = new Table(skin);
-        tooltipTable.pad(10).background("tooltip");
+        tooltipTable.pad(5).background("tooltip");
         tooltipTable.add(new TextButton("Fancy tooltip!", skin));
         imgButton.addListener(new Tooltip(tooltipTable));
 

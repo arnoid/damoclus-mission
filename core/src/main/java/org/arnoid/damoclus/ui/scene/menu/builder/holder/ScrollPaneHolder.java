@@ -5,7 +5,7 @@ import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScrollPaneHolder extends ActorHolder {
+public class ScrollPaneHolder extends ActorHolder<ScrollPaneHolder> {
 
     public final boolean verticalScrollBar;
     public final boolean horizontalScrollBar;

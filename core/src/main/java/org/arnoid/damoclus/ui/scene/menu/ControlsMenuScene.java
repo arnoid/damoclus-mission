@@ -12,6 +12,7 @@ import org.arnoid.damoclus.ui.scene.menu.builder.holder.RowHolder;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.ScrollPaneHolder;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.SingleActorHolder;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.TableHolder;
+import org.arnoid.damoclus.ui.scene.menu.builder.holder.WindowHolder;
 
 public class ControlsMenuScene extends AbstractMenuScene<ControlsMenuSceneDelegate> {
 
@@ -40,22 +41,21 @@ public class ControlsMenuScene extends AbstractMenuScene<ControlsMenuSceneDelega
 
     @Override
     protected void produceMenuItems() {
-        MenuSceneBuilder.with(this)
-                .prefWidth(150)
+        MenuSceneBuilder.with(this, new WindowHolder())
                 .add(
-                        new ScrollPaneHolder(false, true)
+                        new ScrollPaneHolder(true, false)
                                 .set(new TableHolder()
                                         .add(
-                                                new RowHolder()
+                                                RowHolder.row()
                                                         .add(SingleActorHolder.textButton("1"))
                                                         .add(SingleActorHolder.textButton("2")),
-                                                new RowHolder()
+                                                RowHolder.row()
                                                         .add(SingleActorHolder.textButton("2"))
                                                         .add(SingleActorHolder.textButton("3")),
-                                                new RowHolder()
+                                                RowHolder.row()
                                                         .add(SingleActorHolder.textButton("4"))
                                                         .add(SingleActorHolder.textButton("5")),
-                                                new RowHolder()
+                                                RowHolder.row()
                                                         .add(SingleActorHolder.textButton("6"))
                                                         .add(SingleActorHolder.textButton("7"))
                                                         .add(SingleActorHolder.textButton("18"))
@@ -64,16 +64,16 @@ public class ControlsMenuScene extends AbstractMenuScene<ControlsMenuSceneDelega
                 )
                 .add(
                         new TableHolder().add(
-                                new RowHolder()
+                                RowHolder.row()
                                         .add(SingleActorHolder.textButton("1"))
                                         .add(SingleActorHolder.textButton("2")),
-                                new RowHolder()
+                                RowHolder.row()
                                         .add(SingleActorHolder.textButton("2"))
                                         .add(SingleActorHolder.textButton("3")),
-                                new RowHolder()
+                                RowHolder.row()
                                         .add(SingleActorHolder.textButton("4"))
                                         .add(SingleActorHolder.textButton("5")),
-                                new RowHolder()
+                                RowHolder.row()
                                         .add(SingleActorHolder.textButton("6"))
                                         .add(SingleActorHolder.textButton("7"))
                                         .add(SingleActorHolder.textButton("18"))
