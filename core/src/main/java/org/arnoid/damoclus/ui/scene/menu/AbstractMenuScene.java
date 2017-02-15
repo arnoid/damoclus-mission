@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -266,6 +267,13 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
         return selectBox;
     }
 
+    public ScrollPane produceScroll(String name) {
+        final ScrollPane scrollPane = new ScrollPane(null, getSkinController().getSkin());
+        scrollPane.setName(name);
+
+        return scrollPane;
+    }
+
     public ImageButton produceCheckBox(String name) {
         final ImageButton checkBox = new ImageButton(getSkinController().getSkin(), getSkinController().getImgByttonCheckBoxStyle());
 
@@ -367,4 +375,5 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
     public void produceSpace() {
         window.add().height(getCellHeight(0));
     }
+
 }
