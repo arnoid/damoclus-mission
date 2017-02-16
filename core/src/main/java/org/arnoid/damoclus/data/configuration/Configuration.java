@@ -4,6 +4,7 @@ import java.util.Locale;
 
 public class Configuration {
 
+    boolean debug;
     Locale locale;
     UserControllerMap keyboardMap;
     DisplayConfiguration displayConfiguration;
@@ -30,5 +31,13 @@ public class Configuration {
 
     public void setDisplayConfiguration(DisplayConfiguration displayConfiguration) {
         this.displayConfiguration = displayConfiguration;
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
+    }
+
+    public boolean isDebug() {
+        return debug;
     }
 }

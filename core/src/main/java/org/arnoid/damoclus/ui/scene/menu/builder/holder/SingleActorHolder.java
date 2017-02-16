@@ -23,6 +23,10 @@ public class SingleActorHolder extends ActorHolder<SingleActorHolder> {
         return new SingleActorHolder(MenuSceneBuilder.ActorType.SelectBox, name);
     }
 
+    public static SingleActorHolder textField(String name) {
+        return new SingleActorHolder(MenuSceneBuilder.ActorType.TextField, name);
+    }
+
     public static SingleActorHolder space() {
         return new SingleActorHolder(MenuSceneBuilder.ActorType.Space, "");
     }

@@ -29,6 +29,7 @@ public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, Acto
         TableRow,
         Space,
         Window,
+        TextField,
     }
 
     private List<RowHolder> rowHolders;
@@ -58,7 +59,7 @@ public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, Acto
             case SelectBox:
             case TextButton:
             default:
-                add(RowHolder.row().add(actorHolder));
+                add(new RowHolder().add(actorHolder));
                 break;
         }
 
@@ -74,6 +75,7 @@ public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, Acto
 
         window.setX(windowHolder.x);
         window.setY(windowHolder.y);
+        window.setDebug(windowHolder.debug);
 
         window.setWidth(windowHolder.width);
         window.setHeight(windowHolder.height);
@@ -82,6 +84,7 @@ public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, Acto
 
         window.setMovable(windowHolder.movable);
         window.setModal(windowHolder.modal);
+        window.setFillParent(windowHolder.fillParent);
 
         for (RowHolder rowHolder : rowHolders) {
             handleTableRow(scene, rowHolder, window);
@@ -101,6 +104,9 @@ public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, Acto
 
             scene.onActorProduced(innerActorHolder.name, innerActor);
 
+            if (innerActorHolder.debug) {
+                innerActor.setDebug(true);
+            }
             handleCell(table.add(innerActor), innerActorHolder);
 
             if (ActorType.Table.equals(innerActorHolder.actorType)) {
@@ -123,6 +129,14 @@ public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, Acto
         cell.align(actorHolder.align);
 
         cell.pad(actorHolder.padTop, actorHolder.padLeft, actorHolder.padBottom, actorHolder.padRight);
+
+        if (actorHolder.expandX) {
+            cell.expandX();
+        }
+
+        if (actorHolder.expandY) {
+            cell.expandY();
+        }
 
         switch (actorHolder.grow) {
             case Grow:
@@ -171,6 +185,7 @@ public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, Acto
             case TextButton:
             case SelectBox:
             case Label:
+            case TextField:
                 scene.registerLabeledActor(producedActor);
                 break;
             case CheckBox:
@@ -185,6 +200,7 @@ public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, Acto
             case CheckBox:
             case TextButton:
             case SelectBox:
+            case TextField:
                 scene.registerMenuItemListeners(producedActor);
                 scene.registerInMenuItems(producedActor);
                 break;
@@ -208,6 +224,9 @@ public class MenuSceneBuilder extends AbstractMenuBuilder<MenuSceneBuilder, Acto
                 break;
             case TextButton:
                 producedActor = scene.produceButton(actorHolder.name);
+                break;
+            case TextField:
+                producedActor = scene.produceTextField(actorHolder.name);
                 break;
             case Table:
                 producedActor = scene.produceGroupTable(actorHolder.name);

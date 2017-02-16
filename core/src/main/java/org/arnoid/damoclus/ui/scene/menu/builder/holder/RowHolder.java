@@ -15,13 +15,13 @@ public class RowHolder extends ActorHolder<RowHolder> {
         super(actorType, "");
     }
 
+    public RowHolder() {
+        super(MenuSceneBuilder.ActorType.TableRow, "");
+    }
+
     public RowHolder add(ActorHolder actorHolder) {
         actorHolders.add(actorHolder);
         return this;
-    }
-
-    public static RowHolder row() {
-        return new RowHolder(MenuSceneBuilder.ActorType.TableRow);
     }
 
 }

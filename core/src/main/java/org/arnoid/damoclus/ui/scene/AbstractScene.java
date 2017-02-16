@@ -1,6 +1,5 @@
 package org.arnoid.damoclus.ui.scene;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import org.arnoid.damoclus.DamoclusGdxGame;
@@ -34,6 +33,15 @@ public abstract class AbstractScene<T extends AbstractScene.SceneDelegate> exten
     }
 
     public void onSceneDelegate() {
+
+    }
+
+    @Override
+    public void render(float delta) {
+        super.render(delta);
+    }
+
+    public void act(float delta) {
 
     }
 

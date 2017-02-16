@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import org.arnoid.damoclus.component.MainComponent;
 import org.arnoid.damoclus.logic.delegate.menu.ControlsMenuSceneDelegate;
 import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
@@ -36,47 +37,52 @@ public class ControlsMenuScene extends AbstractMenuScene<ControlsMenuSceneDelega
 
     @Override
     protected String getWindowTitle() {
-        return "";
+        return "Controls";
     }
 
     @Override
     protected void produceMenuItems() {
         MenuSceneBuilder.with(this, new WindowHolder())
-                .add(
-                        new ScrollPaneHolder(true, false)
-                                .set(new TableHolder()
-                                        .add(
-                                                RowHolder.row()
-                                                        .add(SingleActorHolder.textButton("1"))
-                                                        .add(SingleActorHolder.textButton("2")),
-                                                RowHolder.row()
-                                                        .add(SingleActorHolder.textButton("2"))
-                                                        .add(SingleActorHolder.textButton("3")),
-                                                RowHolder.row()
-                                                        .add(SingleActorHolder.textButton("4"))
-                                                        .add(SingleActorHolder.textButton("5")),
-                                                RowHolder.row()
-                                                        .add(SingleActorHolder.textButton("6"))
-                                                        .add(SingleActorHolder.textButton("7"))
-                                                        .add(SingleActorHolder.textButton("18"))
-                                        )
-                                )
+                .add(new TableHolder()
+                        .add(
+                                new RowHolder()
+                                        .add(SingleActorHolder.space().width(150))
+                                        .add(SingleActorHolder.label("Keyboard").width(150).align(Align.center))
+                                        .add(SingleActorHolder.label("Controller").width(150).align(Align.center)),
+                                new RowHolder()
+                                        .add(SingleActorHolder.label("Up").width(150))
+                                        .add(SingleActorHolder.textButton("W").width(75).align(Align.center))
+                                        .add(SingleActorHolder.textButton("W").width(75).align(Align.center)),
+                                new RowHolder()
+                                        .add(SingleActorHolder.label("Down").width(150))
+                                        .add(SingleActorHolder.textButton("S").width(75).align(Align.center))
+                                        .add(SingleActorHolder.textButton("S").width(75).align(Align.center)),
+                                new RowHolder()
+                                        .add(SingleActorHolder.label("Right").width(150))
+                                        .add(SingleActorHolder.textButton("D").width(75).align(Align.center))
+                                        .add(SingleActorHolder.textButton("D").width(75).align(Align.center)),
+                                new RowHolder()
+                                        .add(SingleActorHolder.label("Left").width(150))
+                                        .add(SingleActorHolder.textButton("A").width(75).align(Align.center))
+                                        .add(SingleActorHolder.textButton("A").width(75).align(Align.center)),
+                                new RowHolder()
+                                        .add(SingleActorHolder.label("Interact").width(150))
+                                        .add(SingleActorHolder.textButton("Enter").width(75).align(Align.center))
+                                        .add(SingleActorHolder.textButton("Enter").width(75).align(Align.center)),
+                                new RowHolder()
+                                        .add(SingleActorHolder.label("Inventory").width(150))
+                                        .add(SingleActorHolder.textButton("I").width(75).align(Align.center))
+                                        .add(SingleActorHolder.textButton("I").width(75).align(Align.center)),
+                                new RowHolder()
+                                        .add(SingleActorHolder.label("Menu").width(150))
+                                        .add(SingleActorHolder.textButton("Esc").width(75).align(Align.center))
+                                        .add(SingleActorHolder.textButton("Esc").width(75).align(Align.center))
+                        )
                 )
-                .add(
-                        new TableHolder().add(
-                                RowHolder.row()
-                                        .add(SingleActorHolder.textButton("1"))
-                                        .add(SingleActorHolder.textButton("2")),
-                                RowHolder.row()
-                                        .add(SingleActorHolder.textButton("2"))
-                                        .add(SingleActorHolder.textButton("3")),
-                                RowHolder.row()
-                                        .add(SingleActorHolder.textButton("4"))
-                                        .add(SingleActorHolder.textButton("5")),
-                                RowHolder.row()
-                                        .add(SingleActorHolder.textButton("6"))
-                                        .add(SingleActorHolder.textButton("7"))
-                                        .add(SingleActorHolder.textButton("18"))
+                .add(new TableHolder()
+                        .add(new RowHolder()
+                                .add(SingleActorHolder.textButton("Back").width(150))
+                                .add(SingleActorHolder.textButton("Apply").width(150))
                         )
                 )
                 .build();
@@ -86,6 +92,6 @@ public class ControlsMenuScene extends AbstractMenuScene<ControlsMenuSceneDelega
     public void onActorProduced(String name, Actor producedActor) {
         super.onActorProduced(name, producedActor);
 
-        Gdx.app.debug(TAG, "Actor produced [" + name + "]");
+        Gdx.app.log(TAG, "Actor produced [" + name + "]");
     }
 }

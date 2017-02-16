@@ -6,6 +6,7 @@ import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
 public abstract class ActorHolder<T extends ActorHolder> {
     public MenuSceneBuilder.ActorType actorType;
     public String name;
+    public boolean debug;
 
     public enum Grow {
         Grow,
@@ -21,6 +22,10 @@ public abstract class ActorHolder<T extends ActorHolder> {
     public float padRight = 0;
     public float padBottom = 0;
     public float padTop = 0;
+
+    public boolean expandX = false;
+    public boolean expandY = false;
+
     public Grow grow = Grow.None;
 
     public ActorHolder(MenuSceneBuilder.ActorType actorType, String name) {
@@ -73,6 +78,21 @@ public abstract class ActorHolder<T extends ActorHolder> {
 
     public T grow(Grow grow) {
         this.grow = grow;
+        return (T) this;
+    }
+
+    public T debug() {
+        this.debug = true;
+        return (T) this;
+    }
+
+    public T expandX() {
+        this.expandX = true;
+        return (T) this;
+    }
+
+    public T expandY() {
+        this.expandY = true;
         return (T) this;
     }
 }

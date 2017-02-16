@@ -13,7 +13,7 @@ public interface Strings {
     }
 
     interface OptionsMenuWindow {
-        String title = "main_menu_window_title";
+        String title = "options_menu_window_title";
         String btn_audio = "options_menu_btn_audio";
         String btn_language = "options_menu_btn_language";
         String btn_video = "options_menu_btn_video";

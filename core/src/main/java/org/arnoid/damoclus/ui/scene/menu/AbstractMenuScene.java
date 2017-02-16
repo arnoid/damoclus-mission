@@ -1,13 +1,11 @@
 package org.arnoid.damoclus.ui.scene.menu;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -15,11 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.kotcrab.vis.ui.widget.VisWindow;
 import org.arnoid.damoclus.controller.skin.SkinController;
 import org.arnoid.damoclus.controller.strings.StringsController;
 import org.arnoid.damoclus.logic.input.MenuNavigationInputAdapter;
@@ -32,13 +31,14 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
 
     private static final String TAG = AbstractMenuScene.class.getSimpleName();
 
+    private static final float WINDOW_TITLE_PADDING = 5F;
+
     @Inject
     StringsController stringsController;
     @Inject
     SkinController skinController;
 
-    private Window window;
-    private SpriteBatch spriteBatch;
+    private VisWindow window;
     private ClickListener clickListener;
 
     private LinkedList<Actor> menuItems = new LinkedList<>();
@@ -52,12 +52,14 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
     }
 
     void init() {
-        spriteBatch = new SpriteBatch();
-
         Skin skin = skinController.getSkin();
 
-        window = new Window(getWindowTitle(), skin);
-        window.getTitleTable().padLeft(5).align(Align.left);
+        window = new VisWindow(getWindowTitle(), skin.get("default", Window.WindowStyle.class));
+
+        window.getTitleTable().align(Align.topLeft).padLeft(15).padTop(WINDOW_TITLE_PADDING);
+
+        window.add().height(WINDOW_TITLE_PADDING + window.getTitleLabel().getHeight() + WINDOW_TITLE_PADDING);
+        window.row();
 
         clickListener = new ClickListener() {
 
@@ -110,6 +112,9 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
             Actor firstButton = menuItems.get(0);
             getStage().setKeyboardFocus(firstButton);
         }
+
+        window.pack();
+        window.centerWindow();
     }
 
     @Override
@@ -228,6 +233,12 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
         return button;
     }
 
+    public TextField produceTextField(String name) {
+        TextField textField = new TextField(getText(name), getSkinController().getSkin());
+        textField.setName(name);
+        return textField;
+    }
+
     public Label produceLabel(String name) {
         Label label = new Label(getText(name), getSkinController().getSkin());
         label.setName(name);
@@ -264,26 +275,7 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
     public void resize(int width, int height) {
         super.resize(width, height);
 
-        window.setPosition(0, 0);
-        window.setSize(width, height);
-    }
-
-    @Override
-    public void render(float delta) {
-        super.render(delta);
-
-        spriteBatch.begin();
-        if (window.hasParent()) {
-            window.draw(spriteBatch, 1);
-        }
-        spriteBatch.end();
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-
-        spriteBatch.dispose();
+        window.centerWindow();
     }
 
     private void markNotSelected(Actor actor) {
@@ -310,6 +302,9 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
         if (isPaused()) {
             return;
         }
+        if (menuItems.size() == 0) {
+            return;
+        }
         Actor actor = menuItems.removeFirst();
 
         menuItems.addLast(actor);
@@ -322,6 +317,9 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
     @Override
     public void onPrev() {
         if (isPaused()) {
+            return;
+        }
+        if (menuItems.size() == 0) {
             return;
         }
         markNotSelected(menuItems.peek());
@@ -344,5 +342,6 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
     public void onActorProduced(String name, Actor producedActor) {
 
     }
+
 
 }

@@ -18,6 +18,13 @@ roboto-regular-medium
   orig: 512, 512
   offset: 0, 0
   index: -1
+cursor
+  rotate: false
+  xy: 565, 626
+  size: 3, 58
+  orig: 3, 58
+  offset: 0, 0
+  index: -1
 skin_btn_check_off_disabled_focused_holo_dark
   rotate: false
   xy: 515, 927
@@ -560,7 +567,7 @@ skin_switch_thumb_pressed_holo_dark
   index: -1
 skin_tab_selected_focused_holo
   rotate: false
-  xy: 600, 807
+  xy: 92, 239
   size: 3, 12
   split: 0, 0, 0, 9
   pad: 0, 0, 0, 0
@@ -569,7 +576,7 @@ skin_tab_selected_focused_holo
   index: -1
 skin_tab_selected_holo
   rotate: false
-  xy: 673, 907
+  xy: 600, 807
   size: 3, 12
   split: 0, 0, 0, 9
   pad: 0, 0, 0, 0
@@ -657,11 +664,18 @@ skin_textfield_focused_holo_dark
   orig: 39, 48
   offset: 0, 0
   index: -1
+selection
+  rotate: false
+  xy: 98, 348
+  size: 3, 58
+  orig: 3, 58
+  offset: 0, 0
+  index: -1
 window
   rotate: false
-  xy: 92, 195
-  size: 3, 56
-  split: 1, 1, 55, 0
-  orig: 3, 56
+  xy: 673, 893
+  size: 5, 26
+  split: 2, 2, 23, 2
+  orig: 5, 26
   offset: 0, 0
   index: -1

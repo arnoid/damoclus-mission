@@ -23,6 +23,12 @@ public class SceneContainer implements Screen {
         }
     }
 
+    public void act(float delta) {
+        for (AbstractScene scene : scenes) {
+            scene.act(delta);
+        }
+    }
+
     @Override
     public void resize(int width, int height) {
         for (AbstractScene scene : scenes) {
