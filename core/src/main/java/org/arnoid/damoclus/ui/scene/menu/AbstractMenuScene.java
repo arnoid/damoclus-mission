@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -172,6 +173,13 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
         }
 
         getStage().addActor(window);
+
+        window.addAction(
+                Actions.sequence(
+                        Actions.alpha(0, 0),
+                        Actions.fadeIn(1)
+                )
+        );
     }
 
     protected String getText(String name) {
@@ -185,7 +193,13 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
     @Override
     public void hide() {
         window.setTouchable(Touchable.disabled);
-        window.remove();
+
+        window.addAction(
+                Actions.sequence(
+                        Actions.fadeOut(0.5F),
+                        Actions.removeActor(window)
+                )
+        );
     }
 
     protected abstract void clicked(Actor actor, InputEvent event);
@@ -342,6 +356,5 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
     public void onActorProduced(String name, Actor producedActor) {
 
     }
-
 
 }
