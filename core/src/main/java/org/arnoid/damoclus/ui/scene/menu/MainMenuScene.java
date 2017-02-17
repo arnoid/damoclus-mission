@@ -5,11 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
+import org.arnoid.damoclus.Ids;
 import org.arnoid.damoclus.component.MainComponent;
-import org.arnoid.damoclus.controller.strings.Strings;
 import org.arnoid.damoclus.logic.delegate.menu.MainMenuSceneDelegate;
 import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
-import org.arnoid.damoclus.ui.scene.menu.builder.holder.ActorHolder;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.SingleActorHolder;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.WindowHolder;
 
@@ -30,15 +29,15 @@ public class MainMenuScene extends AbstractMenuScene<MainMenuSceneDelegate> {
 
     @Override
     protected String getWindowTitle() {
-        return getStringsController().string(Strings.MainMenuWindow.title);
+        return getStringsController().string(Ids.menu.main.window_title);
     }
 
     @Override
     protected void produceMenuItems() {
         MenuSceneBuilder.with(this, new WindowHolder().movable().modal())
-                .add(SingleActorHolder.textButton(Strings.MainMenuWindow.btn_new_game).align(Align.center).pad(5).width(250))
-                .add(SingleActorHolder.textButton(Strings.MainMenuWindow.btn_options).align(Align.center).pad(5).width(250))
-                .add(SingleActorHolder.textButton(Strings.MainMenuWindow.btn_quit).align(Align.center).pad(5).width(250))
+                .add(SingleActorHolder.textButton(Ids.menu.main.btn_new_game).align(Align.center).pad(5).width(250))
+                .add(SingleActorHolder.textButton(Ids.menu.main.btn_options).align(Align.center).pad(5).width(250))
+                .add(SingleActorHolder.textButton(Ids.menu.main.btn_quit).align(Align.center).pad(5).width(250))
                 .build();
 
     }
@@ -51,13 +50,13 @@ public class MainMenuScene extends AbstractMenuScene<MainMenuSceneDelegate> {
     @Override
     protected void clicked(Actor actor, InputEvent event) {
         switch (actor.getName()) {
-            case Strings.MainMenuWindow.btn_new_game:
+            case Ids.menu.main.btn_new_game:
                 getSceneDelegate().onNewGame();
                 break;
-            case Strings.MainMenuWindow.btn_options:
+            case Ids.menu.main.btn_options:
                 getSceneDelegate().onOptions();
                 break;
-            case Strings.MainMenuWindow.btn_quit:
+            case Ids.menu.main.btn_quit:
                 getSceneDelegate().onQuit();
                 break;
         }

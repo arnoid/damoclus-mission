@@ -64,7 +64,7 @@ public class MenuNavigationInputAdapter extends InputAdapter implements Controll
     }
 
     private UserControllerMap getKeyboardMap() {
-        return configurationController.read().getKeyboardMap();
+        return configurationController.read().getKeyboardMapping();
     }
 
     private void previous() {

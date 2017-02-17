@@ -5,8 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
+import org.arnoid.damoclus.Ids;
 import org.arnoid.damoclus.component.MainComponent;
-import org.arnoid.damoclus.controller.strings.Strings;
 import org.arnoid.damoclus.logic.delegate.menu.AudioMenuSceneDelegate;
 import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.SingleActorHolder;
@@ -23,20 +23,20 @@ public class AudioMenuScene extends AbstractMenuScene<AudioMenuSceneDelegate> {
 
     @Override
     protected String getWindowTitle() {
-        return getStringsController().string(Strings.AudioMenuWindow.title);
+        return getStringsController().string(Ids.menu.audio.window_title);
     }
 
     @Override
     protected void produceMenuItems() {
         MenuSceneBuilder.with(this, new WindowHolder())
-                .add(SingleActorHolder.textButton(Strings.AudioMenuWindow.btn_back).align(Align.center).pad(5).width(250))
+                .add(SingleActorHolder.textButton(Ids.menu.audio.btn_back).align(Align.center).pad(5).width(250))
                 .build();
     }
 
     @Override
     protected void clicked(Actor actor, InputEvent event) {
         switch (actor.getName()) {
-            case Strings.AudioMenuWindow.btn_back:
+            case Ids.menu.audio.btn_back:
                 getSceneDelegate().onBack();
                 break;
         }

@@ -11,8 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
+import org.arnoid.damoclus.Ids;
 import org.arnoid.damoclus.component.MainComponent;
-import org.arnoid.damoclus.controller.strings.Strings;
 import org.arnoid.damoclus.data.configuration.DisplayConfiguration;
 import org.arnoid.damoclus.logic.delegate.menu.VideoMenuSceneDelegate;
 import org.arnoid.damoclus.logic.input.MenuNavigationInputAdapter;
@@ -40,26 +40,26 @@ public class VideoMenuScene extends AbstractMenuScene<VideoMenuSceneDelegate> {
 
     @Override
     protected String getWindowTitle() {
-        return getStringsController().string(Strings.VideoMenuWindow.title);
+        return getStringsController().string(Ids.menu.video.window_title);
     }
 
     @Override
     protected void produceMenuItems() {
         MenuSceneBuilder.with(this, new WindowHolder())
                 .add(new RowHolder()
-                        .add(SingleActorHolder.label(Strings.VideoMenuWindow.lbl_fullscreen).align(Align.right))
-                        .add(SingleActorHolder.checkBox(Strings.VideoMenuWindow.chk_fullscreen).align(Align.left))
+                        .add(SingleActorHolder.label(Ids.menu.video.label_fullscreen).align(Align.right))
+                        .add(SingleActorHolder.checkBox(Ids.menu.video.chk_fullscreen).align(Align.left))
                         .align(Align.center).pad(5).width(250)
                 )
                 .add(new RowHolder()
-                        .add(SingleActorHolder.label(Strings.VideoMenuWindow.lbl_resolution).align(Align.right))
-                        .add(SingleActorHolder.selectBox(Strings.VideoMenuWindow.select_resolution).align(Align.left))
+                        .add(SingleActorHolder.label(Ids.menu.video.label_resolution).align(Align.right))
+                        .add(SingleActorHolder.selectBox(Ids.menu.video.selectbox_resolution).align(Align.left))
                         .align(Align.center).pad(5).width(250)
                 )
                 .add(SingleActorHolder.space().height(50))
                 .add(new RowHolder()
-                        .add(SingleActorHolder.textButton(Strings.VideoMenuWindow.btn_back).width(250))
-                        .add(SingleActorHolder.textButton(Strings.VideoMenuWindow.btn_apply).width(250))
+                        .add(SingleActorHolder.textButton(Ids.menu.video.btn_back).width(250))
+                        .add(SingleActorHolder.textButton(Ids.menu.video.btn_apply).width(250))
                         .align(Align.center).pad(5).width(250)
                 )
                 .build();
@@ -67,7 +67,7 @@ public class VideoMenuScene extends AbstractMenuScene<VideoMenuSceneDelegate> {
 
     @Override
     protected Object[] getSelectBoxArray(String name) {
-        if (Strings.VideoMenuWindow.select_resolution.equals(name)) {
+        if (Ids.menu.video.selectbox_resolution.equals(name)) {
             displayModeSelectBox.setItems(getSceneDelegate().getDisplayModes());
 
             DisplayConfiguration displayConfiguration = getSceneDelegate().getDisplayConfiguration();
@@ -82,16 +82,16 @@ public class VideoMenuScene extends AbstractMenuScene<VideoMenuSceneDelegate> {
     @Override
     protected void clicked(Actor actor, InputEvent event) {
         switch (actor.getName()) {
-            case Strings.VideoMenuWindow.chk_fullscreen:
+            case Ids.menu.video.chk_fullscreen:
                 fullscreenCheckBox.toggle();
                 break;
-            case Strings.VideoMenuWindow.btn_back:
+            case Ids.menu.video.btn_back:
                 getSceneDelegate().onBack();
                 break;
-            case Strings.VideoMenuWindow.btn_apply:
+            case Ids.menu.video.btn_apply:
                 getSceneDelegate().apply(fullscreenCheckBox.isChecked(), displayModeSelectBox.getSelected());
                 break;
-            case Strings.VideoMenuWindow.select_resolution:
+            case Ids.menu.video.selectbox_resolution:
                 displayModeSelectBox.showList();
                 List<Graphics.DisplayMode> list = displayModeSelectBox.getList();
                 list.setTouchable(Touchable.enabled);
@@ -144,9 +144,9 @@ public class VideoMenuScene extends AbstractMenuScene<VideoMenuSceneDelegate> {
     @Override
     public void onActorProduced(String name, Actor producedActor) {
         Gdx.app.log(TAG, name);
-        if (Strings.VideoMenuWindow.chk_fullscreen.equals(name)) {
+        if (Ids.menu.video.chk_fullscreen.equals(name)) {
             fullscreenCheckBox = (ImageButton) producedActor;
-        } else if (Strings.VideoMenuWindow.select_resolution.equals(name)) {
+        } else if (Ids.menu.video.selectbox_resolution.equals(name)) {
             displayModeSelectBox = (SelectBox<Graphics.DisplayMode>) producedActor;
         }
     }

@@ -10,14 +10,18 @@ buildscript {
     }
     dependencies {
         classpath "net.ltgt.gradle:gradle-apt-plugin:0.9"
+        classpath 'com.squareup:javapoet:1.8.0'
+        classpath 'com.google.code.gson:gson:2.8.0'
     }
+
 }
 
 allprojects {
-    apply plugin: "eclipse"
     apply plugin: "idea"
+    apply plugin: "maven"
 
     version = '1.0'
+    group = "org.arnoid.damoclus"
     ext {
         appName = "Damoclus Mission"
         gdxVersion = '1.9.5'
@@ -39,7 +43,7 @@ allprojects {
 project(":desktop") {
     apply plugin: "java"
     apply plugin: "net.ltgt.apt"
-
+    apply plugin: "idea"
 
     dependencies {
         compile project(":core")
@@ -57,7 +61,7 @@ project(":desktop") {
 project(":core") {
     apply plugin: "java"
     apply plugin: "net.ltgt.apt"
-
+    apply plugin: "idea"
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
@@ -76,8 +80,5 @@ project(":core") {
         compile "com.github.czyzby:gdx-lml:1.8.1.9.4"
         compile "com.github.czyzby:gdx-lml-vis:1.8.1.9.4"
     }
-}
 
-tasks.eclipse.doLast {
-    delete ".project"
 }

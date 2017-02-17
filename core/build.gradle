@@ -4,7 +4,6 @@ apply plugin: "net.ltgt.apt"
 sourceCompatibility = 1.8
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-
 sourceSets {
     main {
         java.srcDirs = ["src/main/java"]
@@ -16,10 +15,6 @@ sourceSets {
     }
 }
 
-eclipse.project {
-    name = appName + "-core"
-}
-
 dependencies {
     compile 'com.google.code.gson:gson:2.8.0'
 
@@ -27,4 +22,144 @@ dependencies {
 
     compile 'com.google.dagger:dagger:2+'
     apt 'com.google.dagger:dagger-compiler:2+'
+}
+
+//apply from: 'GenerateIdsTask.gradle'
+
+task generateIds(type: GenerateIdsTask) {
+    generatedSourcesPath = "generated-ids/source/ids/main/"
+}
+
+tasks.assemble*.dependsOn tasks.getByName("generateIds")
+project.sourceSets.main.java.srcDirs += "$project.buildDir/" + tasks.getByName("generateIds").generatedSourcesPath
+
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.squareup.javapoet.FieldSpec
+import com.squareup.javapoet.JavaFile
+import com.squareup.javapoet.TypeSpec
+
+import javax.lang.model.element.Modifier
+import java.lang.reflect.Type
+
+class GenerateIdsTask extends DefaultTask {
+
+    @Input
+    def generatedSourcesPath
+
+    @TaskAction
+    void generateIds() {
+
+        def projectBuildDir = project.buildDir
+        def projectDir = project.projectDir
+
+        println "Project build dir [" + projectBuildDir + "]"
+        println "Project dir [" + projectDir + "]"
+
+        File generatedSrcDir = new File(projectBuildDir, generatedSourcesPath)
+
+        println "Generated ids destination [" + generatedSrcDir.absolutePath + "]"
+
+        if (generatedSrcDir.exists()) {
+
+        } else {
+            generatedSrcDir.mkdirs()
+        }
+
+        project.sourceSets.main.java.srcDirs += "$projectBuildDir/" + generatedSourcesPath
+
+        Gson gson = new Gson()
+
+        File file = new File("$projectDir/assets/locale/en/strings.json")
+
+        println "Parsing json file [" + file.absolutePath + "]"
+
+        Reader reader = new FileReader(file)
+
+        Type type = new TypeToken<Map<String, String>>() {
+        }.getType()
+
+        Map<String, String> strings = gson.fromJson(reader, type)
+
+        reader.close()
+
+        HashMap<String, TypeSpec.Builder> categories = new HashMap<>()
+        HashMap<TypeSpec.Builder, HashMap<String, TypeSpec.Builder>> subcategories = new HashMap<>()
+
+        for (String key : strings.keySet()) {
+            def splits = key.split("_")
+            def categoryName = splits[0]
+            def subcategoryName = splits[1]
+
+            def id = key.split(categoryName + "_" + subcategoryName + "_")[1]
+
+            TypeSpec.Builder categoryTypeSpecBuilder
+            TypeSpec.Builder subcategoryTypeSpecBuilder
+
+            categoryTypeSpecBuilder = getCategoryBuilder(categories, categoryName)
+
+            subcategoryTypeSpecBuilder = getSubcategoryBuilder(subcategories, categoryTypeSpecBuilder, subcategoryName)
+
+            subcategoryTypeSpecBuilder.addField(
+                    FieldSpec.builder(String.class, id, Modifier.FINAL, Modifier.STATIC, Modifier.PUBLIC)
+                            .initializer('$S', key)
+                            .build()
+            ).build()
+        }
+
+
+        for (TypeSpec.Builder categoryBuilder : subcategories.keySet()) {
+            HashMap<String, TypeSpec.Builder> subcategoryBuildersMap = subcategories.get(categoryBuilder);
+
+            for (TypeSpec.Builder subcategoryBuilder : subcategoryBuildersMap.values()) {
+                categoryBuilder.addType(subcategoryBuilder.build())
+            }
+        }
+
+        TypeSpec.Builder idsTypeBuilder = TypeSpec.classBuilder("Ids")
+                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+
+        for (TypeSpec.Builder categoryBuilder : categories.values()) {
+
+            idsTypeBuilder.addType(categoryBuilder.build())
+        }
+
+        JavaFile.Builder idsJavaFileBuilder = JavaFile.builder(String.valueOf(project.group), idsTypeBuilder.build())
+
+        JavaFile javaFile = idsJavaFileBuilder.build()
+
+        javaFile.writeTo(generatedSrcDir)
+    }
+
+    private TypeSpec.Builder getSubcategoryBuilder(HashMap<TypeSpec.Builder, HashMap<String, TypeSpec.Builder>> subcategories, TypeSpec.Builder categoryTypeSpecBuilder, String subcategoryName) {
+        TypeSpec.Builder subcategoryTypeSpecBuilder
+        if (subcategories.containsKey(categoryTypeSpecBuilder) && subcategories.get(categoryTypeSpecBuilder).containsKey(subcategoryName)) {
+            subcategoryTypeSpecBuilder = subcategories.get(categoryTypeSpecBuilder).get(subcategoryName)
+        } else {
+
+            if (subcategories.containsKey(categoryTypeSpecBuilder)) {
+
+            } else {
+                subcategories.put(categoryTypeSpecBuilder, new HashMap<String, TypeSpec.Builder>())
+            }
+
+            subcategoryTypeSpecBuilder = TypeSpec.classBuilder(subcategoryName)
+                    .addModifiers(Modifier.PUBLIC, Modifier.FINAL, Modifier.STATIC)
+            subcategories.get(categoryTypeSpecBuilder).put(subcategoryName, subcategoryTypeSpecBuilder)
+        }
+        subcategoryTypeSpecBuilder
+    }
+
+    private TypeSpec.Builder getCategoryBuilder(HashMap<String, TypeSpec.Builder> categories, String categoryName) {
+        TypeSpec.Builder categoryTypeSpecBuilder
+        if (categories.containsKey(categoryName)) {
+            categoryTypeSpecBuilder = categories.get(categoryName)
+        } else {
+            categoryTypeSpecBuilder = TypeSpec.classBuilder(categoryName)
+                    .addModifiers(Modifier.PUBLIC, Modifier.FINAL, Modifier.STATIC)
+
+            categories.put(categoryName, categoryTypeSpecBuilder)
+        }
+        categoryTypeSpecBuilder
+    }
 }

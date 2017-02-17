@@ -5,8 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
+import org.arnoid.damoclus.Ids;
 import org.arnoid.damoclus.component.MainComponent;
-import org.arnoid.damoclus.controller.strings.Strings;
 import org.arnoid.damoclus.logic.delegate.menu.LanguageMenuSceneDelegate;
 import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.SingleActorHolder;
@@ -23,30 +23,30 @@ public class LanguageMenuScene extends AbstractMenuScene<LanguageMenuSceneDelega
 
     @Override
     protected String getWindowTitle() {
-        return getStringsController().string(Strings.LanguageMenuWindow.title);
+        return getStringsController().string(Ids.menu.language.window_title);
     }
 
     @Override
     protected void produceMenuItems() {
         MenuSceneBuilder.with(this, new WindowHolder())
-                .add(SingleActorHolder.textButton(Strings.LanguageMenuWindow.en).align(Align.center).pad(5).width(250))
-                .add(SingleActorHolder.textButton(Strings.LanguageMenuWindow.ru).align(Align.center).pad(5).width(250))
+                .add(SingleActorHolder.textButton(Ids.menu.language.en).align(Align.center).pad(5).width(250))
+                .add(SingleActorHolder.textButton(Ids.menu.language.ru).align(Align.center).pad(5).width(250))
                 .add(SingleActorHolder.space().height(50))
-                .add(SingleActorHolder.textButton(Strings.LanguageMenuWindow.btn_back).align(Align.center).pad(5).width(250))
+                .add(SingleActorHolder.textButton(Ids.menu.language.btn_back).align(Align.center).pad(5).width(250))
                 .build();
     }
 
     @Override
     protected void clicked(Actor actor, InputEvent event) {
         switch (actor.getName()) {
-            case Strings.LanguageMenuWindow.btn_back:
+            case Ids.menu.language.btn_back:
                 getSceneDelegate().onBack();
                 break;
-            case Strings.LanguageMenuWindow.en:
+            case Ids.menu.language.en:
                 getSceneDelegate().onEnglish();
                 show();
                 break;
-            case Strings.LanguageMenuWindow.ru:
+            case Ids.menu.language.ru:
                 getSceneDelegate().onRussian();
                 show();
                 break;

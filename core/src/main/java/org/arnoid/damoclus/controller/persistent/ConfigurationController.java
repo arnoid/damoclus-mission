@@ -24,21 +24,35 @@ public class ConfigurationController extends JsonPersistingController<Configurat
 
     @Override
     protected void onPostRead(Configuration instance) {
+        if (instance.getKeyboardMapping() == null) {
+            instance.setKeyboardMapping(UserControllerMap.defaultKeyboardInstance());
+        }
 
+        if (instance.getControllerMapping() == null) {
+            instance.setControllerMapping(UserControllerMap.defaultControllerInstance());
+        }
+
+        if (instance.getDisplayConfiguration() == null) {
+            instance.setDisplayConfiguration(generateDefaultDisplayConfiguration());
+        }
     }
 
     @Override
     protected Configuration generateDefaultInstance() {
         Configuration defaultConfiguration = new Configuration();
-        defaultConfiguration.setKeyboardMap(UserControllerMap.defaultKeyboardInstance());
+        defaultConfiguration.setKeyboardMapping(UserControllerMap.defaultKeyboardInstance());
+        defaultConfiguration.setControllerMapping(UserControllerMap.defaultControllerInstance());
         defaultConfiguration.setLocale(Locale.ENGLISH);
+        defaultConfiguration.setDisplayConfiguration(generateDefaultDisplayConfiguration());
 
+        return defaultConfiguration;
+    }
+
+    private DisplayConfiguration generateDefaultDisplayConfiguration() {
         DisplayConfiguration displayConfiguration = new DisplayConfiguration();
         displayConfiguration.setFullscreen(Gdx.graphics.isFullscreen());
         displayConfiguration.setDisplayMode(Gdx.graphics.getDisplayMode());
-        defaultConfiguration.setDisplayConfiguration(displayConfiguration);
-        
-        return defaultConfiguration;
+        return displayConfiguration;
     }
 
     @Override

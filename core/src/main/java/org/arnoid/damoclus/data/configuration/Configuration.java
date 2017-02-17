@@ -6,15 +6,16 @@ public class Configuration {
 
     boolean debug;
     Locale locale;
-    UserControllerMap keyboardMap;
+    UserControllerMap keyboardMapping;
+    UserControllerMap controllerMapping;
     DisplayConfiguration displayConfiguration;
 
-    public UserControllerMap getKeyboardMap() {
-        return keyboardMap;
+    public UserControllerMap getKeyboardMapping() {
+        return keyboardMapping;
     }
 
-    public void setKeyboardMap(UserControllerMap keyboardMap) {
-        this.keyboardMap = keyboardMap;
+    public void setKeyboardMapping(UserControllerMap keyboardMapping) {
+        this.keyboardMapping = keyboardMapping;
     }
 
     public Locale getLocale() {
@@ -39,5 +40,13 @@ public class Configuration {
 
     public boolean isDebug() {
         return debug;
+    }
+
+    public UserControllerMap getControllerMapping() {
+        return controllerMapping;
+    }
+
+    public void setControllerMapping(UserControllerMap controllerMapping) {
+        this.controllerMapping = controllerMapping;
     }
 }
