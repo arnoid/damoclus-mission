@@ -1,5 +1,6 @@
 package org.arnoid.damoclus.ui.scene.menu;
 
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -7,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -27,6 +30,7 @@ import org.arnoid.damoclus.ui.scene.AbstractScene;
 
 import javax.inject.Inject;
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> extends AbstractScene<M> implements MenuNavigationInputAdapter.MenuNavigationListener {
 
@@ -46,7 +50,7 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
     private LinkedList<Actor> labelItems = new LinkedList<>();
     private ChangeListener changeListener;
 
-    private boolean paused = false;
+    private AtomicBoolean paused = new AtomicBoolean(false);
 
     public AbstractMenuScene(Stage stage) {
         super(stage);
@@ -121,17 +125,13 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
     @Override
     public void pause() {
         super.pause();
-        paused = true;
+        paused.set(true);
     }
 
     @Override
     public void resume() {
         super.resume();
-        paused = false;
-    }
-
-    public boolean isPaused() {
-        return paused;
+        paused.set(false);
     }
 
     public Window getWindow() {
@@ -144,8 +144,21 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
 
     @Override
     public void show() {
-        window.setTouchable(Touchable.enabled);
+        enableTouch();
 
+        updateTexts();
+
+        getStage().addActor(window);
+
+        window.addAction(
+                Actions.sequence(
+                        Actions.alpha(0, 0),
+                        Actions.fadeIn(0.5F)
+                )
+        );
+    }
+
+    protected void updateTexts() {
         window.getTitleLabel().setText(getWindowTitle());
 
         for (Actor actor : menuItems) {
@@ -171,15 +184,14 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
                 }
             }
         }
+    }
 
-        getStage().addActor(window);
+    public void enableTouch() {
+        window.setTouchable(Touchable.enabled);
+    }
 
-        window.addAction(
-                Actions.sequence(
-                        Actions.alpha(0, 0),
-                        Actions.fadeIn(1)
-                )
-        );
+    public void disableTouch() {
+        window.setTouchable(Touchable.disabled);
     }
 
     protected String getText(String name) {
@@ -192,7 +204,7 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
 
     @Override
     public void hide() {
-        window.setTouchable(Touchable.disabled);
+        disableTouch();
 
         window.addAction(
                 Actions.sequence(
@@ -313,7 +325,7 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
 
     @Override
     public void onNext() {
-        if (isPaused()) {
+        if (paused.get()) {
             return;
         }
         if (menuItems.size() == 0) {
@@ -330,7 +342,7 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
 
     @Override
     public void onPrev() {
-        if (isPaused()) {
+        if (paused.get()) {
             return;
         }
         if (menuItems.size() == 0) {
@@ -347,7 +359,7 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
 
     @Override
     public void onInteract() {
-        if (isPaused()) {
+        if (paused.get()) {
             return;
         }
         clicked(menuItems.peek(), new InputEvent());
@@ -357,4 +369,20 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
 
     }
 
+    public Action produceDialogDisplayAction(final Dialog dialog) {
+        DelayAction action = Actions.delay(0.3F, new Action() {
+
+            @Override
+            public boolean act(float delta) {
+                pause();
+                dialog.show(getStage());
+                getStage().setKeyboardFocus(dialog);
+                return true;
+            }
+        });
+
+        action.setActor(dialog);
+
+        return action;
+    }
 }

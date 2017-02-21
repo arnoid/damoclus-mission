@@ -17,6 +17,7 @@ import org.arnoid.damoclus.ui.scene.menu.builder.holder.RowHolder;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.SingleActorHolder;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.TableHolder;
 import org.arnoid.damoclus.ui.scene.menu.builder.holder.WindowHolder;
+import org.arnoid.damoclus.ui.scene.menu.dialog.InputRecorderDialog;
 
 import javax.inject.Inject;
 
@@ -25,7 +26,7 @@ public class ControlsMenuScene extends AbstractMenuScene<ControlsMenuSceneDelega
     private static final String TAG = ControlsMenuScene.class.getSimpleName();
 
     @Inject
-    ConfigurationController configurationControllerl;
+    ConfigurationController configurationController;
 
     public ControlsMenuScene(MainComponent component, Stage stage) {
         super(stage);
@@ -46,48 +47,166 @@ public class ControlsMenuScene extends AbstractMenuScene<ControlsMenuSceneDelega
                 sceneDelegate.onApply();
                 break;
             case Ids.menu.controls.btn_down_controller:
-                sceneDelegate.onChangeDownController();
+                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                    @Override
+                    public void onKey(int key) {
+                        sceneDelegate.onChangeDownController(key);
+                        updateTexts();
+                        resume();
+                        getStage().setKeyboardFocus(getWindow());
+                    }
+                });
                 break;
             case Ids.menu.controls.btn_down_keyboard:
-                sceneDelegate.onChangeDownKeyboard();
+                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                    @Override
+                    public void onKey(int key) {
+                        sceneDelegate.onChangeDownKeyboard(key);
+                        updateTexts();
+                        resume();
+                        getStage().setKeyboardFocus(getWindow());
+                    }
+                });
                 break;
             case Ids.menu.controls.btn_interact_controller:
-                sceneDelegate.onChangeInteractController();
+                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                    @Override
+                    public void onKey(int key) {
+                        sceneDelegate.onChangeInteractController(key);
+                        updateTexts();
+                        resume();
+                        getStage().setKeyboardFocus(getWindow());
+                    }
+                });
                 break;
             case Ids.menu.controls.btn_interact_keyboard:
-                sceneDelegate.onChangeInteractKeyboard();
+                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                    @Override
+                    public void onKey(int key) {
+                        sceneDelegate.onChangeInteractKeyboard(key);
+                        updateTexts();
+                        resume();
+                        getStage().setKeyboardFocus(getWindow());
+                    }
+                });
                 break;
             case Ids.menu.controls.btn_inventory_controller:
-                sceneDelegate.onChangeInventoryController();
+                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                    @Override
+                    public void onKey(int key) {
+                        sceneDelegate.onChangeInventoryController(key);
+                        updateTexts();
+                        resume();
+                        getStage().setKeyboardFocus(getWindow());
+                    }
+                });
                 break;
             case Ids.menu.controls.btn_inventory_keyboard:
-                sceneDelegate.onChangeInventoryKeyboard();
+                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                    @Override
+                    public void onKey(int key) {
+                        sceneDelegate.onChangeInventoryKeyboard(key);
+                        updateTexts();
+                        resume();
+                        getStage().setKeyboardFocus(getWindow());
+                    }
+                });
                 break;
             case Ids.menu.controls.btn_left_controller:
-                sceneDelegate.onChangeLeftController();
+                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                    @Override
+                    public void onKey(int key) {
+                        sceneDelegate.onChangeLeftController(key);
+                        updateTexts();
+                        resume();
+                        getStage().setKeyboardFocus(getWindow());
+                    }
+                });
                 break;
             case Ids.menu.controls.btn_left_keyboard:
-                sceneDelegate.onChangeLeftKeyboard();
+                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                    @Override
+                    public void onKey(int key) {
+                        sceneDelegate.onChangeLeftKeyboard(key);
+                        updateTexts();
+                        resume();
+                        getStage().setKeyboardFocus(getWindow());
+                    }
+                });
                 break;
             case Ids.menu.controls.btn_menu_controller:
-                sceneDelegate.onChangeMenuController();
+                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                    @Override
+                    public void onKey(int key) {
+                        sceneDelegate.onChangeMenuController(key);
+                        updateTexts();
+                        resume();
+                        getStage().setKeyboardFocus(getWindow());
+                    }
+                });
                 break;
             case Ids.menu.controls.btn_menu_keyboard:
-                sceneDelegate.onChangeMenuKeyboard();
+                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                    @Override
+                    public void onKey(int key) {
+                        sceneDelegate.onChangeMenuKeyboard(key);
+                        updateTexts();
+                        resume();
+                        getStage().setKeyboardFocus(getWindow());
+                    }
+                });
                 break;
             case Ids.menu.controls.btn_right_controller:
-                sceneDelegate.onChangeRightController();
+                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                    @Override
+                    public void onKey(int key) {
+                        sceneDelegate.onChangeRightController(key);
+                        updateTexts();
+                        resume();
+                        getStage().setKeyboardFocus(getWindow());
+                    }
+                });
                 break;
             case Ids.menu.controls.btn_right_keyboard:
-                sceneDelegate.onChangeRightKeyboard();
+                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                    @Override
+                    public void onKey(int key) {
+                        sceneDelegate.onChangeRightKeyboard(key);
+                        updateTexts();
+                        resume();
+                        getStage().setKeyboardFocus(getWindow());
+                    }
+                });
                 break;
             case Ids.menu.controls.btn_up_controller:
-                sceneDelegate.onChangeUpController();
+                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                    @Override
+                    public void onKey(int key) {
+                        sceneDelegate.onChangeUpController(key);
+                        updateTexts();
+                        resume();
+                        getStage().setKeyboardFocus(getWindow());
+                    }
+                });
                 break;
             case Ids.menu.controls.btn_up_keyboard:
-                sceneDelegate.onChangeUpKeyboard();
+                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                    @Override
+                    public void onKey(int key) {
+                        sceneDelegate.onChangeUpKeyboard(key);
+                        updateTexts();
+                        resume();
+                        getStage().setKeyboardFocus(getWindow());
+                    }
+                });
                 break;
         }
+    }
+
+    private void showInputRecorderDialog(InputRecorderDialog.KeyListener listener) {
+        InputRecorderDialog dialog = new InputRecorderDialog(Ids.dialog.recorder.keyboard_window_title, skinController.getSkin()).setListener(listener);
+        getStage().setKeyboardFocus(dialog);
+        getStage().addAction(produceDialogDisplayAction(dialog));
     }
 
     @Override
@@ -157,8 +276,16 @@ public class ControlsMenuScene extends AbstractMenuScene<ControlsMenuSceneDelega
 
     @Override
     protected String getText(String name) {
-        UserControllerMap keyboardMap = configurationControllerl.read().getKeyboardMapping();
-        UserControllerMap controllerMap = configurationControllerl.read().getControllerMapping();
+        UserControllerMap keyboardMap;
+        UserControllerMap controllerMap;
+
+        if (getSceneDelegate() == null) {
+            keyboardMap = configurationController.read().getKeyboardMapping();
+            controllerMap = configurationController.read().getControllerMapping();
+        } else {
+            keyboardMap = getSceneDelegate().getTempKeyboardMapping();
+            controllerMap = getSceneDelegate().getTempControllerMap();
+        }
 
         String value;
         switch (name) {
@@ -209,4 +336,5 @@ public class ControlsMenuScene extends AbstractMenuScene<ControlsMenuSceneDelega
         }
         return value;
     }
+
 }

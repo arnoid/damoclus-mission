@@ -5,10 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.kotcrab.vis.ui.widget.VisTable;
+import com.kotcrab.vis.runtime.util.VisBagUtils;
+import com.kotcrab.vis.ui.VisUI;
 import org.arnoid.damoclus.component.ControllerModule;
 import org.arnoid.damoclus.component.DaggerMainComponent;
 import org.arnoid.damoclus.component.MainComponent;
@@ -55,6 +54,8 @@ public class DamoclusGdxGame implements ApplicationListener, SceneNavigator {
                 .build();
 
         mainComponent.inject(this);
+
+        VisUI.load(skinController.getSkin());
 
         stage.setDebugAll(configurationController.read().isDebug());
 
@@ -184,4 +185,7 @@ public class DamoclusGdxGame implements ApplicationListener, SceneNavigator {
         sceneContainer.resize(width, height);
     }
 
+    public Stage getStage() {
+        return stage;
+    }
 }

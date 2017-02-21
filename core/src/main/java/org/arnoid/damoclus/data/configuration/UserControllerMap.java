@@ -39,4 +39,20 @@ public class UserControllerMap extends AbstractUserControllerMap {
         return controllerMap;
     }
 
+    public UserControllerMap clone() {
+        UserControllerMap clone = new UserControllerMap();
+        clone.up = up;
+        clone.down = down;
+
+        clone.left = left;
+        clone.right = right;
+
+        clone.interact = interact;
+        clone.inventory = inventory;
+
+        clone.menu = menu;
+
+        return clone;
+    }
+
 }

@@ -2,6 +2,7 @@ package org.arnoid.damoclus.component;
 
 import dagger.Component;
 import org.arnoid.damoclus.DamoclusGdxGame;
+import org.arnoid.damoclus.logic.delegate.menu.ControlsMenuSceneDelegate;
 import org.arnoid.damoclus.logic.delegate.menu.LanguageMenuSceneDelegate;
 import org.arnoid.damoclus.logic.delegate.menu.VideoMenuSceneDelegate;
 import org.arnoid.damoclus.logic.input.MenuNavigationInputAdapter;
@@ -13,6 +14,7 @@ import org.arnoid.damoclus.ui.scene.menu.LanguageMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.MainMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.OptionsMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.VideoMenuScene;
+import org.arnoid.damoclus.ui.scene.menu.dialog.InputRecorderDialog;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -83,4 +85,8 @@ public interface MainComponent {
     void inject(AudioMenuScene audioMenuScene);
 
     void inject(ControlsMenuScene controlsMenuScene);
+
+    void inject(InputRecorderDialog inputRecorderDialog);
+
+    void inject(ControlsMenuSceneDelegate controlsMenuSceneDelegate);
 }

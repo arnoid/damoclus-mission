@@ -55,6 +55,10 @@
 
   "menu_audio_window_title":"Audio",
   "menu_audio_btn_back": "Back",
-  "menu_audio_btn_apply": "Apply"
+  "menu_audio_btn_apply": "Apply",
+
+  "dialog_recorder_keyboard_window_title":"Recording ...",
+  "dialog_recorder_keyboard_label_message":"Type new button",
+  "dialog_recorder_btn_cancel":"Cancel"
 
 }

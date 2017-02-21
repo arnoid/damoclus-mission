@@ -1,11 +1,28 @@
 package org.arnoid.damoclus.logic.delegate.menu;
 
 import org.arnoid.damoclus.DamoclusGdxGame;
+import org.arnoid.damoclus.controller.persistent.ConfigurationController;
+import org.arnoid.damoclus.data.configuration.Configuration;
+import org.arnoid.damoclus.data.configuration.UserControllerMap;
 import org.arnoid.damoclus.ui.scene.AbstractScene;
 
+import javax.inject.Inject;
+
 public class ControlsMenuSceneDelegate extends AbstractScene.SceneDelegate {
+    private static final String TAG = ControlsMenuSceneDelegate.class.getSimpleName();
+
+    @Inject
+    ConfigurationController configurationController;
+    private final UserControllerMap keyboardMapping;
+    private final UserControllerMap controllerMap;
+
     public ControlsMenuSceneDelegate(DamoclusGdxGame game) {
         super(game);
+
+        game.mainComponent.inject(this);
+
+        keyboardMapping = configurationController.read().getKeyboardMapping().clone();
+        controllerMap = configurationController.read().getControllerMapping().clone();
     }
 
     public void onBack() {
@@ -13,62 +30,77 @@ public class ControlsMenuSceneDelegate extends AbstractScene.SceneDelegate {
     }
 
     public void onApply() {
+        Configuration configuration = configurationController.read();
 
+        configuration.setControllerMapping(controllerMap);
+        configuration.setKeyboardMapping(keyboardMapping);
+
+        configurationController.write(configuration);
+
+        onBack();
     }
 
-    public void onChangeDownController() {
-
+    public UserControllerMap getTempKeyboardMapping() {
+        return keyboardMapping;
     }
 
-    public void onChangeDownKeyboard() {
-
+    public UserControllerMap getTempControllerMap() {
+        return controllerMap;
     }
 
-    public void onChangeInteractController() {
-
+    public void onChangeDownController(int keyCode) {
+        controllerMap.down = keyCode;
     }
 
-    public void onChangeInteractKeyboard() {
-
+    public void onChangeDownKeyboard(int keyCode) {
+        keyboardMapping.down = keyCode;
     }
 
-    public void onChangeInventoryController() {
-
+    public void onChangeInteractController(int keyCode) {
+        controllerMap.interact = keyCode;
     }
 
-    public void onChangeInventoryKeyboard() {
-
+    public void onChangeInteractKeyboard(int keyCode) {
+        keyboardMapping.interact = keyCode;
     }
 
-    public void onChangeLeftController() {
-
+    public void onChangeInventoryController(int keyCode) {
+        controllerMap.inventory = keyCode;
     }
 
-    public void onChangeLeftKeyboard() {
-
+    public void onChangeInventoryKeyboard(int keyCode) {
+        keyboardMapping.inventory = keyCode;
     }
 
-    public void onChangeMenuController() {
-
+    public void onChangeLeftController(int keyCode) {
+        controllerMap.left = keyCode;
     }
 
-    public void onChangeMenuKeyboard() {
-
+    public void onChangeLeftKeyboard(int keyCode) {
+        keyboardMapping.left = keyCode;
     }
 
-    public void onChangeRightKeyboard() {
-
+    public void onChangeMenuController(int keyCode) {
+        controllerMap.menu = keyCode;
     }
 
-    public void onChangeRightController() {
-
+    public void onChangeMenuKeyboard(int keyCode) {
+        keyboardMapping.menu = keyCode;
     }
 
-    public void onChangeUpController() {
-
+    public void onChangeRightController(int keyCode) {
+        controllerMap.right = keyCode;
     }
 
-    public void onChangeUpKeyboard() {
+    public void onChangeRightKeyboard(int keyCode) {
+        keyboardMapping.right = keyCode;
+    }
 
+    public void onChangeUpController(int keyCode) {
+        controllerMap.up = keyCode;
+    }
+
+    public void onChangeUpKeyboard(int keyCode) {
+        keyboardMapping.up = keyCode;
     }
 }

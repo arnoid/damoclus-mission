@@ -1,5 +1,6 @@
 package org.arnoid.damoclus.logic.input;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.controllers.Controller;
@@ -47,20 +48,20 @@ public class MenuNavigationInputAdapter extends InputAdapter implements Controll
     }
 
     @Override
-    public boolean keyDown(int keycode) {
+    public boolean keyTyped(char character) {
         UserControllerMap keyboardMap = getKeyboardMap();
 
-        if (keycode == Input.Keys.UP || keycode == keyboardMap.getUp()) {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(keyboardMap.getUp())) {
             previous();
-        } else if (keycode == Input.Keys.DOWN || keycode == keyboardMap.getDown()) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(keyboardMap.getDown())) {
             next();
-        } else if (keycode == Input.Keys.ENTER || keycode == keyboardMap.getInteract()) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.ENTER) || Gdx.input.isKeyPressed(keyboardMap.getInteract())) {
             interact();
         } else {
 
         }
 
-        return true;
+        return false;
     }
 
     private UserControllerMap getKeyboardMap() {
