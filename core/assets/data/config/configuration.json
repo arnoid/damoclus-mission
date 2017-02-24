@@ -1,1 +1,31 @@
-{"debug":false,"locale":"en","keyboardMapping":{"up":19,"down":20,"left":21,"right":22,"interact":33,"inventory":37,"menu":131},"controllerMapping":{"up":19,"down":20,"left":21,"right":22,"interact":33,"inventory":37,"menu":131},"displayConfiguration":{"fullscreen":false,"displayMode":{"width":640,"height":480,"refreshRate":0,"bitsPerPixel":32}}}
+{
+  "debug": false,
+  "locale": "en",
+  "keyboardMapping": {
+    "up": 19,
+    "down": 20,
+    "left": 21,
+    "right": 22,
+    "interact": 33,
+    "inventory": 37,
+    "menu": 131
+  },
+  "controllerMapping": {
+    "up": 19,
+    "down": 20,
+    "left": 21,
+    "right": 22,
+    "interact": 33,
+    "inventory": 37,
+    "menu": 131
+  },
+  "displayConfiguration": {
+    "fullscreen": false,
+    "displayMode": {
+      "width": 640,
+      "height": 480,
+      "refreshRate": 0,
+      "bitsPerPixel": 32
+    }
+  }
+}
