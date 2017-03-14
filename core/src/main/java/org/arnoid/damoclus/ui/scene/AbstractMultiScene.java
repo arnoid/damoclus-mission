@@ -10,11 +10,11 @@ public abstract class AbstractMultiScene<T extends AbstractScene.SceneDelegate> 
     private List<AbstractScene> nestedScenes = new ArrayList<>();
 
     public AbstractMultiScene(Stage stage) {
-        super(stage);
+        super();
     }
 
     public AbstractMultiScene(Stage stage, T sceneDelegate) {
-        super(stage, sceneDelegate);
+        super(sceneDelegate);
     }
 
     public void add(AbstractScene scene) {

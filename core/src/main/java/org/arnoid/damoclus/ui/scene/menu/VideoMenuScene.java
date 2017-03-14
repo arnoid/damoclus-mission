@@ -1,25 +1,22 @@
 package org.arnoid.damoclus.ui.scene.menu;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Align;
-import org.arnoid.damoclus.Ids;
+import org.arnoid.damoclus.R;
 import org.arnoid.damoclus.component.MainComponent;
 import org.arnoid.damoclus.data.configuration.DisplayConfiguration;
 import org.arnoid.damoclus.logic.delegate.menu.VideoMenuSceneDelegate;
 import org.arnoid.damoclus.logic.input.MenuNavigationInputAdapter;
-import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
-import org.arnoid.damoclus.ui.scene.menu.builder.holder.RowHolder;
-import org.arnoid.damoclus.ui.scene.menu.builder.holder.SingleActorHolder;
-import org.arnoid.damoclus.ui.scene.menu.builder.holder.WindowHolder;
+import org.arnoid.damoclus.ui.scene.menu.builder.XmlMenuSceneBuilder;
+import org.arnoid.damoclus.ui.scene.menu.builder.XmlMenuSceneBuilderAdapter;
+import org.arnoid.damoclus.ui.view.SelectList;
 
 import javax.inject.Inject;
 
@@ -29,110 +26,48 @@ public class VideoMenuScene extends AbstractMenuScene<VideoMenuSceneDelegate> {
     MenuNavigationInputAdapter menuNavigationInputAdapter;
 
     private static final String TAG = VideoMenuScene.class.getSimpleName();
-    private SelectBox<Graphics.DisplayMode> displayModeSelectBox;
-    private ImageButton fullscreenCheckBox;
+    private ImageButton chkFullscreen;
+    private SelectList slctDisplayMode;
 
-    public VideoMenuScene(MainComponent component, Stage stage) {
-        super(stage);
+    public VideoMenuScene(MainComponent component) {
+        super();
         component.inject(this);
         init();
     }
 
     @Override
-    protected String getWindowTitle() {
-        return getStringsController().string(Ids.menu.video.window_title);
+    protected void produceLayout() {
+        XmlMenuSceneBuilder
+                .with(R.layout.menu_video)
+                .listener(new XmlMenuSceneBuilderAdapter())
+                .build(getStage());
     }
 
     @Override
-    protected void produceMenuItems() {
-        MenuSceneBuilder.with(this, new WindowHolder())
-                .add(new RowHolder()
-                        .add(SingleActorHolder.label(Ids.menu.video.label_fullscreen).align(Align.right))
-                        .add(SingleActorHolder.checkBox(Ids.menu.video.chk_fullscreen).align(Align.left))
-                        .align(Align.center).pad(5).width(250)
-                )
-                .add(new RowHolder()
-                        .add(SingleActorHolder.label(Ids.menu.video.label_resolution).align(Align.right))
-                        .add(SingleActorHolder.selectBox(Ids.menu.video.selectbox_resolution).align(Align.left))
-                        .align(Align.center).pad(5).width(250)
-                )
-                .add(SingleActorHolder.space().height(50))
-                .add(new RowHolder()
-                        .add(SingleActorHolder.textButton(Ids.menu.video.btn_back).width(250))
-                        .add(SingleActorHolder.textButton(Ids.menu.video.btn_apply).width(250))
-                        .align(Align.center).pad(5).width(250)
-                )
-                .build();
-    }
+    public void postProduceLayout() {
+        chkFullscreen = (ImageButton) findActor(R.id.menu_video_chk_fullscreen);
+        slctDisplayMode = (SelectList) findActor(R.id.menu_video_selectbox_resolution);
 
-    @Override
-    protected Object[] getSelectBoxArray(String name) {
-        if (Ids.menu.video.selectbox_resolution.equals(name)) {
-            displayModeSelectBox.setItems(getSceneDelegate().getDisplayModes());
-
-            DisplayConfiguration displayConfiguration = getSceneDelegate().getDisplayConfiguration();
-
-            displayModeSelectBox.setSelectedIndex(getSceneDelegate().getDisplayModeIndex(displayConfiguration.getDisplayMode()));
-            return null;
-        } else {
-            return super.getSelectBoxArray(name);
-        }
+        registerMenuItem(chkFullscreen);
+        registerMenuItem(slctDisplayMode);
+        registerMenuItem(findButton(R.id.btn_back));
+        registerMenuItem(findButton(R.id.btn_apply));
     }
 
     @Override
     protected void clicked(Actor actor, InputEvent event) {
         switch (actor.getName()) {
-            case Ids.menu.video.chk_fullscreen:
-                fullscreenCheckBox.toggle();
+            case R.id.menu_video_chk_fullscreen:
+                chkFullscreen.toggle();
                 break;
-            case Ids.menu.video.btn_back:
+            case R.id.btn_back:
                 getSceneDelegate().onBack();
                 break;
-            case Ids.menu.video.btn_apply:
-                getSceneDelegate().apply(fullscreenCheckBox.isChecked(), displayModeSelectBox.getSelected());
+            case R.id.btn_apply:
+                getSceneDelegate().apply(chkFullscreen.isChecked(), (Graphics.DisplayMode) slctDisplayMode.getSelected());
                 break;
-            case Ids.menu.video.selectbox_resolution:
-                displayModeSelectBox.showList();
-                List<Graphics.DisplayMode> list = displayModeSelectBox.getList();
-                list.setTouchable(Touchable.enabled);
-                getStage().setKeyboardFocus(list);
-                MenuNavigationInputAdapter.MenuNavigationListener resolutionsListNavigator = new MenuNavigationInputAdapter.MenuNavigationListener() {
-                    @Override
-                    public void onNext() {
-                        int selectedIndex = displayModeSelectBox.getSelectedIndex();
-                        if (selectedIndex >= displayModeSelectBox.getItems().size - 1) {
-                            selectedIndex = 0;
-                        } else {
-                            selectedIndex++;
-                        }
-
-                        displayModeSelectBox.setSelectedIndex(selectedIndex);
-                        list.setSelectedIndex(selectedIndex);
-                    }
-
-                    @Override
-                    public void onPrev() {
-                        int selectedIndex = displayModeSelectBox.getSelectedIndex();
-                        if (selectedIndex == 0) {
-                            selectedIndex = displayModeSelectBox.getItems().size - 1;
-                        } else {
-                            selectedIndex--;
-                        }
-
-                        displayModeSelectBox.setSelectedIndex(selectedIndex);
-                        list.setSelectedIndex(selectedIndex);
-                    }
-
-                    @Override
-                    public void onInteract() {
-                        menuNavigationInputAdapter.removeListener(this);
-                        displayModeSelectBox.hideList();
-                        resume();
-                    }
-                };
-
-                menuNavigationInputAdapter.addListener(resolutionsListNavigator);
-                pause();
+            case R.id.menu_video_selectbox_resolution:
+                slctDisplayMode.show(this);
                 break;
         }
     }
@@ -142,21 +77,14 @@ public class VideoMenuScene extends AbstractMenuScene<VideoMenuSceneDelegate> {
     }
 
     @Override
-    public void onActorProduced(String name, Actor producedActor) {
-        Gdx.app.log(TAG, name);
-        if (Ids.menu.video.chk_fullscreen.equals(name)) {
-            fullscreenCheckBox = (ImageButton) producedActor;
-        } else if (Ids.menu.video.selectbox_resolution.equals(name)) {
-            displayModeSelectBox = (SelectBox<Graphics.DisplayMode>) producedActor;
-        }
-    }
-
-    @Override
     public void onSceneDelegate() {
         super.onSceneDelegate();
 
         DisplayConfiguration displayConfiguration = getSceneDelegate().getDisplayConfiguration();
 
-        fullscreenCheckBox.setChecked(displayConfiguration.isFullscreen());
+        chkFullscreen.setChecked(displayConfiguration.isFullscreen());
+
+        slctDisplayMode.setItems(getSceneDelegate().getDisplayModes());
+        slctDisplayMode.setSelectedIndex(getSceneDelegate().getDisplayModeIndex(displayConfiguration.getDisplayMode()));
     }
 }

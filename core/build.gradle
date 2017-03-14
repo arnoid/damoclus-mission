@@ -53,12 +53,12 @@ class GenerateIdsTask extends DefaultTask {
         def projectBuildDir = project.buildDir
         def projectDir = project.projectDir
 
-        println "Project build dir [" + projectBuildDir + "]"
-        println "Project dir [" + projectDir + "]"
+        logger.info("Project build dir [" + projectBuildDir + "]")
+        logger.info("Project dir [" + projectDir + "]")
 
         File generatedSrcDir = new File(projectBuildDir, generatedSourcesPath)
 
-        println "Generated ids destination [" + generatedSrcDir.absolutePath + "]"
+        logger.info "Generated ids destination [" + generatedSrcDir.absolutePath + "]"
 
         if (generatedSrcDir.exists()) {
 
@@ -70,9 +70,115 @@ class GenerateIdsTask extends DefaultTask {
 
         Gson gson = new Gson()
 
-        File file = new File("$projectDir/assets/locale/en/strings.json")
+        String baseAssetsFolder = "$projectDir/assets/"
+        String imagesFolder = baseAssetsFolder + "images"
 
-        println "Parsing json file [" + file.absolutePath + "]"
+        List<File> drawablesFiles = listDrawableFiles(imagesFolder)
+        List<File> fontFiles = listFontFiles(imagesFolder)
+        List<File> skinFiles = listSkinFiles(imagesFolder)
+        List<File> atlasFiles = listAtlasFiles(imagesFolder)
+
+        List<File> layoutFiles = listLayoutFiles(baseAssetsFolder)
+
+        Map<String, String> strings = readStringNames(baseAssetsFolder, gson)
+
+        List<String> drawables = readFileNames(drawablesFiles)
+        List<String> fonts = readFileNames(fontFiles)
+        List<String> skins = readFileNames(skinFiles)
+        List<String> atlases = readFileNames(atlasFiles)
+        List<String> layouts = readFileNames(layoutFiles)
+
+        Set<String> ids = readIdsFromLayouts(layoutFiles);
+
+        TypeSpec.Builder stringsTypeBuilder = TypeSpec.classBuilder("string").addModifiers(Modifier.PUBLIC, Modifier.FINAL, Modifier.STATIC);
+
+        for (String key : strings.keySet()) {
+
+            stringsTypeBuilder.addField(
+                    FieldSpec.builder(String.class, key, Modifier.FINAL, Modifier.STATIC, Modifier.PUBLIC)
+                            .initializer('$S', strings.get(key))
+                            .build()
+            )
+        }
+
+        TypeSpec.Builder drawablesTypeBuilder = produceResourcesTypeBuilder("drawable", drawables)
+        TypeSpec.Builder fontsTypeBuilder = produceResourcesTypeBuilder("font", fonts)
+        TypeSpec.Builder skinsTypeBuilder = produceResourcesTypeBuilder("skin", skins)
+        TypeSpec.Builder atlasesTypeBuilder = produceResourcesTypeBuilder("atlas", atlases)
+        TypeSpec.Builder layoutsTypeBuilder = produceResourcesTypeBuilder("layout", layouts)
+        TypeSpec.Builder idsTypeBuilder = produceResourcesTypeBuilder("id", ids)
+
+        TypeSpec.Builder resourcesTypeBuilder = TypeSpec.classBuilder("R")
+                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+
+        resourcesTypeBuilder.addType(stringsTypeBuilder.build())
+        resourcesTypeBuilder.addType(drawablesTypeBuilder.build())
+        resourcesTypeBuilder.addType(fontsTypeBuilder.build())
+        resourcesTypeBuilder.addType(skinsTypeBuilder.build())
+        resourcesTypeBuilder.addType(atlasesTypeBuilder.build())
+        resourcesTypeBuilder.addType(layoutsTypeBuilder.build())
+        resourcesTypeBuilder.addType(idsTypeBuilder.build())
+
+        JavaFile.Builder idsJavaFileBuilder = JavaFile.builder(String.valueOf(project.group), resourcesTypeBuilder.build())
+
+        JavaFile javaFile = idsJavaFileBuilder.build()
+
+        javaFile.writeTo(generatedSrcDir)
+    }
+
+    private TypeSpec.Builder produceResourcesTypeBuilder(String resourceName, Collection<String> nameSource) {
+        TypeSpec.Builder dataTypeBuilder = TypeSpec.classBuilder(resourceName).addModifiers(Modifier.PUBLIC, Modifier.FINAL, Modifier.STATIC);
+
+        for (String value : nameSource) {
+
+            dataTypeBuilder.addField(
+                    FieldSpec.builder(String.class, value.replaceFirst(~/\.[^\.]+$/, ''), Modifier.FINAL, Modifier.STATIC, Modifier.PUBLIC)
+                            .initializer('$S', value)
+                            .build()
+            )
+        }
+
+        return dataTypeBuilder
+    }
+
+    private Set<String> readIdsFromLayouts(List<File> layoutFiles) {
+        Set<String> ids = new ArrayList<>()
+
+        logger.info("Extracting ids from layouts")
+        for (File layoutFile : layoutFiles) {
+            logger.info("Processing layout [" + layoutFile.getAbsolutePath() + "]")
+            Node items = new XmlParser().parse(layoutFile)
+            fetchNodeId(items, ids)
+            fetchChildrenIds(items, ids)
+        }
+
+        return ids
+    }
+
+    private void fetchChildrenIds(Node item, final Set<String> ids) {
+        List children = item.children()
+
+        for(Node child : children) {
+            logger.debug("Found item [" + item + "]")
+            fetchNodeId(child, ids)
+            fetchChildrenIds(child, ids)
+        }
+    }
+
+    protected void fetchNodeId(Node item, Set<String> ids) {
+        if (item.hasProperty("name")) {
+            String name = item.attributes().get("name")
+            if (name != null && name.length() > 0) {
+                logger.info("Found id [" + name + "]")
+                ids.add(name)
+            }
+        }
+    }
+
+    protected Map<String, String> readStringNames(String baseAssetsFolder, Gson gson) {
+        File file = new File(baseAssetsFolder + "locale/en/strings.json")
+
+        logger.info "Parsing json file [" + file.absolutePath + "]"
 
         Reader reader = new FileReader(file)
 
@@ -83,83 +189,88 @@ class GenerateIdsTask extends DefaultTask {
 
         reader.close()
 
-        HashMap<String, TypeSpec.Builder> categories = new HashMap<>()
-        HashMap<TypeSpec.Builder, HashMap<String, TypeSpec.Builder>> subcategories = new HashMap<>()
+        return strings
+    }
 
-        for (String key : strings.keySet()) {
-            def splits = key.split("_")
-            def categoryName = splits[0]
-            def subcategoryName = splits[1]
+    private List<String> readFileNames(List<File> files) {
+        List<String> strings = new ArrayList<>(files.size())
 
-            def id = key.split(categoryName + "_" + subcategoryName + "_")[1]
-
-            TypeSpec.Builder categoryTypeSpecBuilder
-            TypeSpec.Builder subcategoryTypeSpecBuilder
-
-            categoryTypeSpecBuilder = getCategoryBuilder(categories, categoryName)
-
-            subcategoryTypeSpecBuilder = getSubcategoryBuilder(subcategories, categoryTypeSpecBuilder, subcategoryName)
-
-            subcategoryTypeSpecBuilder.addField(
-                    FieldSpec.builder(String.class, id, Modifier.FINAL, Modifier.STATIC, Modifier.PUBLIC)
-                            .initializer('$S', key)
-                            .build()
-            ).build()
+        files.each { File file ->
+            strings.add(file.name);
         }
 
+        return strings
+    }
 
-        for (TypeSpec.Builder categoryBuilder : subcategories.keySet()) {
-            HashMap<String, TypeSpec.Builder> subcategoryBuildersMap = subcategories.get(categoryBuilder);
+    private List<File> listDrawableFiles(String baseDrawablesFolder) {
+        logger.info("Reading [" + baseDrawablesFolder + "] for *.png")
+        return listFiles(baseDrawablesFolder, "png")
+    }
 
-            for (TypeSpec.Builder subcategoryBuilder : subcategoryBuildersMap.values()) {
-                categoryBuilder.addType(subcategoryBuilder.build())
+    private List<File> listFontFiles(String baseFontsFolder) {
+        logger.info("Reading [" + baseFontsFolder + "] for *.fnt")
+        return listFiles(baseFontsFolder, "fnt")
+    }
+
+    private List<File> listSkinFiles(String baseJsonsFolder) {
+        logger.info("Reading [" + baseJsonsFolder + "] for *.json")
+        return listFiles(baseJsonsFolder, "json")
+    }
+
+    private List<File> listAtlasFiles(String baseDrawablesFolder) {
+        logger.info("Reading [" + baseDrawablesFolder + "] for *.atlas")
+        return listFiles(baseDrawablesFolder, "atlas")
+    }
+
+    protected List<File> listFiles(String baseFolder, String extension) {
+        List<File> drawableFiles = new ArrayList<>()
+
+        File drawablesFolder = new File(baseFolder)
+
+        if (drawablesFolder.exists()) {
+            drawablesFolder.listFiles().each { File file ->
+                if (file.directory) {
+                    drawableFiles.addAll(listFiles(file.getAbsolutePath(), extension))
+                } else if (file.name.endsWith(extension)) {
+                    logger.debug("Found file [" + file.getAbsolutePath() + "]")
+                    drawableFiles.add(file)
+                }
             }
         }
 
-        TypeSpec.Builder idsTypeBuilder = TypeSpec.classBuilder("Ids")
-                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-
-        for (TypeSpec.Builder categoryBuilder : categories.values()) {
-
-            idsTypeBuilder.addType(categoryBuilder.build())
-        }
-
-        JavaFile.Builder idsJavaFileBuilder = JavaFile.builder(String.valueOf(project.group), idsTypeBuilder.build())
-
-        JavaFile javaFile = idsJavaFileBuilder.build()
-
-        javaFile.writeTo(generatedSrcDir)
+        return drawableFiles
     }
 
-    private TypeSpec.Builder getSubcategoryBuilder(HashMap<TypeSpec.Builder, HashMap<String, TypeSpec.Builder>> subcategories, TypeSpec.Builder categoryTypeSpecBuilder, String subcategoryName) {
-        TypeSpec.Builder subcategoryTypeSpecBuilder
-        if (subcategories.containsKey(categoryTypeSpecBuilder) && subcategories.get(categoryTypeSpecBuilder).containsKey(subcategoryName)) {
-            subcategoryTypeSpecBuilder = subcategories.get(categoryTypeSpecBuilder).get(subcategoryName)
-        } else {
+    private List<File> listLayoutFiles(String baseAssetsFolder) {
+        logger.info("Reading [" + baseAssetsFolder + "] for layouts")
+        List<File> layoutFiles = new ArrayList<>();
 
-            if (subcategories.containsKey(categoryTypeSpecBuilder)) {
-
-            } else {
-                subcategories.put(categoryTypeSpecBuilder, new HashMap<String, TypeSpec.Builder>())
+        File defaultLayoutFolder = new File(baseAssetsFolder, "layout")
+        if (defaultLayoutFolder.exists()) {
+            defaultLayoutFolder.listFiles().each { File file ->
+                logger.debug("Found layout [" + file.getAbsolutePath() + "]")
+                layoutFiles.add(file)
             }
 
-            subcategoryTypeSpecBuilder = TypeSpec.classBuilder(subcategoryName)
-                    .addModifiers(Modifier.PUBLIC, Modifier.FINAL, Modifier.STATIC)
-            subcategories.get(categoryTypeSpecBuilder).put(subcategoryName, subcategoryTypeSpecBuilder)
         }
-        subcategoryTypeSpecBuilder
+
+        File landscapeLayoutFolder = new File(baseAssetsFolder, "layout-land")
+        if (landscapeLayoutFolder.exists()) {
+            landscapeLayoutFolder.listFiles().each { File file ->
+                logger.debug("Found layout [" + file.getAbsolutePath() + "]")
+                layoutFiles.add(file)
+            }
+        }
+
+        File portraitLayoutFolder = new File(baseAssetsFolder, "layout-port")
+        if (portraitLayoutFolder.exists()) {
+            portraitLayoutFolder.listFiles().each { File file ->
+                logger.debug("Found layout [" + file.getAbsolutePath() + "]")
+                layoutFiles.add(file)
+            }
+        }
+
+        return layoutFiles
     }
 
-    private TypeSpec.Builder getCategoryBuilder(HashMap<String, TypeSpec.Builder> categories, String categoryName) {
-        TypeSpec.Builder categoryTypeSpecBuilder
-        if (categories.containsKey(categoryName)) {
-            categoryTypeSpecBuilder = categories.get(categoryName)
-        } else {
-            categoryTypeSpecBuilder = TypeSpec.classBuilder(categoryName)
-                    .addModifiers(Modifier.PUBLIC, Modifier.FINAL, Modifier.STATIC)
-
-            categories.put(categoryName, categoryTypeSpecBuilder)
-        }
-        categoryTypeSpecBuilder
-    }
 }

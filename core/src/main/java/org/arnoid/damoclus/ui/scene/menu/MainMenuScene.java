@@ -2,22 +2,19 @@ package org.arnoid.damoclus.ui.scene.menu;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Align;
-import org.arnoid.damoclus.Ids;
+import org.arnoid.damoclus.R;
 import org.arnoid.damoclus.component.MainComponent;
 import org.arnoid.damoclus.logic.delegate.menu.MainMenuSceneDelegate;
-import org.arnoid.damoclus.ui.scene.menu.builder.MenuSceneBuilder;
-import org.arnoid.damoclus.ui.scene.menu.builder.holder.SingleActorHolder;
-import org.arnoid.damoclus.ui.scene.menu.builder.holder.WindowHolder;
+import org.arnoid.damoclus.ui.scene.menu.builder.XmlMenuSceneBuilder;
+import org.arnoid.damoclus.ui.scene.menu.builder.XmlMenuSceneBuilderAdapter;
 
 public class MainMenuScene extends AbstractMenuScene<MainMenuSceneDelegate> {
 
     private static final String TAG = MainMenuScene.class.getSimpleName();
 
-    public MainMenuScene(MainComponent component, Stage stage) {
-        super(stage);
+    public MainMenuScene(MainComponent component) {
+        super();
         component.inject(this);
         init();
     }
@@ -28,35 +25,30 @@ public class MainMenuScene extends AbstractMenuScene<MainMenuSceneDelegate> {
     }
 
     @Override
-    protected String getWindowTitle() {
-        return getStringsController().string(Ids.menu.main.window_title);
+    protected void produceLayout() {
+        XmlMenuSceneBuilder
+                .with(R.layout.menu_main)
+                .listener(new XmlMenuSceneBuilderAdapter())
+                .build(getStage());
     }
 
     @Override
-    protected void produceMenuItems() {
-        MenuSceneBuilder.with(this, new WindowHolder().movable().modal())
-                .add(SingleActorHolder.textButton(Ids.menu.main.btn_new_game).align(Align.center).pad(5).width(250))
-                .add(SingleActorHolder.textButton(Ids.menu.main.btn_options).align(Align.center).pad(5).width(250))
-                .add(SingleActorHolder.textButton(Ids.menu.main.btn_quit).align(Align.center).pad(5).width(250))
-                .build();
-
-    }
-
-    @Override
-    public void onActorProduced(String name, Actor producedActor) {
-
+    public void postProduceLayout() {
+        registerMenuItem(findButton(R.id.btn_new_game));
+        registerMenuItem(findButton(R.id.btn_options));
+        registerMenuItem(findButton(R.id.btn_quit));
     }
 
     @Override
     protected void clicked(Actor actor, InputEvent event) {
         switch (actor.getName()) {
-            case Ids.menu.main.btn_new_game:
+            case R.id.btn_new_game:
                 getSceneDelegate().onNewGame();
                 break;
-            case Ids.menu.main.btn_options:
+            case R.id.btn_options:
                 getSceneDelegate().onOptions();
                 break;
-            case Ids.menu.main.btn_quit:
+            case R.id.btn_quit:
                 getSceneDelegate().onQuit();
                 break;
         }

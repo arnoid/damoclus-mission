@@ -15,6 +15,7 @@ import java.util.Map;
 public class StringsController implements Disposable {
 
     private static final String TAG = StringsController.class.getSimpleName();
+    private static final String PATTER_STRING_REFERENCE = "@string/";
 
     private final Gson gson;
     private Map<String, String> stringsMap;
@@ -46,10 +47,19 @@ public class StringsController implements Disposable {
     }
 
     public String string(String key) {
-        if (stringsMap.containsKey(key)) {
-            return stringsMap.get(key);
+        if (key != null && isStringReference(key)) {
+            String extractedReference = key.replace(PATTER_STRING_REFERENCE, "");
+            if (stringsMap.containsKey(extractedReference)) {
+                return stringsMap.get(extractedReference);
+            } else {
+                return key;
+            }
         } else {
             return key;
         }
+    }
+
+    public boolean isStringReference(String stringToCheck) {
+        return stringToCheck.startsWith(PATTER_STRING_REFERENCE);
     }
 }

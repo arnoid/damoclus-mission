@@ -20,7 +20,7 @@ public class VideoMenuSceneDelegate extends AbstractScene.SceneDelegate {
 
     public VideoMenuSceneDelegate(DamoclusGdxGame game) {
         super(game);
-        DamoclusGdxGame.mainComponent.inject(this);
+        DamoclusGdxGame.mainComponent().inject(this);
     }
 
     public void onBack() {

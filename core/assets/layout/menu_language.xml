@@ -1,0 +1,29 @@
+<Container
+        fillParent="true">
+    <Window
+            name="menu_language_window"
+            title="@string/menu_language_window_title">
+        <TextButton
+                name="btn_language_en"
+                pad="5"
+                width="250"
+                align="center"
+                text="@string/menu_language_en"/>
+        <TextButton
+                name="btn_language_ru"
+                padLeft="10"
+                padRight="10"
+                width="250"
+                align="center"
+                text="@string/menu_language_ru"/>
+        <Space
+                height="25"
+        />
+        <TextButton
+                name="btn_back"
+                pad="5"
+                width="250"
+                align="center"
+                text="@string/menu_language_btn_back"/>
+    </Window>
+</Container>

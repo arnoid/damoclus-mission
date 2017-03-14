@@ -1,0 +1,29 @@
+<Container
+        fillParent="true">
+    <Window
+            name="main_menu_window"
+            title="@string/menu_main_window_title">
+        <TextButton
+                name="btn_new_game"
+                pad="5"
+                width="250"
+                align="center"
+                text="@string/menu_main_btn_new_game"/>
+        <TextButton
+                name="btn_options"
+                padLeft="10"
+                padRight="10"
+                width="250"
+                align="center"
+                text="@string/menu_main_btn_options"/>
+        <Space
+                height="25"
+        />
+        <TextButton
+                name="btn_quit"
+                pad="5"
+                width="250"
+                align="center"
+                text="@string/menu_main_btn_quit"/>
+    </Window>
+</Container>

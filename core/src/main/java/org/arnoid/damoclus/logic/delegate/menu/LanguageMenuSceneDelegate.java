@@ -20,7 +20,7 @@ public class LanguageMenuSceneDelegate extends AbstractScene.SceneDelegate {
 
     public LanguageMenuSceneDelegate(DamoclusGdxGame game) {
         super(game);
-        game.mainComponent.inject(this);
+        game.mainComponent().inject(this);
     }
 
     public void onEnglish() {

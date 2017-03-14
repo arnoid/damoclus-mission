@@ -1,5 +1,6 @@
 package org.arnoid.damoclus.component;
 
+import com.badlogic.gdx.InputMultiplexer;
 import dagger.Module;
 import dagger.Provides;
 import org.arnoid.damoclus.controller.persistent.ConfigurationController;
@@ -30,9 +31,15 @@ public class ControllerModule {
         return new ConfigurationController();
     }
 
-    @Singleton
     @Provides
     public MenuNavigationInputAdapter provideMenuNavigationInputAdapter(ConfigurationController configurationController) {
         return new MenuNavigationInputAdapter(configurationController);
     }
+
+    @Singleton
+    @Provides
+    public InputMultiplexer provideInputMultiplexer() {
+        return new InputMultiplexer();
+    }
+
 }

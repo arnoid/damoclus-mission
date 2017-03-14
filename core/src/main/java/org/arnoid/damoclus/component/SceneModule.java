@@ -24,46 +24,43 @@ public class SceneModule {
     public static final String SCENE_MENU_AUDIO = "SCENE_MENU_AUDIO";
     public static final String SCENE_MENU_CONTROLS = "SCENE_MENU_CONTROLS";
 
-    private final Stage stage;
-
-    public SceneModule(Stage stage) {
-        this.stage = stage;
+    public SceneModule() {
     }
 
     @Named(value = SceneModule.SCENE_MENU_MAIN)
     @Provides
     public AbstractMenuScene produceMainMenuScene(MainComponent component) {
-        return new MainMenuScene(component, stage);
+        return new MainMenuScene(component);
     }
 
     @Named(value = SceneModule.SCENE_MENU_OPTIONS)
     @Provides
     public AbstractMenuScene produceOptionsMenuScene(MainComponent component) {
-        return new OptionsMenuScene(component, stage);
+        return new OptionsMenuScene(component);
     }
 
     @Named(value = SceneModule.SCENE_MENU_LANGUAGE)
     @Provides
     public AbstractMenuScene produceLanguageMenuScene(MainComponent component) {
-        return new LanguageMenuScene(component, stage);
+        return new LanguageMenuScene(component);
     }
 
     @Named(value = SceneModule.SCENE_MENU_AUDIO)
     @Provides
     public AbstractMenuScene produceAudioMenuScene(MainComponent component) {
-        return new AudioMenuScene(component, stage);
+        return new AudioMenuScene(component);
     }
 
     @Named(value = SceneModule.SCENE_MENU_VIDEO)
     @Provides
     public AbstractMenuScene produceVideoMenuScene(MainComponent component) {
-        return new VideoMenuScene(component, stage);
+        return new VideoMenuScene(component);
     }
 
     @Named(value = SceneModule.SCENE_MENU_CONTROLS)
     @Provides
     public AbstractMenuScene produceControlsMenuScene(MainComponent component) {
-        return new ControlsMenuScene(component, stage);
+        return new ControlsMenuScene(component);
     }
 
 

@@ -14,7 +14,10 @@ import org.arnoid.damoclus.ui.scene.menu.LanguageMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.MainMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.OptionsMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.VideoMenuScene;
+import org.arnoid.damoclus.ui.scene.menu.builder.XmlMenuSceneBuilder;
 import org.arnoid.damoclus.ui.scene.menu.dialog.InputRecorderDialog;
+import org.arnoid.damoclus.ui.view.SelectList;
+import org.arnoid.damoclus.ui.view.SelectListNavigationDelegate;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -65,7 +68,6 @@ public interface MainComponent {
     @Named(value = SceneModule.SCENE_MENU_CONTROLS)
     AbstractScene.SceneDelegate provideControlsMenuDelegate();
 
-
     void inject(DamoclusGdxGame game);
 
     void inject(MenuNavigationInputAdapter menuNavigationInputAdapter);
@@ -89,4 +91,8 @@ public interface MainComponent {
     void inject(InputRecorderDialog inputRecorderDialog);
 
     void inject(ControlsMenuSceneDelegate controlsMenuSceneDelegate);
+
+    void inject(XmlMenuSceneBuilder xmlMenuSceneBuilder);
+
+    void inject(SelectList selectList);
 }

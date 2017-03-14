@@ -4,6 +4,7 @@ import com.badlogic.gdx.Screen;
 import org.arnoid.damoclus.ui.scene.AbstractScene;
 
 import java.util.ArrayDeque;
+import java.util.Iterator;
 
 public class SceneContainer implements Screen {
 
@@ -18,8 +19,10 @@ public class SceneContainer implements Screen {
 
     @Override
     public void render(float delta) {
-        for (AbstractScene scene : scenes) {
-            scene.render(delta);
+        Iterator<AbstractScene> sceneIterator = scenes.descendingIterator();
+
+        while (sceneIterator.hasNext()) {
+            sceneIterator.next().render(delta);
         }
     }
 

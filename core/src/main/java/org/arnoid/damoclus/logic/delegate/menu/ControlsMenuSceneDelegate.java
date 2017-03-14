@@ -19,7 +19,7 @@ public class ControlsMenuSceneDelegate extends AbstractScene.SceneDelegate {
     public ControlsMenuSceneDelegate(DamoclusGdxGame game) {
         super(game);
 
-        game.mainComponent.inject(this);
+        game.mainComponent().inject(this);
 
         keyboardMapping = configurationController.read().getKeyboardMapping().clone();
         controllerMap = configurationController.read().getControllerMapping().clone();

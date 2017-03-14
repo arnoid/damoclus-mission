@@ -18,7 +18,6 @@ public class MainMenuSceneDelegate extends AbstractScene.SceneDelegate {
     }
 
     public void onOptions() {
-
         getGame().loadScene(SceneNavigator.SceneType.MENU_OPTIONS);
     }
 

@@ -13,12 +13,16 @@ import org.arnoid.damoclus.data.configuration.UserControllerMap;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MenuNavigationInputAdapter extends InputAdapter implements ControllerListener {
 
+    private static final String TAG = MenuNavigationInputAdapter.class.getSimpleName();
+
     @Inject
     ConfigurationController configurationController;
-    private ArrayList<MenuNavigationListener> listeners = new ArrayList<>();
+    private Set<MenuNavigationListener> listeners = new HashSet<>();
 
     public MenuNavigationInputAdapter(ConfigurationController configurationController) {
         this.configurationController = configurationController;
@@ -35,20 +39,22 @@ public class MenuNavigationInputAdapter extends InputAdapter implements Controll
         listeners.remove(listener);
     }
 
-    public void registerMenuNavigation(MenuNavigationListener scene) {
-        if (scene != null) {
-            addListener(scene);
+    public void registerMenuNavigation(MenuNavigationListener listener) {
+        if (listener != null) {
+            addListener(listener);
+            Gdx.app.debug(TAG, "Registered listener [" + listener + "]");
         }
     }
 
     public void unregisterMenuNavigation(MenuNavigationListener listener) {
         if (listener != null) {
             removeListener(listener);
+            Gdx.app.debug(TAG, "Unregistered listener [" + listener + "]");
         }
     }
 
     @Override
-    public boolean keyTyped(char character) {
+    public boolean keyDown(int character) {
         UserControllerMap keyboardMap = getKeyboardMap();
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(keyboardMap.getUp())) {
@@ -61,7 +67,7 @@ public class MenuNavigationInputAdapter extends InputAdapter implements Controll
 
         }
 
-        return false;
+        return true;
     }
 
     private UserControllerMap getKeyboardMap() {
@@ -143,6 +149,8 @@ public class MenuNavigationInputAdapter extends InputAdapter implements Controll
         void onPrev();
 
         void onInteract();
+
+        MenuNavigationInputAdapter getInputAdapter();
     }
 
 }

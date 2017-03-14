@@ -1,28 +1,16 @@
 package org.arnoid.damoclus.ui.scene.menu;
 
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
-import com.kotcrab.vis.ui.widget.VisWindow;
 import org.arnoid.damoclus.controller.skin.SkinController;
 import org.arnoid.damoclus.controller.strings.StringsController;
 import org.arnoid.damoclus.logic.input.MenuNavigationInputAdapter;
@@ -36,36 +24,28 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
 
     private static final String TAG = AbstractMenuScene.class.getSimpleName();
 
-    private static final float WINDOW_TITLE_PADDING = 5F;
-
     @Inject
     StringsController stringsController;
     @Inject
     SkinController skinController;
 
-    private VisWindow window;
+    @Inject
+    MenuNavigationInputAdapter menuNavigationInputAdapter;
+    @Inject
+    InputMultiplexer inputMultiplexer;
+
     private ClickListener clickListener;
 
     private LinkedList<Actor> menuItems = new LinkedList<>();
-    private LinkedList<Actor> labelItems = new LinkedList<>();
     private ChangeListener changeListener;
 
     private AtomicBoolean paused = new AtomicBoolean(false);
 
-    public AbstractMenuScene(Stage stage) {
-        super(stage);
+    public AbstractMenuScene() {
+        super();
     }
 
     void init() {
-        Skin skin = skinController.getSkin();
-
-        window = new VisWindow(getWindowTitle(), skin.get("default", Window.WindowStyle.class));
-
-        window.getTitleTable().align(Align.topLeft).padLeft(15).padTop(WINDOW_TITLE_PADDING);
-
-        window.add().height(WINDOW_TITLE_PADDING + window.getTitleLabel().getHeight() + WINDOW_TITLE_PADDING);
-        window.row();
-
         clickListener = new ClickListener() {
 
             boolean mouseMode = false;
@@ -86,7 +66,7 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
 
             public void clicked(InputEvent event, float x, float y) {
                 Actor listenerActor = event.getListenerActor();
-                if (listenerActor != null && listenerActor.getName() != null) {
+                if (!paused.get() && listenerActor != null && listenerActor.getName() != null) {
                     AbstractMenuScene.this.clicked(listenerActor, event);
                 }
             }
@@ -109,48 +89,39 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
             }
         };
 
-        window.addListener(clickListener);
+        getStage().addListener(clickListener);
+        getStage().addListener(changeListener);
 
-        produceMenuContent(window, skin);
+        produceLayout();
+        postProduceLayout();
 
         if (menuItems.size() > 0) {
             Actor firstButton = menuItems.get(0);
             getStage().setKeyboardFocus(firstButton);
         }
-
-        window.pack();
-        window.centerWindow();
     }
 
     @Override
     public void pause() {
         super.pause();
         paused.set(true);
+        inputMultiplexer.removeProcessor(menuNavigationInputAdapter);
     }
 
     @Override
     public void resume() {
         super.resume();
         paused.set(false);
-    }
-
-    public Window getWindow() {
-        return window;
-    }
-
-    protected void produceMenuContent(Window window, Skin skin) {
-        produceMenuItems();
+        inputMultiplexer.addProcessor(menuNavigationInputAdapter);
     }
 
     @Override
     public void show() {
-        enableTouch();
+        super.show();
 
-        updateTexts();
+        menuNavigationInputAdapter.registerMenuNavigation(this);
 
-        getStage().addActor(window);
-
-        window.addAction(
+        getStage().addAction(
                 Actions.sequence(
                         Actions.alpha(0, 0),
                         Actions.fadeIn(0.5F)
@@ -158,59 +129,14 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
         );
     }
 
-    protected void updateTexts() {
-        window.getTitleLabel().setText(getWindowTitle());
-
-        for (Actor actor : menuItems) {
-            if (actor instanceof TextButton) {
-                TextButton button = (TextButton) actor;
-                button.setText(getText(button.getName()));
-            }
-        }
-
-        for (Actor actor : labelItems) {
-            if (actor instanceof TextButton) {
-                ((TextButton) actor).setText(getText(actor.getName()));
-            } else if (actor instanceof Label) {
-                ((Label) actor).setText(getText(actor.getName()));
-            } else if (actor instanceof SelectBox) {
-                Object[] selectBoxArray = getSelectBoxArray(actor.getName());
-                if (selectBoxArray != null) {
-                    SelectBox selectBox = (SelectBox) actor;
-                    selectBox.setItems(selectBoxArray);
-                    if (selectBoxArray.length > 0) {
-                        selectBox.setSelectedIndex(0);
-                    }
-                }
-            }
-        }
-    }
-
-    public void enableTouch() {
-        window.setTouchable(Touchable.enabled);
-    }
-
-    public void disableTouch() {
-        window.setTouchable(Touchable.disabled);
-    }
-
-    protected String getText(String name) {
-        return getStringsController().string(name);
-    }
-
-    protected Object[] getSelectBoxArray(String name) {
-        return new String[]{};
-    }
-
     @Override
     public void hide() {
-        disableTouch();
+        super.hide();
 
-        window.addAction(
-                Actions.sequence(
-                        Actions.fadeOut(0.5F),
-                        Actions.removeActor(window)
-                )
+        menuNavigationInputAdapter.unregisterMenuNavigation(this);
+
+        getStage().addAction(
+                Actions.fadeOut(0.5F)
         );
     }
 
@@ -218,25 +144,18 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
 
     protected abstract void changed(Actor actor, ChangeListener.ChangeEvent event);
 
-    protected abstract String getWindowTitle();
+    protected abstract void produceLayout();
 
-    protected abstract void produceMenuItems();
+    public abstract void postProduceLayout();
 
-    public void registerMenuItemListeners(Actor actor) {
-        actor.addListener(clickListener);
-        actor.addListener(changeListener);
-    }
-
-    public void registerInMenuItems(Actor actor) {
+    public void registerMenuItem(Actor actor) {
         menuItems.add(actor);
 
         if (menuItems.size() == 1) {
             markSelected(menuItems.peek());
         }
-    }
 
-    public void registerLabeledActor(Actor producedActor) {
-        labelItems.add(producedActor);
+        actor.addListener(clickListener);
     }
 
     public StringsController getStringsController() {
@@ -247,61 +166,9 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
         return skinController;
     }
 
-    public Table produceGroupTable(String name) {
-        Table table = new Table();
-        table.setName(name);
-        return table;
-    }
-
-    public TextButton produceButton(String name) {
-        TextButton button = new TextButton(getText(name), getSkinController().getSkin());
-        button.setName(name);
-        return button;
-    }
-
-    public TextField produceTextField(String name) {
-        TextField textField = new TextField(getText(name), getSkinController().getSkin());
-        textField.setName(name);
-        return textField;
-    }
-
-    public Label produceLabel(String name) {
-        Label label = new Label(getText(name), getSkinController().getSkin());
-        label.setName(name);
-        return label;
-    }
-
-    public <T> SelectBox<T> produceSelectBox(String name) {
-        final SelectBox<T> selectBox = new SelectBox<>(getSkinController().getSkin());
-
-        selectBox.setName(name);
-
-        selectBox.addListener(changeListener);
-        return selectBox;
-    }
-
-    public ScrollPane produceScroll(String name) {
-        final ScrollPane scrollPane = new ScrollPane(null, getSkinController().getSkin());
-        scrollPane.setName(name);
-
-        return scrollPane;
-    }
-
-    public ImageButton produceCheckBox(String name) {
-        final ImageButton checkBox = new ImageButton(getSkinController().getSkin(), getSkinController().getImgByttonCheckBoxStyle());
-
-        checkBox.setName(name);
-
-        checkBox.addListener(changeListener);
-        return checkBox;
-    }
-
-
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-
-        window.centerWindow();
     }
 
     private void markNotSelected(Actor actor) {
@@ -365,24 +232,8 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
         clicked(menuItems.peek(), new InputEvent());
     }
 
-    public void onActorProduced(String name, Actor producedActor) {
-
-    }
-
-    public Action produceDialogDisplayAction(final Dialog dialog) {
-        DelayAction action = Actions.delay(0.3F, new Action() {
-
-            @Override
-            public boolean act(float delta) {
-                pause();
-                dialog.show(getStage());
-                getStage().setKeyboardFocus(dialog);
-                return true;
-            }
-        });
-
-        action.setActor(dialog);
-
-        return action;
+    @Override
+    public MenuNavigationInputAdapter getInputAdapter() {
+        return menuNavigationInputAdapter;
     }
 }

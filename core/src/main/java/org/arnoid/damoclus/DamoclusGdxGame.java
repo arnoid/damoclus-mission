@@ -1,5 +1,6 @@
 package org.arnoid.damoclus;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -26,7 +27,6 @@ public class DamoclusGdxGame implements ApplicationListener, SceneNavigator {
 
     private static final String TAG = DamoclusGdxGame.class.getSimpleName();
 
-    private Stage stage;
     private SceneContainer sceneContainer;
 
     @Inject
@@ -37,33 +37,39 @@ public class DamoclusGdxGame implements ApplicationListener, SceneNavigator {
     SkinController skinController;
 
     @Inject
-    MenuNavigationInputAdapter menuNavigationInputAdapter;
+    InputMultiplexer inputMultiplexer;
 
-    public static MainComponent mainComponent;
+    private static MainComponent mainComponent;
 
     @Override
     public void create() {
         Gdx.graphics.setContinuousRendering(true);
 
-        stage = new Stage(new ScreenViewport());
-
         mainComponent = DaggerMainComponent.builder()
                 .controllerModule(new ControllerModule())
-                .sceneModule(new SceneModule(stage))
+                .sceneModule(new SceneModule())
                 .sceneDelegateModule(new SceneDelegateModule(this))
                 .build();
 
         mainComponent.inject(this);
 
-        VisUI.load(skinController.getSkin());
+        Gdx.input.setInputProcessor(inputMultiplexer);
 
-        stage.setDebugAll(configurationController.read().isDebug());
+        if(configurationController.read().isDebug()) {
+            Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        } else {
+            Gdx.app.setLogLevel(Application.LOG_ERROR);
+        }
+
+        VisUI.load(skinController.getSkin());
 
         sceneContainer = new SceneContainer();
 
-        Gdx.input.setInputProcessor(new InputMultiplexer(menuNavigationInputAdapter, stage));
-
         loadScene(SceneType.MENU_MAIN);
+    }
+
+    public static MainComponent mainComponent() {
+        return mainComponent;
     }
 
     public void loadScene(SceneType sceneType) {
@@ -111,18 +117,7 @@ public class DamoclusGdxGame implements ApplicationListener, SceneNavigator {
         scene.setSceneDelegate(sceneDelegate);
         scene.onSceneDelegate();
 
-        AbstractScene peekedScene = sceneContainer.peek();
-        if (peekedScene != null && peekedScene instanceof MenuNavigationInputAdapter.MenuNavigationListener) {
-            menuNavigationInputAdapter.unregisterMenuNavigation((MenuNavigationInputAdapter.MenuNavigationListener) peekedScene);
-        }
-
-        if (scene != null && scene instanceof MenuNavigationInputAdapter.MenuNavigationListener) {
-            menuNavigationInputAdapter.registerMenuNavigation((MenuNavigationInputAdapter.MenuNavigationListener) scene);
-        }
-
         sceneContainer.push(scene);
-
-        scene.resize(stage.getViewport().getScreenWidth(), stage.getViewport().getScreenHeight());
 
         Gdx.graphics.requestRendering();
     }
@@ -130,25 +125,11 @@ public class DamoclusGdxGame implements ApplicationListener, SceneNavigator {
     public void popScene() {
         AbstractScene scene = sceneContainer.pop();
 
-        if (scene != null && scene instanceof MenuNavigationInputAdapter.MenuNavigationListener) {
-            menuNavigationInputAdapter.unregisterMenuNavigation((MenuNavigationInputAdapter.MenuNavigationListener) scene);
-        }
-
-        AbstractScene peekedScene = sceneContainer.peek();
-        if (peekedScene != null && peekedScene instanceof MenuNavigationInputAdapter.MenuNavigationListener) {
-            menuNavigationInputAdapter.registerMenuNavigation((MenuNavigationInputAdapter.MenuNavigationListener) peekedScene);
-        }
-
         Gdx.graphics.requestRendering();
-    }
-
-    public MenuNavigationInputAdapter getMenuNavigationInputAdapter() {
-        return menuNavigationInputAdapter;
     }
 
     @Override
     public void dispose() {
-        stage.dispose();
         sceneContainer.dispose();
 
         skinController.dispose();
@@ -172,20 +153,14 @@ public class DamoclusGdxGame implements ApplicationListener, SceneNavigator {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        stage.act(deltaTime);
         sceneContainer.act(deltaTime);
-        stage.draw();
         sceneContainer.render(deltaTime);
 
     }
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
         sceneContainer.resize(width, height);
     }
 
-    public Stage getStage() {
-        return stage;
-    }
 }
