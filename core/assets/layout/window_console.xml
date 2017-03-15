@@ -7,9 +7,8 @@
         <Label
                 name="lbl_console_output"
                 width="300"
-                height="150"
-                grow="growX"
-                text="adfdsfsdfsjdhbfkjhlksbsdfkjalsskbvdfanldnsvjbkdf\n\n\n\n\n\n\nandlsvbkdfnadsvlkbflda\dfd\df"/>
+                text="111"
+                height="150"/>
         <TextField
                 align="left"
                 grow="growX"

@@ -1,7 +1,10 @@
 package org.arnoid.damoclus.ui.scene;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -13,7 +16,7 @@ import org.arnoid.damoclus.DamoclusGdxGame;
 
 import javax.inject.Inject;
 
-public abstract class AbstractScene<T extends AbstractScene.SceneDelegate> extends ScreenAdapter {
+public abstract class AbstractScene<T extends AbstractScene.SceneDelegate> extends ScreenAdapter implements Telegraph{
 
     private static final String TAG = AbstractScene.class.getSimpleName();
 
@@ -75,6 +78,10 @@ public abstract class AbstractScene<T extends AbstractScene.SceneDelegate> exten
         visible = false;
     }
 
+    public void hideAndDispose() {
+        hide();
+    }
+
     @Override
     public void resize(int width, int height) {
         stage.getViewport().setScreenSize(width, height);
@@ -121,5 +128,10 @@ public abstract class AbstractScene<T extends AbstractScene.SceneDelegate> exten
         public DamoclusGdxGame getGame() {
             return game;
         }
+    }
+
+    @Override
+    public boolean handleMessage(Telegram msg) {
+        return false;
     }
 }

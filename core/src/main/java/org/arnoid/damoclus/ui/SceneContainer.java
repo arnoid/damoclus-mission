@@ -109,7 +109,9 @@ public class SceneContainer implements Screen {
 
         scenes.push(scene);
 
-        scene.resume();
+        if (overlay == null) {
+            scene.resume();
+        }
 
         return scene;
     }
@@ -139,12 +141,13 @@ public class SceneContainer implements Screen {
 
         overlay = scene;
         scene.resume();
+        scene.show();
     }
 
     public void removeOverlay() {
         if (overlay != null) {
             overlay.pause();
-            overlay.dispose();
+            overlay.hideAndDispose();
 
             overlay = null;
         }
@@ -163,12 +166,14 @@ public class SceneContainer implements Screen {
 
         if (removedScene != null) {
             removedScene.pause();
+            removedScene.hideAndDispose();
         }
 
         AbstractScene peekedScene = scenes.peekFirst();
 
         if (peekedScene != null) {
             peekedScene.resume();
+            peekedScene.show();
         }
 
         return removedScene;

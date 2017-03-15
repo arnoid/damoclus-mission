@@ -1,11 +1,14 @@
 package org.arnoid.damoclus.ui.scene.menu;
 
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import org.arnoid.damoclus.controller.skin.SkinController;
@@ -121,10 +124,14 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
         menuNavigationInputAdapter.registerMenuNavigation(this);
 
         getStage().addAction(
-                Actions.sequence(
-                        Actions.alpha(0, 0),
-                        Actions.fadeIn(0.5F)
-                )
+                produceShowAction()
+        );
+    }
+
+    protected SequenceAction produceShowAction() {
+        return Actions.sequence(
+                Actions.alpha(0, 0),
+                Actions.fadeIn(0.5F)
         );
     }
 
@@ -135,7 +142,30 @@ public abstract class AbstractMenuScene<M extends AbstractScene.SceneDelegate> e
         menuNavigationInputAdapter.unregisterMenuNavigation(this);
 
         getStage().addAction(
-                Actions.fadeOut(0.5F)
+                produceHideAction()
+        );
+
+    }
+
+    protected AlphaAction produceHideAction() {
+        return Actions.fadeOut(0.5F);
+    }
+
+    public void hideAndDispose() {
+        super.hideAndDispose();
+        menuNavigationInputAdapter.unregisterMenuNavigation(this);
+
+        getStage().addAction(
+                Actions.sequence(
+                        produceHideAction(),
+                        new Action() {
+                            @Override
+                            public boolean act(float delta) {
+                                dispose();
+                                return false;
+                            }
+                        }
+                )
         );
     }
 

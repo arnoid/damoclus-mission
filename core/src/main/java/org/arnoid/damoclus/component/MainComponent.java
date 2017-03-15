@@ -3,6 +3,7 @@ package org.arnoid.damoclus.component;
 import com.badlogic.gdx.InputMultiplexer;
 import dagger.Component;
 import org.arnoid.damoclus.DamoclusGdxGame;
+import org.arnoid.damoclus.logic.delegate.ConsoleSceneDelegate;
 import org.arnoid.damoclus.logic.delegate.menu.ControlsMenuSceneDelegate;
 import org.arnoid.damoclus.logic.delegate.menu.LanguageMenuSceneDelegate;
 import org.arnoid.damoclus.logic.delegate.menu.VideoMenuSceneDelegate;
@@ -108,4 +109,5 @@ public interface MainComponent {
 
     InputMultiplexer provideInputMultiplexer();
 
+    void inject(ConsoleSceneDelegate consoleSceneDelegate);
 }

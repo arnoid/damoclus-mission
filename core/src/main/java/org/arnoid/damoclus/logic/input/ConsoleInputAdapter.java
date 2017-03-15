@@ -1,7 +1,9 @@
-package org.arnoid.damoclus;
+package org.arnoid.damoclus.logic.input;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import org.arnoid.damoclus.DamoclusGdxGame;
+import org.arnoid.damoclus.SceneNavigator;
 import org.arnoid.damoclus.ui.SceneContainer;
 import org.arnoid.damoclus.ui.scene.AbstractScene;
 
@@ -21,17 +23,12 @@ public class ConsoleInputAdapter extends InputAdapter {
     public boolean keyUp(int keycode) {
         if (keycode == Input.Keys.GRAVE) {
             if (consoleIsVisible) {
-                AbstractScene overlay = sceneContainer.getOverlay();
-                if (overlay != null) {
-                    overlay.pause();
-                }
                 sceneContainer.removeOverlay();
                 sceneContainer.peek().resume();
                 consoleIsVisible = false;
             } else {
-                AbstractScene scene = game.produceScene(SceneNavigator.SceneType.MENU_CONSOLE);
-                sceneContainer.setOverlay(scene);
-                scene.resume();
+                AbstractScene consoleScene = game.produceScene(SceneNavigator.SceneType.MENU_CONSOLE);
+                sceneContainer.setOverlay(consoleScene);
                 sceneContainer.peek().pause();
                 consoleIsVisible = true;
             }
