@@ -1,0 +1,18 @@
+<Container
+        fillParent="true">
+    <Window
+            name="window_console"
+            align="top|left"
+            title="Console">
+        <Label
+                name="lbl_console_output"
+                width="300"
+                height="150"
+                grow="growX"
+                text="adfdsfsdfsjdhbfkjhlksbsdfkjalsskbvdfanldnsvjbkdf\n\n\n\n\n\n\nandlsvbkdfnadsvlkbflda\dfd\df"/>
+        <TextField
+                align="left"
+                grow="growX"
+                name="edt_console_input"/>
+    </Window>
+</Container>

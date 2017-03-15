@@ -8,6 +8,7 @@ import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import org.arnoid.damoclus.controller.persistent.ConfigurationController;
 import org.arnoid.damoclus.data.configuration.UserControllerMap;
 
@@ -23,12 +24,17 @@ public class MenuNavigationInputAdapter extends InputAdapter implements Controll
     @Inject
     ConfigurationController configurationController;
     private Set<MenuNavigationListener> listeners = new HashSet<>();
+    private Stage stage;
 
     public MenuNavigationInputAdapter(ConfigurationController configurationController) {
         this.configurationController = configurationController;
 
         Controllers.addListener(this);
         configurationController.read();
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     public void addListener(MenuNavigationListener listener) {
@@ -64,7 +70,6 @@ public class MenuNavigationInputAdapter extends InputAdapter implements Controll
         } else if (Gdx.input.isKeyPressed(Input.Keys.ENTER) || Gdx.input.isKeyPressed(keyboardMap.getInteract())) {
             interact();
         } else {
-
         }
 
         return true;

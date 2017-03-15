@@ -22,12 +22,9 @@ import javax.inject.Inject;
 
 public class VideoMenuScene extends AbstractMenuScene<VideoMenuSceneDelegate> {
 
-    @Inject
-    MenuNavigationInputAdapter menuNavigationInputAdapter;
-
     private static final String TAG = VideoMenuScene.class.getSimpleName();
     private ImageButton chkFullscreen;
-    private SelectList slctDisplayMode;
+    private SelectList<Graphics.DisplayMode> slctDisplayMode;
 
     public VideoMenuScene(MainComponent component) {
         super();
@@ -46,7 +43,7 @@ public class VideoMenuScene extends AbstractMenuScene<VideoMenuSceneDelegate> {
     @Override
     public void postProduceLayout() {
         chkFullscreen = (ImageButton) findActor(R.id.menu_video_chk_fullscreen);
-        slctDisplayMode = (SelectList) findActor(R.id.menu_video_selectbox_resolution);
+        slctDisplayMode = (SelectList<Graphics.DisplayMode>) findActor(R.id.menu_video_selectbox_resolution);
 
         registerMenuItem(chkFullscreen);
         registerMenuItem(slctDisplayMode);

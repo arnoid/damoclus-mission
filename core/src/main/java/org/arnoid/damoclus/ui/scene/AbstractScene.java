@@ -21,6 +21,7 @@ public abstract class AbstractScene<T extends AbstractScene.SceneDelegate> exten
     private Stage stage;
 
     private boolean visible = false;
+    private boolean overlay = false;
 
     @Inject
     InputMultiplexer inputMultiplexer;
@@ -50,36 +51,38 @@ public abstract class AbstractScene<T extends AbstractScene.SceneDelegate> exten
 
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public boolean isOverlay() {
+        return overlay;
+    }
+
+    public void setOverlay(boolean overlay) {
+        this.overlay = overlay;
+    }
+
     @Override
     public void show() {
-        super.show();
         inputMultiplexer.addProcessor(stage);
         visible = true;
-
-        resume();
     }
 
     @Override
     public void hide() {
-        pause();
-
-        super.hide();
         inputMultiplexer.removeProcessor(stage);
         visible = false;
     }
 
     @Override
     public void resize(int width, int height) {
-        super.resize(width, height);
         stage.getViewport().setScreenSize(width, height);
     }
 
     @Override
     public void render(float delta) {
-        if (visible) {
-            super.render(delta);
-            stage.draw();
-        }
+        stage.draw();
     }
 
     public void act(float delta) {
@@ -88,7 +91,6 @@ public abstract class AbstractScene<T extends AbstractScene.SceneDelegate> exten
 
     @Override
     public void dispose() {
-        super.dispose();
         stage.dispose();
     }
 

@@ -3,12 +3,10 @@ package org.arnoid.damoclus;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.kotcrab.vis.runtime.util.VisBagUtils;
-import com.kotcrab.vis.ui.VisUI;
 import org.arnoid.damoclus.component.ControllerModule;
 import org.arnoid.damoclus.component.DaggerMainComponent;
 import org.arnoid.damoclus.component.MainComponent;
@@ -17,7 +15,6 @@ import org.arnoid.damoclus.component.SceneModule;
 import org.arnoid.damoclus.controller.persistent.ConfigurationController;
 import org.arnoid.damoclus.controller.skin.SkinController;
 import org.arnoid.damoclus.controller.strings.StringsController;
-import org.arnoid.damoclus.logic.input.MenuNavigationInputAdapter;
 import org.arnoid.damoclus.ui.SceneContainer;
 import org.arnoid.damoclus.ui.scene.AbstractScene;
 
@@ -55,15 +52,15 @@ public class DamoclusGdxGame implements ApplicationListener, SceneNavigator {
 
         Gdx.input.setInputProcessor(inputMultiplexer);
 
-        if(configurationController.read().isDebug()) {
+        if (configurationController.read().isDebug()) {
             Gdx.app.setLogLevel(Application.LOG_DEBUG);
         } else {
             Gdx.app.setLogLevel(Application.LOG_ERROR);
         }
 
-        VisUI.load(skinController.getSkin());
-
         sceneContainer = new SceneContainer();
+
+        inputMultiplexer.addProcessor(new ConsoleInputAdapter(sceneContainer, this));
 
         loadScene(SceneType.MENU_MAIN);
     }
@@ -74,6 +71,19 @@ public class DamoclusGdxGame implements ApplicationListener, SceneNavigator {
 
     public void loadScene(SceneType sceneType) {
 
+        AbstractScene scene = produceScene(sceneType);
+
+        AbstractScene topScene = sceneContainer.peek();
+        if (topScene != null) {
+            topScene.hide();
+        }
+        sceneContainer.push(scene);
+        scene.show();
+
+        Gdx.graphics.requestRendering();
+    }
+
+    public AbstractScene produceScene(SceneType sceneType) {
         AbstractScene scene;
         AbstractScene.SceneDelegate sceneDelegate;
 
@@ -102,6 +112,10 @@ public class DamoclusGdxGame implements ApplicationListener, SceneNavigator {
                 scene = mainComponent.provideControlsMenu();
                 sceneDelegate = mainComponent.provideControlsMenuDelegate();
                 break;
+            case MENU_CONSOLE:
+                scene = mainComponent.provideConsoleMenu();
+                sceneDelegate = mainComponent.provideConsoleMenuDelegate();
+                break;
             default:
                 String sceneName;
                 if (sceneType == null) {
@@ -116,14 +130,13 @@ public class DamoclusGdxGame implements ApplicationListener, SceneNavigator {
 
         scene.setSceneDelegate(sceneDelegate);
         scene.onSceneDelegate();
-
-        sceneContainer.push(scene);
-
-        Gdx.graphics.requestRendering();
+        return scene;
     }
 
     public void popScene() {
         AbstractScene scene = sceneContainer.pop();
+
+        scene.dispose();
 
         Gdx.graphics.requestRendering();
     }

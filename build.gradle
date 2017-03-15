@@ -24,11 +24,10 @@ allprojects {
     group = "org.arnoid.damoclus"
     ext {
         appName = "Damoclus Mission"
-        gdxVersion = '1.9.5'
-        roboVMVersion = '2.3.0'
+        gdxVersion = '1.9.6'
         box2DLightsVersion = '1.4'
-        ashleyVersion = '1.7.0'
-        aiVersion = '1.8.0'
+        ashleyVersion = '1.7.3'
+        aiVersion = '1.8.1'
     }
 
     repositories {
@@ -72,8 +71,6 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
-        compile "com.kotcrab.vis:vis-ui:1.2.4"
-        compile "com.kotcrab.vis:vis-runtime:0.3.2"
         compile "com.underwaterapps.overlap2druntime:overlap2d-runtime-libgdx:0.1.0"
         compile "net.dermetfan.libgdx-utils:libgdx-utils-box2d:0.13.3"
         compile "net.dermetfan.libgdx-utils:libgdx-utils:0.13.3"

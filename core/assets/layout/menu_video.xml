@@ -1,7 +1,6 @@
 <Container
         fillParent="true">
     <Window
-            name="video_menu_window"
             title="@string/menu_video_window_title">
         <Table>
             <Row

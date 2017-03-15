@@ -28,7 +28,7 @@ public class InputRecorderDialog extends Dialog {
 
     public Action produceDialogDisplayAction(final AbstractMenuScene scene) {
         final Dialog dialog = this;
-        DelayAction action = Actions.delay(0.3F, new Action() {
+        Action action = new Action() {
 
             @Override
             public boolean act(float delta) {
@@ -36,7 +36,7 @@ public class InputRecorderDialog extends Dialog {
                 scene.getStage().setKeyboardFocus(dialog);
                 return true;
             }
-        });
+        };
 
         action.setActor(this);
 

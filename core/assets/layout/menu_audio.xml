@@ -1,7 +1,6 @@
 <Container
         fillParent="true">
     <Window
-            name="audio_menu_window"
             title="@string/menu_audio_window_title">
         <TextButton
                 name="btn_back"

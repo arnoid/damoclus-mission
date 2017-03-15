@@ -1,7 +1,6 @@
 <Container
         fillParent="true">
     <Window
-            name="options_menu_window"
             title="@string/menu_options_window_title">
         <TextButton
                 name="btn_audio"

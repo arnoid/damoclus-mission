@@ -3,6 +3,7 @@ package org.arnoid.damoclus.component;
 import dagger.Module;
 import dagger.Provides;
 import org.arnoid.damoclus.DamoclusGdxGame;
+import org.arnoid.damoclus.logic.delegate.ConsoleSceneDelegate;
 import org.arnoid.damoclus.logic.delegate.menu.AudioMenuSceneDelegate;
 import org.arnoid.damoclus.logic.delegate.menu.ControlsMenuSceneDelegate;
 import org.arnoid.damoclus.logic.delegate.menu.LanguageMenuSceneDelegate;
@@ -57,5 +58,11 @@ public class SceneDelegateModule {
     @Provides
     public AbstractScene.SceneDelegate produceControlsMenuSceneDelegate() {
         return new ControlsMenuSceneDelegate(game);
+    }
+
+    @Named(value = SceneModule.SCENE_CONSOLE)
+    @Provides
+    public AbstractScene.SceneDelegate produceConsoleSceneDelegate() {
+        return new ConsoleSceneDelegate(game);
     }
 }

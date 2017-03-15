@@ -9,11 +9,16 @@ import java.util.Iterator;
 public class SceneContainer implements Screen {
 
     private ArrayDeque<AbstractScene> scenes = new ArrayDeque<>();
+    private AbstractScene overlay;
 
     @Override
     public void show() {
         for (AbstractScene scene : scenes) {
             scene.show();
+        }
+
+        if (overlay != null) {
+            overlay.show();
         }
     }
 
@@ -24,11 +29,19 @@ public class SceneContainer implements Screen {
         while (sceneIterator.hasNext()) {
             sceneIterator.next().render(delta);
         }
+
+        if (overlay != null) {
+            overlay.render(delta);
+        }
     }
 
     public void act(float delta) {
         for (AbstractScene scene : scenes) {
             scene.act(delta);
+        }
+
+        if (overlay != null) {
+            overlay.act(delta);
         }
     }
 
@@ -37,12 +50,20 @@ public class SceneContainer implements Screen {
         for (AbstractScene scene : scenes) {
             scene.resize(width, height);
         }
+
+        if (overlay != null) {
+            overlay.resize(width, height);
+        }
     }
 
     @Override
     public void pause() {
         for (AbstractScene scene : scenes) {
             scene.pause();
+        }
+
+        if (overlay != null) {
+            overlay.pause();
         }
     }
 
@@ -51,12 +72,20 @@ public class SceneContainer implements Screen {
         for (AbstractScene scene : scenes) {
             scene.resume();
         }
+
+        if (overlay != null) {
+            overlay.resume();
+        }
     }
 
     @Override
     public void hide() {
         for (AbstractScene scene : scenes) {
             scene.hide();
+        }
+
+        if (overlay != null) {
+            overlay.hide();
         }
     }
 
@@ -65,18 +94,22 @@ public class SceneContainer implements Screen {
         for (AbstractScene scene : scenes) {
             scene.dispose();
         }
+
+        if (overlay != null) {
+            overlay.dispose();
+        }
     }
 
     public AbstractScene addFirstScene(AbstractScene scene) {
         AbstractScene peekedScene = scenes.peek();
 
         if (peekedScene != null) {
-            peekedScene.hide();
+            peekedScene.pause();
         }
 
         scenes.push(scene);
 
-        scene.show();
+        scene.resume();
 
         return scene;
     }
@@ -101,6 +134,26 @@ public class SceneContainer implements Screen {
         return addFirstScene(scene);
     }
 
+    public void setOverlay(AbstractScene scene) {
+        removeOverlay();
+
+        overlay = scene;
+        scene.resume();
+    }
+
+    public void removeOverlay() {
+        if (overlay != null) {
+            overlay.pause();
+            overlay.dispose();
+
+            overlay = null;
+        }
+    }
+
+    public AbstractScene getOverlay() {
+        return overlay;
+    }
+
     public AbstractScene remove() {
         return removeFirst();
     }
@@ -109,13 +162,13 @@ public class SceneContainer implements Screen {
         AbstractScene removedScene = scenes.removeFirst();
 
         if (removedScene != null) {
-            removedScene.hide();
+            removedScene.pause();
         }
 
         AbstractScene peekedScene = scenes.peekFirst();
 
         if (peekedScene != null) {
-            peekedScene.show();
+            peekedScene.resume();
         }
 
         return removedScene;

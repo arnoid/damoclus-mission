@@ -1,0 +1,7 @@
+<Container
+        fillParent="true">
+    <Window
+            title="@string/menu_main_window_title">
+
+    </Window>
+</Container>

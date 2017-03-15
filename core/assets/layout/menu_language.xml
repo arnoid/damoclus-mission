@@ -1,7 +1,6 @@
 <Container
         fillParent="true">
     <Window
-            name="menu_language_window"
             title="@string/menu_language_window_title">
         <TextButton
                 name="btn_language_en"

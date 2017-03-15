@@ -1,5 +1,6 @@
 package org.arnoid.damoclus.component;
 
+import com.badlogic.gdx.InputMultiplexer;
 import dagger.Component;
 import org.arnoid.damoclus.DamoclusGdxGame;
 import org.arnoid.damoclus.logic.delegate.menu.ControlsMenuSceneDelegate;
@@ -9,6 +10,7 @@ import org.arnoid.damoclus.logic.input.MenuNavigationInputAdapter;
 import org.arnoid.damoclus.ui.scene.AbstractScene;
 import org.arnoid.damoclus.ui.scene.menu.AbstractMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.AudioMenuScene;
+import org.arnoid.damoclus.ui.scene.menu.ConsoleScene;
 import org.arnoid.damoclus.ui.scene.menu.ControlsMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.LanguageMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.MainMenuScene;
@@ -68,6 +70,12 @@ public interface MainComponent {
     @Named(value = SceneModule.SCENE_MENU_CONTROLS)
     AbstractScene.SceneDelegate provideControlsMenuDelegate();
 
+    @Named(value = SceneModule.SCENE_CONSOLE)
+    AbstractMenuScene provideConsoleMenu();
+
+    @Named(value = SceneModule.SCENE_CONSOLE)
+    AbstractScene.SceneDelegate provideConsoleMenuDelegate();
+
     void inject(DamoclusGdxGame game);
 
     void inject(MenuNavigationInputAdapter menuNavigationInputAdapter);
@@ -88,11 +96,16 @@ public interface MainComponent {
 
     void inject(ControlsMenuScene controlsMenuScene);
 
+    void inject(ConsoleScene consoleScene);
+
     void inject(InputRecorderDialog inputRecorderDialog);
 
     void inject(ControlsMenuSceneDelegate controlsMenuSceneDelegate);
 
     void inject(XmlMenuSceneBuilder xmlMenuSceneBuilder);
 
-    void inject(SelectList selectList);
+    MenuNavigationInputAdapter provideMenuNavigationInputAdapter();
+
+    InputMultiplexer provideInputMultiplexer();
+
 }
