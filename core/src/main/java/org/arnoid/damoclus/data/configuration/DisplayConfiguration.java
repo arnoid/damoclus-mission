@@ -5,8 +5,17 @@ import com.badlogic.gdx.Graphics;
 
 public class DisplayConfiguration {
 
-    private boolean fullscreen;
+    public enum TextureQuality {
+        mdpi,
+        hdpi,
+        xhdpi,
+        xxhdpi,
+        xxxhdpi
+    }
+
     private Graphics.DisplayMode displayMode;
+    private boolean fullscreen;
+    private TextureQuality textureQuality;
 
     public boolean isFullscreen() {
         return fullscreen;
@@ -22,5 +31,13 @@ public class DisplayConfiguration {
 
     public void setDisplayMode(Graphics.DisplayMode displayMode) {
         this.displayMode = displayMode;
+    }
+
+    public TextureQuality getTextureQuality() {
+        return textureQuality;
+    }
+
+    public void setTextureQuality(TextureQuality activeTextureQuality) {
+        this.textureQuality = activeTextureQuality;
     }
 }

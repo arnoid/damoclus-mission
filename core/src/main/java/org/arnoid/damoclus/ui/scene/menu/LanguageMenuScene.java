@@ -6,8 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import org.arnoid.damoclus.R;
 import org.arnoid.damoclus.component.MainComponent;
 import org.arnoid.damoclus.logic.delegate.menu.LanguageMenuSceneDelegate;
-import org.arnoid.damoclus.ui.scene.menu.builder.XmlMenuSceneBuilder;
-import org.arnoid.damoclus.ui.scene.menu.builder.XmlMenuSceneBuilderAdapter;
 
 public class LanguageMenuScene extends AbstractMenuScene<LanguageMenuSceneDelegate> {
     private static final String TAG = OptionsMenuScene.class.getSimpleName();
@@ -20,10 +18,7 @@ public class LanguageMenuScene extends AbstractMenuScene<LanguageMenuSceneDelega
 
     @Override
     protected void produceLayout() {
-        XmlMenuSceneBuilder
-                .with(R.layout.menu_language)
-                .listener(new XmlMenuSceneBuilderAdapter())
-                .build(getStage());
+        setLayout(R.layout.menu_language);
     }
 
     @Override
@@ -34,7 +29,7 @@ public class LanguageMenuScene extends AbstractMenuScene<LanguageMenuSceneDelega
     }
 
     @Override
-    protected void clicked(Actor actor, InputEvent event) {
+    public void onInteract(Actor actor, InputEvent event) {
         switch (actor.getName()) {
             case R.id.btn_back:
                 getSceneDelegate().onBack();
@@ -48,6 +43,12 @@ public class LanguageMenuScene extends AbstractMenuScene<LanguageMenuSceneDelega
                 show();
                 break;
         }
+    }
+
+    @Override
+    public void onBack() {
+        super.onBack();
+        getSceneDelegate().onBack();
     }
 
     @Override

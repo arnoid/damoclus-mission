@@ -1,13 +1,11 @@
 package org.arnoid.damoclus.ui.scene;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -15,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import org.arnoid.damoclus.DamoclusGdxGame;
 
 import javax.inject.Inject;
+import java.util.Map;
 
 public abstract class AbstractScene<T extends AbstractScene.SceneDelegate> extends ScreenAdapter implements Telegraph{
 
@@ -28,6 +27,8 @@ public abstract class AbstractScene<T extends AbstractScene.SceneDelegate> exten
 
     @Inject
     InputMultiplexer inputMultiplexer;
+
+    public Map<String, Object> arguments;
 
     public AbstractScene() {
         this(null);
@@ -60,6 +61,18 @@ public abstract class AbstractScene<T extends AbstractScene.SceneDelegate> exten
 
     public boolean isOverlay() {
         return overlay;
+    }
+
+    public Map<String, Object> getArguments() {
+        return arguments;
+    }
+
+    public void onArguments() {
+
+    }
+
+    public void setArguments(Map<String, Object> arguments) {
+        this.arguments = arguments;
     }
 
     public void setOverlay(boolean overlay) {

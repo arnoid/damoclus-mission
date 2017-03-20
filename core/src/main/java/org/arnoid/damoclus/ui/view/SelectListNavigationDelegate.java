@@ -1,19 +1,22 @@
 package org.arnoid.damoclus.ui.view;
 
 import com.badlogic.gdx.InputMultiplexer;
-import org.arnoid.damoclus.logic.input.MenuNavigationInputAdapter;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import org.arnoid.damoclus.logic.input.NavigationInputAdapter;
+import org.arnoid.damoclus.logic.input.NavigationListener;
 import org.arnoid.damoclus.ui.scene.AbstractScene;
 
-public class SelectListNavigationDelegate implements MenuNavigationInputAdapter.MenuNavigationListener {
+public class SelectListNavigationDelegate implements NavigationListener {
 
     private final AbstractScene scene;
-    private final MenuNavigationInputAdapter menuNavigationInputAdapter;
+    private final NavigationInputAdapter menuNavigationInputAdapter;
     private final InputMultiplexer inputMultiplexer;
     private final SelectList selectList;
 
-    public SelectListNavigationDelegate(SelectList selectList, MenuNavigationInputAdapter menuNavigationInputAdapter, InputMultiplexer inputMultiplexer, AbstractScene scene) {
+    public SelectListNavigationDelegate(SelectList selectList, NavigationInputAdapter navigationInputAdapter, InputMultiplexer inputMultiplexer, AbstractScene scene) {
         this.selectList = selectList;
-        this.menuNavigationInputAdapter = menuNavigationInputAdapter;
+        this.menuNavigationInputAdapter = navigationInputAdapter;
         this.inputMultiplexer = inputMultiplexer;
         this.scene = scene;
 
@@ -34,7 +37,7 @@ public class SelectListNavigationDelegate implements MenuNavigationInputAdapter.
     }
 
     @Override
-    public void onPrev() {
+    public void onPrevious() {
         int selectedIndex = selectList.getSelectedIndex();
         if (selectedIndex == 0) {
             selectedIndex = selectList.getItems().size - 1;
@@ -47,16 +50,17 @@ public class SelectListNavigationDelegate implements MenuNavigationInputAdapter.
     }
 
     @Override
-    public void onInteract() {
+    public void onInteract(Actor actor, InputEvent event) {
+        onBack();
+    }
+
+    @Override
+    public void onBack() {
         menuNavigationInputAdapter.removeListener(this);
-        inputMultiplexer.removeProcessor(getInputAdapter());
+        inputMultiplexer.removeProcessor(menuNavigationInputAdapter);
         menuNavigationInputAdapter.unregisterMenuNavigation(this);
         selectList.hideList();
         scene.resume();
     }
 
-    @Override
-    public MenuNavigationInputAdapter getInputAdapter() {
-        return menuNavigationInputAdapter;
-    }
 }

@@ -1,0 +1,68 @@
+{
+  "ASTRONAUT": {
+    "name": "Astronaut",
+    "typeId": "ASTRONAUT",
+    "icon": "/drawable/helmet_astronaut_logo.png",
+    "abbreviation": "Ast",
+    "description": "There are four available astronauts. At least two of must be taken to pilot the Shuttle on each mission. Astronauts are not considered scientists.",
+    "min": 2,
+    "max": 4,
+    "strength": 1.0,
+    "scientist": false
+  },
+  "ASTRONOMER": {
+    "name": "Astronomer",
+    "typeId": "ASTRONOMER",
+    "icon": "/drawable/helmet_astronomer_logo.png",
+    "abbreviation": "Am",
+    "description": "A scientist with a solid  knowledge of the cosmos, including galaxies and solar systems outside our own.",
+    "min": 0,
+    "max": 4,
+    "strength": 1.0,
+    "scientist": true
+  },
+  "BIOLOGIST": {
+    "name": "Biologist",
+    "typeId": "BIOLOGIST",
+    "icon": "/drawable/helmet_biologist_logo.png",
+    "abbreviation": "Bio",
+    "description": "A scientist knowledgeable in all aspects of biology, including the study of the relationship of man to tools and their use.",
+    "min": 0,
+    "max": 4,
+    "strength": 1.0,
+    "scientist": true
+  },
+  "ENGINEER": {
+    "name": "Engineer",
+    "typeId": "ENGINEER",
+    "icon": "/drawable/helmet_engineer_logo.png",
+    "abbreviation": "Eng",
+    "description": "A scientist with a solid knowledge of how things work, both mechanically and electronically.",
+    "min": 0,
+    "max": 4,
+    "strength": 1.0,
+    "scientist": true
+  },
+  "PHYSICIST": {
+    "name": "Physicist",
+    "typeId": "PHYSICIST",
+    "icon": "/drawable/helmet_engineer_logo.png",
+    "abbreviation": "Phy",
+    "description": "A scientist specializing in high energy propulsion systems.",
+    "min": 0,
+    "max": 4,
+    "strength": 1.0,
+    "scientist": true
+  },
+  "SEMANTICIST": {
+    "name": "Semanticist",
+    "typeId": "SEMANTICIST",
+    "icon": "/drawable/helmet_semanticist_logo.png",
+    "abbreviation": "Sem",
+    "description": "A scientist specializing in symbols, words, language, and interrelationships among them.",
+    "min": 0,
+    "max": 4,
+    "strength": 1.0,
+    "scientist": true
+  }
+}

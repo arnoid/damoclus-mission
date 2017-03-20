@@ -26,11 +26,11 @@ public class XmlMenuSceneBuilderAdapter implements XmlMenuSceneBuilderListener {
 
     @Override
     public void onActorModel(BaseModel actorModel) {
-        Gdx.app.debug(TAG, "Parsed actor model [" + actorModel + "]");
+//        Gdx.app.debug(TAG, "Parsed actor model [" + actorModel + "]");
     }
 
     @Override
     public void onActor(Actor actor, BaseModel actorModel) {
-        Gdx.app.debug(TAG, "Parsed actor [name=" + actor.getName() + "; actor=" + actor + "]");
+//        Gdx.app.debug(TAG, "Parsed actor [name=" + actor.getName() + "; actor=" + actor + "]");
     }
 }

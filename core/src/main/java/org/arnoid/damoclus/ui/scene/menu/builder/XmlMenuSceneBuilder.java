@@ -1,6 +1,6 @@
 package org.arnoid.damoclus.ui.scene.menu.builder;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import org.arnoid.damoclus.DamoclusGdxGame;
 import org.arnoid.damoclus.controller.skin.SkinController;
 import org.arnoid.damoclus.controller.strings.StringsController;
@@ -8,6 +8,7 @@ import org.arnoid.damoclus.ui.scene.menu.builder.model.BaseModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.xml.XmlParser;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
 public class XmlMenuSceneBuilder {
@@ -54,7 +55,7 @@ public class XmlMenuSceneBuilder {
         return this;
     }
 
-    public void build(Stage stage) {
+    public List<Actor> build() {
 
         if (listener != null) {
             listener.onStart(layoutFileName);
@@ -66,13 +67,17 @@ public class XmlMenuSceneBuilder {
 
         ActorProducer actorProducer = new ActorProducer(skinController, stringsController, listener);
 
+        List<Actor> actors = new ArrayList<>(holders.size());
+
         for (BaseModel baseModel : holders) {
-            stage.addActor(actorProducer.produce(baseModel));
+            actors.add(actorProducer.produce(baseModel));
         }
 
         if (listener != null) {
             listener.onStop();
         }
+
+        return actors;
     }
 
 }

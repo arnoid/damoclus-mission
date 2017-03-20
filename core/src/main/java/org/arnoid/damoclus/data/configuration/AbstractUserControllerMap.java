@@ -9,6 +9,7 @@ public class AbstractUserControllerMap {
     public int interact;
     public int inventory;
     public int menu;
+    public int back;
 
     public int getUp() {
         return up;
@@ -36,5 +37,9 @@ public class AbstractUserControllerMap {
 
     public int getMenu() {
         return menu;
+    }
+
+    public int getBack() {
+        return back;
     }
 }

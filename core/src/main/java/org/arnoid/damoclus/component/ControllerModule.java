@@ -5,10 +5,11 @@ import dagger.Module;
 import dagger.Provides;
 import org.arnoid.damoclus.DamoclusGdxGame;
 import org.arnoid.damoclus.controller.persistent.ConfigurationController;
+import org.arnoid.damoclus.controller.skin.AssetsController;
 import org.arnoid.damoclus.controller.skin.SkinController;
 import org.arnoid.damoclus.controller.strings.StringsController;
 import org.arnoid.damoclus.logic.command.CommandHandler;
-import org.arnoid.damoclus.logic.input.MenuNavigationInputAdapter;
+import org.arnoid.damoclus.logic.input.NavigationInputAdapter;
 
 import javax.inject.Singleton;
 
@@ -23,8 +24,8 @@ public class ControllerModule {
 
     @Provides
     @Singleton
-    public SkinController provideSkinController() {
-        return new SkinController();
+    public SkinController provideSkinController(AssetsController assetsController) {
+        return new SkinController(assetsController);
     }
 
     @Provides
@@ -39,9 +40,15 @@ public class ControllerModule {
         return new ConfigurationController();
     }
 
+    @Singleton
     @Provides
-    public MenuNavigationInputAdapter provideMenuNavigationInputAdapter(ConfigurationController configurationController) {
-        return new MenuNavigationInputAdapter(configurationController);
+    public AssetsController provideAssetsController() {
+        return new AssetsController();
+    }
+
+    @Provides
+    public NavigationInputAdapter provideNavigationInputAdapter(ConfigurationController configurationController) {
+        return new NavigationInputAdapter(configurationController);
     }
 
     @Singleton

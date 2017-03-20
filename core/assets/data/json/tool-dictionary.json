@@ -1,0 +1,133 @@
+{
+  "VISION": {
+    "name": "Vision equipment",
+    "typeId": "VISION",
+    "icon": "/drawable/tool_vision_equipment_logo.png",
+    "description": "This involves various light sources, tactile investigatory methods, and other \"hands-on\" equipment which will not damage the item being examined. This  may be used by anyone and [primary]must[] be taken along by the team.\nUsually has high investigation chance, but also a high backfire probability. Useful, but dangerous.",
+    "weight": 1.0,
+    "min": 1,
+    "max": 6,
+    "type": "MECHANICAL",
+    "mayUse": [
+      "ASTRONAUT",
+      "ASTRONOMER",
+      "BIOLOGIST",
+      "ENGINEER",
+      "PHYSICIST",
+      "SEMANTICIST"
+    ]
+  },
+  "SIMPLE TOOLS": {
+    "name": "Simple tools",
+    "typeId": "SIMPLE TOOLS",
+    "icon": "/drawable/tool_simple_tools_logo.png",
+    "description": "Cutting  tools, hammers, torches, and so forth, designed to \"break into\" the item being examined. Only an [primary]Astronaut[] may use it.\nHas medium investigation chance, but also high backfire; definitely a \"blast of dynamite\" approach.",
+    "weight": 1.0,
+    "min": 0,
+    "max": 6,
+    "type": "MECHANICAL",
+    "mayUse": [
+      "ASTRONAUT"
+    ]
+  },
+  "OHMMETER": {
+    "name": "Ohmmeter",
+    "typeId": "OHMMETER",
+    "icon": "/drawable/tool_ohmmeter_logo.png",
+    "description": "Used to measure electrical activity. Anyone may use this equipment.\nHas a medium investigation chance and low backfire chance. When it does backfire, the results are often impressive (often in an unfortunate way).",
+    "weight": 1.0,
+    "min": 0,
+    "max": 6,
+    "type": "ELECTRONIC",
+    "mayUse": [
+      "ASTRONAUT",
+      "ASTRONOMER",
+      "BIOLOGIST",
+      "ENGINEER",
+      "PHYSICIST",
+      "SEMANTICIST"
+    ]
+  },
+  "MAGNETOMETER": {
+    "name": "Magnetometer",
+    "typeId": "MAGNETOMETER",
+    "icon": "/drawable/tool_magnetometer_logo.png",
+    "description": "Used to measure the strength of magnetic field. Only an [primary]Astronaut[] or [primary]Engineer[] may use it.\nHas a medium investigation chance with low backfire.",
+    "weight": 1.0,
+    "min": 0,
+    "max": 6,
+    "type": "ELECTRONIC",
+    "mayUse": [
+      "ASTRONAUT",
+      "ENGINEER"
+    ]
+  },
+  "GEIGER COUNTER": {
+    "name": "Geiger counter",
+    "typeId": "GEIGER COUNTER",
+    "icon": "/drawable/tool_geiger_counter_logo.png",
+    "description": "Used to measure radio-activity. Only [primary]Physicist or [primary]Astronaut[] may use this.\nHas a very low investigation chance with almost no chance backfire.",
+    "weight": 1.0,
+    "min": 0,
+    "max": 6,
+    "type": "ELECTRONIC",
+    "mayUse": [
+      "ASTRONAUT",
+      "PHYSICIST"
+    ]
+  },
+  "RADIO RECEIVER": {
+    "name": "Radio receiver",
+    "typeId": "RADIO RECEIVER",
+    "icon": "/drawable/tool_radio_receiver_logo.png",
+    "description": "Used to detect radio frequencies on wide spectrum. Anyone may use this.\nHas a medium investigation chance and a medium backfire.",
+    "weight": 1.0,
+    "min": 0,
+    "max": 6,
+    "type": "ELECTRONIC",
+    "mayUse": [
+      "ASTRONAUT",
+      "ASTRONOMER",
+      "BIOLOGIST",
+      "ENGINEER",
+      "PHYSICIST",
+      "SEMANTICIST"
+    ]
+  },
+  "INFRARED": {
+    "name": "Infrared",
+    "typeId": "INFRARED",
+    "icon": "/drawable/tool_infrared_logo.png",
+    "description": "Used to detect infrared radiations. Anyone may use this.\nHas medium investigation chance and medium backfire chance.",
+    "weight": 1.0,
+    "min": 0,
+    "max": 6,
+    "type": "ELECTRONIC",
+    "mayUse": [
+      "ASTRONAUT",
+      "ASTRONOMER",
+      "BIOLOGIST",
+      "ENGINEER",
+      "PHYSICIST",
+      "SEMANTICIST"
+    ]
+  },
+  "RECORDING EQUIPMENT": {
+    "name": "Recording equipment",
+    "typeId": "RECORDING EQUIPMENT",
+    "icon": "/drawable/tool_recording_equipment_logo.png",
+    "description": "Includes all manner of electronic and visual record-making equipment. Anyone may use this.\nUsed only to reread previously investigated messages.",
+    "weight": 1.0,
+    "min": 0,
+    "max": 6,
+    "type": "ELECTRONIC",
+    "mayUse": [
+      "ASTRONAUT",
+      "ASTRONOMER",
+      "BIOLOGIST",
+      "ENGINEER",
+      "PHYSICIST",
+      "SEMANTICIST"
+    ]
+  }
+}

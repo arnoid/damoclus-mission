@@ -7,8 +7,10 @@ import org.arnoid.damoclus.logic.delegate.ConsoleSceneDelegate;
 import org.arnoid.damoclus.logic.delegate.menu.AudioMenuSceneDelegate;
 import org.arnoid.damoclus.logic.delegate.menu.ControlsMenuSceneDelegate;
 import org.arnoid.damoclus.logic.delegate.menu.LanguageMenuSceneDelegate;
+import org.arnoid.damoclus.logic.delegate.menu.AssetsLoadingSceneDelegate;
 import org.arnoid.damoclus.logic.delegate.menu.MainMenuSceneDelegate;
 import org.arnoid.damoclus.logic.delegate.menu.OptionsMenuSceneDelegate;
+import org.arnoid.damoclus.logic.delegate.menu.TeamAssemblyMenuSceneDelegate;
 import org.arnoid.damoclus.logic.delegate.menu.VideoMenuSceneDelegate;
 import org.arnoid.damoclus.ui.scene.AbstractScene;
 
@@ -23,6 +25,11 @@ public class SceneDelegateModule {
         this.game = game;
     }
 
+    @Named(value = SceneModule.SCENE_CONSOLE)
+    @Provides
+    public AbstractScene.SceneDelegate produceConsoleSceneDelegate() {
+        return new ConsoleSceneDelegate(game);
+    }
 
     @Named(value = SceneModule.SCENE_MENU_MAIN)
     @Provides
@@ -60,9 +67,15 @@ public class SceneDelegateModule {
         return new ControlsMenuSceneDelegate(game);
     }
 
-    @Named(value = SceneModule.SCENE_CONSOLE)
+    @Named(value = SceneModule.SCENE_MENU_TEAM_ASSEMBLY)
     @Provides
-    public AbstractScene.SceneDelegate produceConsoleSceneDelegate() {
-        return new ConsoleSceneDelegate(game);
+    public AbstractScene.SceneDelegate produceTeamAssemblyMenuSceneDelegate() {
+        return new TeamAssemblyMenuSceneDelegate(game);
+    }
+
+    @Named(value = SceneModule.SCENE_ASSETS_LOADING)
+    @Provides
+    public AbstractScene.SceneDelegate produceAssetsLoadingSceneDelegate() {
+        return new AssetsLoadingSceneDelegate(game);
     }
 }

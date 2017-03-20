@@ -65,15 +65,15 @@ public class VideoMenuSceneDelegate extends AbstractScene.SceneDelegate {
         return 0;
     }
 
-    public void apply(boolean fullScreen, Graphics.DisplayMode selectedMode) {
+    public void apply(boolean fullScreen, Graphics.DisplayMode selectedMode, DisplayConfiguration.TextureQuality textureQuality) {
         Configuration configuration = configurationController.read();
         DisplayConfiguration displayConfiguration = configuration.getDisplayConfiguration();
 
         displayConfiguration.setFullscreen(fullScreen);
         displayConfiguration.setDisplayMode(selectedMode);
+        displayConfiguration.setTextureQuality(textureQuality);
 
         configurationController.write(configuration);
-        configurationController.applyDisplayMode(fullScreen, selectedMode);
     }
 
     public DisplayConfiguration getDisplayConfiguration() {

@@ -1,0 +1,8 @@
+<Window
+        fillParent="true"
+        title="@string/loading_window_title">
+    <Label
+            align="bottom|left"
+            grow="grow"
+            name="lbl_console_output"/>
+</Window>

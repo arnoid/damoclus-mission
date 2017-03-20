@@ -7,20 +7,20 @@ import org.arnoid.damoclus.logic.delegate.ConsoleSceneDelegate;
 import org.arnoid.damoclus.logic.delegate.menu.ControlsMenuSceneDelegate;
 import org.arnoid.damoclus.logic.delegate.menu.LanguageMenuSceneDelegate;
 import org.arnoid.damoclus.logic.delegate.menu.VideoMenuSceneDelegate;
-import org.arnoid.damoclus.logic.input.MenuNavigationInputAdapter;
-import org.arnoid.damoclus.ui.scene.AbstractScene;
+import org.arnoid.damoclus.logic.input.NavigationInputAdapter;
 import org.arnoid.damoclus.ui.scene.menu.AbstractMenuScene;
+import org.arnoid.damoclus.ui.scene.menu.AssetsLoadingScene;
 import org.arnoid.damoclus.ui.scene.menu.AudioMenuScene;
-import org.arnoid.damoclus.ui.scene.menu.ConsoleScene;
+import org.arnoid.damoclus.ui.scene.menu.ConsoleMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.ControlsMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.LanguageMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.MainMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.OptionsMenuScene;
+import org.arnoid.damoclus.ui.scene.menu.TeamAssemblyMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.VideoMenuScene;
 import org.arnoid.damoclus.ui.scene.menu.builder.XmlMenuSceneBuilder;
-import org.arnoid.damoclus.ui.scene.menu.dialog.InputRecorderDialog;
-import org.arnoid.damoclus.ui.view.SelectList;
-import org.arnoid.damoclus.ui.view.SelectListNavigationDelegate;
+import org.arnoid.damoclus.ui.scene.menu.dialog.MessageDialog;
+import org.arnoid.damoclus.ui.scene.menu.dialog.SceneDialog;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -39,47 +39,57 @@ public interface MainComponent {
     AbstractMenuScene provideMainMenu();
 
     @Named(value = SceneModule.SCENE_MENU_MAIN)
-    AbstractScene.SceneDelegate provideMainMenuDelegate();
+    org.arnoid.damoclus.ui.scene.AbstractScene.SceneDelegate provideMainMenuDelegate();
 
     @Named(value = SceneModule.SCENE_MENU_OPTIONS)
     AbstractMenuScene provideOptionsMenu();
 
     @Named(value = SceneModule.SCENE_MENU_OPTIONS)
-    AbstractScene.SceneDelegate provideOptionsMenuDelegate();
+    org.arnoid.damoclus.ui.scene.AbstractScene.SceneDelegate provideOptionsMenuDelegate();
 
     @Named(value = SceneModule.SCENE_MENU_LANGUAGE)
     AbstractMenuScene provideLanguageMenu();
 
     @Named(value = SceneModule.SCENE_MENU_LANGUAGE)
-    AbstractScene.SceneDelegate provideLanguageMenuDelegate();
+    org.arnoid.damoclus.ui.scene.AbstractScene.SceneDelegate provideLanguageMenuDelegate();
 
     @Named(value = SceneModule.SCENE_MENU_AUDIO)
     AbstractMenuScene provideAudioMenu();
 
     @Named(value = SceneModule.SCENE_MENU_AUDIO)
-    AbstractScene.SceneDelegate provideAudioMenuDelegate();
+    org.arnoid.damoclus.ui.scene.AbstractScene.SceneDelegate provideAudioMenuDelegate();
 
     @Named(value = SceneModule.SCENE_MENU_VIDEO)
     AbstractMenuScene provideVideoMenu();
 
     @Named(value = SceneModule.SCENE_MENU_VIDEO)
-    AbstractScene.SceneDelegate provideVideoMenuDelegate();
+    org.arnoid.damoclus.ui.scene.AbstractScene.SceneDelegate provideVideoMenuDelegate();
+
+    @Named(value = SceneModule.SCENE_MENU_TEAM_ASSEMBLY)
+    AbstractMenuScene provideTeamAssemblyMenu();
+
+    @Named(value = SceneModule.SCENE_MENU_TEAM_ASSEMBLY)
+    org.arnoid.damoclus.ui.scene.AbstractScene.SceneDelegate provideTeamAssemblyMenuDelegate();
 
     @Named(value = SceneModule.SCENE_MENU_CONTROLS)
     AbstractMenuScene provideControlsMenu();
 
     @Named(value = SceneModule.SCENE_MENU_CONTROLS)
-    AbstractScene.SceneDelegate provideControlsMenuDelegate();
+    org.arnoid.damoclus.ui.scene.AbstractScene.SceneDelegate provideControlsMenuDelegate();
 
     @Named(value = SceneModule.SCENE_CONSOLE)
     AbstractMenuScene provideConsoleMenu();
 
     @Named(value = SceneModule.SCENE_CONSOLE)
-    AbstractScene.SceneDelegate provideConsoleMenuDelegate();
+    org.arnoid.damoclus.ui.scene.AbstractScene.SceneDelegate provideConsoleMenuDelegate();
+
+    @Named(value = SceneModule.SCENE_ASSETS_LOADING)
+    AbstractMenuScene provideAssetsLoadingScene();
+
+    @Named(value = SceneModule.SCENE_ASSETS_LOADING)
+    org.arnoid.damoclus.ui.scene.AbstractScene.SceneDelegate provideAssetsLoadingSceneDelegate();
 
     void inject(DamoclusGdxGame game);
-
-    void inject(MenuNavigationInputAdapter menuNavigationInputAdapter);
 
     void inject(MainMenuScene scene);
 
@@ -97,17 +107,23 @@ public interface MainComponent {
 
     void inject(ControlsMenuScene controlsMenuScene);
 
-    void inject(ConsoleScene consoleScene);
+    void inject(ConsoleMenuScene consoleScene);
 
-    void inject(InputRecorderDialog inputRecorderDialog);
+    void inject(SceneDialog menuSceneDialog);
+
+    void inject(MessageDialog menuSceneDialog);
 
     void inject(ControlsMenuSceneDelegate controlsMenuSceneDelegate);
 
     void inject(XmlMenuSceneBuilder xmlMenuSceneBuilder);
 
-    MenuNavigationInputAdapter provideMenuNavigationInputAdapter();
+    NavigationInputAdapter provideMenuNavigationInputAdapter();
 
     InputMultiplexer provideInputMultiplexer();
 
     void inject(ConsoleSceneDelegate consoleSceneDelegate);
+
+    void inject(TeamAssemblyMenuScene teamAssemblyMenuScene);
+
+    void inject(AssetsLoadingScene assetsLoadingScene);
 }

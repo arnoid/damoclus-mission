@@ -7,8 +7,7 @@
         <Label
                 name="lbl_console_output"
                 width="300"
-                text="111"
-                height="150"/>
+                height="350"/>
         <TextField
                 align="left"
                 grow="growX"

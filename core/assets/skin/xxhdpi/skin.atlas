@@ -1,0 +1,681 @@
+
+skin.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+roboto_regular_large
+  rotate: false
+  xy: 1, 507
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+roboto_regular_medium
+  rotate: false
+  xy: 1, 507
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+cursor
+  rotate: false
+  xy: 565, 626
+  size: 3, 58
+  orig: 3, 58
+  offset: 0, 0
+  index: -1
+skin_btn_check_off_disabled_focused_holo_dark
+  rotate: false
+  xy: 515, 927
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_btn_check_off_disabled_holo_dark
+  rotate: false
+  xy: 1, 369
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_btn_check_off_focused_holo_dark
+  rotate: false
+  xy: 515, 877
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_btn_check_off_holo_dark
+  rotate: false
+  xy: 1, 319
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_btn_check_off_pressed_holo_dark
+  rotate: false
+  xy: 515, 827
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_btn_check_on_disabled_focused_holo_dark
+  rotate: false
+  xy: 1, 269
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_btn_check_on_disabled_holo_dark
+  rotate: false
+  xy: 515, 777
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_btn_check_on_focused_holo_dark
+  rotate: false
+  xy: 1, 219
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_btn_check_on_holo_dark
+  rotate: false
+  xy: 515, 727
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_btn_check_on_pressed_holo_dark
+  rotate: false
+  xy: 1, 169
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_btn_default_disabled_focused_holo_dark
+  rotate: false
+  xy: 945, 971
+  size: 39, 48
+  split: 18, 18, 24, 21
+  pad: 18, 18, 12, 12
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+skin_btn_default_disabled_holo_dark
+  rotate: false
+  xy: 51, 203
+  size: 39, 48
+  split: 18, 18, 24, 21
+  pad: 18, 18, 12, 12
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+skin_btn_default_focused_holo_dark
+  rotate: false
+  xy: 51, 153
+  size: 39, 48
+  split: 18, 18, 24, 21
+  pad: 18, 18, 12, 12
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+skin_btn_default_normal_holo_dark
+  rotate: false
+  xy: 51, 103
+  size: 39, 48
+  split: 18, 18, 24, 21
+  pad: 18, 18, 12, 12
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+skin_btn_default_pressed_holo_dark
+  rotate: false
+  xy: 51, 53
+  size: 39, 48
+  split: 18, 18, 24, 21
+  pad: 18, 18, 12, 12
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+skin_btn_radio_off_disabled_focused_holo_dark
+  rotate: false
+  xy: 515, 677
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_btn_radio_off_disabled_holo_dark
+  rotate: false
+  xy: 1, 119
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_btn_radio_off_focused_holo_dark
+  rotate: false
+  xy: 515, 627
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_btn_radio_off_holo_dark
+  rotate: false
+  xy: 1, 69
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_btn_radio_off_pressed_holo_dark
+  rotate: false
+  xy: 515, 577
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_btn_radio_on_disabled_focused_holo_dark
+  rotate: false
+  xy: 1, 19
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_btn_radio_on_disabled_holo_dark
+  rotate: false
+  xy: 515, 527
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_btn_radio_on_focused_holo_dark
+  rotate: false
+  xy: 595, 971
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_btn_radio_on_holo_dark
+  rotate: false
+  xy: 645, 971
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_btn_radio_on_pressed_holo_dark
+  rotate: false
+  xy: 695, 971
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_btn_toggle_off_disabled_focused_holo_dark
+  rotate: false
+  xy: 161, 457
+  size: 39, 48
+  split: 9, 27, 24, 21
+  pad: 18, 18, 6, 6
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+skin_btn_toggle_off_disabled_holo_dark
+  rotate: false
+  xy: 202, 457
+  size: 39, 48
+  split: 9, 27, 24, 21
+  pad: 18, 18, 6, 6
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+skin_btn_toggle_off_focused_holo_dark
+  rotate: false
+  xy: 243, 457
+  size: 39, 48
+  split: 9, 27, 24, 21
+  pad: 18, 18, 6, 6
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+skin_btn_toggle_off_normal_holo_dark
+  rotate: false
+  xy: 284, 457
+  size: 39, 48
+  split: 9, 27, 24, 21
+  pad: 18, 18, 6, 6
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+skin_btn_toggle_off_pressed_holo_dark
+  rotate: false
+  xy: 325, 457
+  size: 39, 48
+  split: 9, 27, 24, 21
+  pad: 18, 18, 6, 6
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+skin_btn_toggle_on_disabled_focused_holo_dark
+  rotate: false
+  xy: 366, 457
+  size: 39, 48
+  split: 9, 27, 24, 21
+  pad: 18, 18, 6, 6
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+skin_btn_toggle_on_disabled_holo_dark
+  rotate: false
+  xy: 407, 457
+  size: 39, 48
+  split: 9, 27, 24, 21
+  pad: 18, 18, 6, 6
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+skin_btn_toggle_on_focused_holo_dark
+  rotate: false
+  xy: 448, 457
+  size: 39, 48
+  split: 9, 27, 24, 21
+  pad: 18, 18, 6, 6
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+skin_btn_toggle_on_normal_holo_dark
+  rotate: false
+  xy: 489, 457
+  size: 39, 48
+  split: 9, 27, 24, 21
+  pad: 18, 18, 6, 6
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+skin_btn_toggle_on_pressed_holo_dark
+  rotate: false
+  xy: 51, 3
+  size: 39, 48
+  split: 9, 27, 24, 21
+  pad: 18, 18, 6, 6
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+skin_fastscroll_thumb_default_holo
+  rotate: false
+  xy: 51, 336
+  size: 45, 81
+  orig: 45, 81
+  offset: 0, 0
+  index: -1
+skin_fastscroll_thumb_pressed_holo
+  rotate: false
+  xy: 51, 253
+  size: 45, 81
+  orig: 45, 81
+  offset: 0, 0
+  index: -1
+skin_ic_navigation_drawer
+  rotate: false
+  xy: 682, 945
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+skin_list_activated_holo
+  rotate: false
+  xy: 515, 516
+  size: 9, 9
+  split: 3, 3, 3, 3
+  pad: 0, 0, 0, 0
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+skin_list_longpressed_holo
+  rotate: false
+  xy: 515, 516
+  size: 9, 9
+  split: 3, 3, 3, 3
+  pad: 0, 0, 0, 0
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+skin_list_dark
+  rotate: false
+  xy: 113, 422
+  size: 9, 9
+  split: 3, 3, 3, 3
+  pad: 0, 0, 0, 0
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+skin_list_focused_holo
+  rotate: false
+  xy: 98, 408
+  size: 9, 9
+  split: 3, 3, 3, 3
+  pad: 0, 0, 0, 0
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+skin_list_pressed_holo_dark
+  rotate: false
+  xy: 588, 760
+  size: 9, 9
+  split: 3, 3, 3, 3
+  pad: 0, 0, 0, 0
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+skin_list_selector_disabled_holo_dark
+  rotate: false
+  xy: 565, 706
+  size: 21, 63
+  split: 11, 9, 30, 32
+  pad: 0, 0, 0, 0
+  orig: 21, 63
+  offset: 0, 0
+  index: -1
+skin_scrubber_control_disabled_holo
+  rotate: false
+  xy: 745, 971
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_scrubber_control_focused_holo
+  rotate: false
+  xy: 795, 971
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_scrubber_control_normal_holo
+  rotate: false
+  xy: 845, 971
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_scrubber_control_pressed_holo
+  rotate: false
+  xy: 895, 971
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+skin_scrubber_primary_holo
+  rotate: false
+  xy: 708, 951
+  size: 15, 18
+  split: 0, 0, 0, 15
+  pad: 0, 0, 0, 0
+  orig: 15, 18
+  offset: 0, 0
+  index: -1
+skin_scrubber_primary_holo_vertical
+  rotate: false
+  xy: 1, 2
+  size: 18, 15
+  split: 0, 0, 0, 0
+  pad: 0, 15, 0, 0
+  orig: 18, 15
+  offset: 0, 0
+  index: -1
+skin_scrubber_secondary_holo
+  rotate: false
+  xy: 565, 686
+  size: 15, 18
+  split: 0, 0, 0, 15
+  pad: 0, 0, 0, 0
+  orig: 15, 18
+  offset: 0, 0
+  index: -1
+skin_scrubber_secondary_holo_vertical
+  rotate: false
+  xy: 530, 460
+  size: 18, 15
+  split: 0, 0, 0, 0
+  pad: 0, 15, 0, 0
+  orig: 18, 15
+  offset: 0, 0
+  index: -1
+skin_scrubber_track_holo_dark
+  rotate: false
+  xy: 134, 443
+  size: 15, 18
+  split: 0, 0, 0, 15
+  pad: 0, 0, 0, 0
+  orig: 15, 18
+  offset: 0, 0
+  index: -1
+skin_scrubber_track_holo_dark_vertical
+  rotate: false
+  xy: 682, 928
+  size: 18, 15
+  split: 0, 0, 0, 0
+  pad: 0, 15, 0, 0
+  orig: 18, 15
+  offset: 0, 0
+  index: -1
+skin_selector
+  rotate: false
+  xy: 113, 433
+  size: 19, 28
+  split: 8, 8, 14, 11
+  pad: 8, 8, 2, 2
+  orig: 19, 28
+  offset: 0, 0
+  index: -1
+skin_spinner_default_holo_dark
+  rotate: false
+  xy: 986, 971
+  size: 33, 48
+  split: 6, 24, 6, 39
+  pad: 6, 24, 10, 12
+  orig: 33, 48
+  offset: 0, 0
+  index: -1
+skin_spinner_disabled_holo_dark
+  rotate: false
+  xy: 606, 871
+  size: 33, 48
+  split: 6, 24, 6, 39
+  pad: 6, 24, 10, 12
+  orig: 33, 48
+  offset: 0, 0
+  index: -1
+skin_spinner_focused_holo_dark
+  rotate: false
+  xy: 647, 921
+  size: 33, 48
+  split: 6, 24, 6, 39
+  pad: 6, 24, 10, 12
+  orig: 33, 48
+  offset: 0, 0
+  index: -1
+skin_spinner_pressed_holo_dark
+  rotate: false
+  xy: 565, 771
+  size: 33, 48
+  split: 6, 24, 6, 39
+  pad: 6, 24, 10, 12
+  orig: 33, 48
+  offset: 0, 0
+  index: -1
+skin_switch_bg_disabled_holo_dark
+  rotate: false
+  xy: 81, 419
+  size: 30, 42
+  split: 14, 15, 21, 20
+  pad: 3, 3, 3, 3
+  orig: 30, 42
+  offset: 0, 0
+  index: -1
+skin_switch_bg_focused_holo_dark
+  rotate: false
+  xy: 606, 827
+  size: 30, 42
+  split: 14, 15, 21, 20
+  pad: 3, 3, 3, 3
+  orig: 30, 42
+  offset: 0, 0
+  index: -1
+skin_switch_bg_holo_dark
+  rotate: false
+  xy: 641, 877
+  size: 30, 42
+  split: 14, 15, 21, 20
+  pad: 3, 3, 3, 3
+  orig: 30, 42
+  offset: 0, 0
+  index: -1
+skin_switch_thumb_activated_holo_dark
+  rotate: false
+  xy: 1, 463
+  size: 78, 42
+  split: 33, 44, 3, 3
+  pad: 21, 21, 3, 3
+  orig: 78, 42
+  offset: 0, 0
+  index: -1
+skin_switch_thumb_disabled_holo_dark
+  rotate: false
+  xy: 515, 977
+  size: 78, 42
+  split: 33, 44, 3, 3
+  pad: 21, 21, 3, 3
+  orig: 78, 42
+  offset: 0, 0
+  index: -1
+skin_switch_thumb_holo_dark
+  rotate: false
+  xy: 1, 419
+  size: 78, 42
+  split: 33, 44, 3, 3
+  pad: 21, 21, 3, 3
+  orig: 78, 42
+  offset: 0, 0
+  index: -1
+skin_switch_thumb_pressed_holo_dark
+  rotate: false
+  xy: 81, 463
+  size: 78, 42
+  split: 33, 44, 3, 3
+  pad: 21, 21, 3, 3
+  orig: 78, 42
+  offset: 0, 0
+  index: -1
+skin_tab_selected_focused_holo
+  rotate: false
+  xy: 92, 239
+  size: 3, 12
+  split: 0, 0, 0, 9
+  pad: 0, 0, 0, 0
+  orig: 3, 12
+  offset: 0, 0
+  index: -1
+skin_tab_selected_holo
+  rotate: false
+  xy: 600, 807
+  size: 3, 12
+  split: 0, 0, 0, 9
+  pad: 0, 0, 0, 0
+  orig: 3, 12
+  offset: 0, 0
+  index: -1
+skin_tab_selected_pressed_holo
+  rotate: false
+  xy: 21, 5
+  size: 3, 12
+  split: 0, 0, 0, 9
+  pad: 0, 0, 0, 0
+  orig: 3, 12
+  offset: 0, 0
+  index: -1
+skin_tab_unselected_focused_holo
+  rotate: false
+  xy: 550, 469
+  size: 3, 6
+  split: 0, 0, 0, 3
+  pad: 0, 0, 0, 0
+  orig: 3, 6
+  offset: 0, 0
+  index: -1
+skin_tab_unselected_holo
+  rotate: false
+  xy: 702, 937
+  size: 3, 6
+  split: 0, 0, 0, 3
+  pad: 0, 0, 0, 0
+  orig: 3, 6
+  offset: 0, 0
+  index: -1
+skin_tab_unselected_pressed_holo
+  rotate: false
+  xy: 725, 963
+  size: 3, 6
+  split: 0, 0, 0, 3
+  pad: 0, 0, 0, 0
+  orig: 3, 6
+  offset: 0, 0
+  index: -1
+skin_textfield_activated_holo_dark
+  rotate: false
+  xy: 530, 477
+  size: 39, 48
+  split: 18, 18, 30, 15
+  pad: 18, 18, 10, 12
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+skin_textfield_default_holo_dark
+  rotate: false
+  xy: 565, 921
+  size: 39, 48
+  split: 18, 18, 30, 15
+  pad: 18, 18, 10, 12
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+skin_textfield_disabled_focused_holo_dark
+  rotate: false
+  xy: 565, 871
+  size: 39, 48
+  split: 18, 18, 30, 15
+  pad: 18, 18, 10, 12
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+skin_textfield_disabled_holo_dark
+  rotate: false
+  xy: 606, 921
+  size: 39, 48
+  split: 18, 18, 30, 15
+  pad: 18, 18, 10, 12
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+skin_textfield_focused_holo_dark
+  rotate: false
+  xy: 565, 821
+  size: 39, 48
+  split: 18, 18, 30, 15
+  pad: 18, 18, 10, 12
+  orig: 39, 48
+  offset: 0, 0
+  index: -1
+selection
+  rotate: false
+  xy: 98, 348
+  size: 3, 58
+  orig: 3, 58
+  offset: 0, 0
+  index: -1
+window
+  rotate: false
+  xy: 673, 893
+  size: 5, 26
+  split: 2, 2, 23, 2
+  orig: 5, 26
+  offset: 0, 0
+  index: -1

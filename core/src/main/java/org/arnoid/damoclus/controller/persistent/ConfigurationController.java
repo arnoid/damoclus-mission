@@ -2,6 +2,7 @@ package org.arnoid.damoclus.controller.persistent;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
+import org.arnoid.damoclus.R;
 import org.arnoid.damoclus.data.configuration.Configuration;
 import org.arnoid.damoclus.data.configuration.DisplayConfiguration;
 import org.arnoid.damoclus.data.configuration.UserControllerMap;
@@ -10,7 +11,7 @@ import java.util.Locale;
 
 public class ConfigurationController extends JsonPersistingController<Configuration> {
 
-    private static final String FILE_PATH = "data/config/configuration.json";
+    private static final String FILE_PATH = R.json.configuration;
 
     @Override
     protected Class<Configuration> getContentClass() {
@@ -52,6 +53,7 @@ public class ConfigurationController extends JsonPersistingController<Configurat
         DisplayConfiguration displayConfiguration = new DisplayConfiguration();
         displayConfiguration.setFullscreen(Gdx.graphics.isFullscreen());
         displayConfiguration.setDisplayMode(Gdx.graphics.getDisplayMode());
+        displayConfiguration.setTextureQuality(DisplayConfiguration.TextureQuality.hdpi);
         return displayConfiguration;
     }
 

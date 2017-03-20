@@ -8,7 +8,10 @@ import org.arnoid.damoclus.DamoclusGdxGame;
 public class Dispatcher extends MessageDispatcher {
 
     public enum MessageType {
-        CONSOLE_OUTPUT
+        CONSOLE_OUTPUT,
+        ASSETS_MANAGER_LOAD_RESOURCE_START,
+        ASSETS_MANAGER_LOAD_RESOURCE_STOP,
+        ASSETS_MANAGER_LOAD_RESOURCE_ERROR,
     }
 
     public void addListener(Telegraph telegraph, MessageType messageType) {

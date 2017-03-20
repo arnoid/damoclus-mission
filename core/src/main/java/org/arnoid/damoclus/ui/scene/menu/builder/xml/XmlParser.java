@@ -33,7 +33,6 @@ import java.util.List;
 
 public class XmlParser {
     private static final String TAG = XmlParser.class.getSimpleName();
-    private static final String DEFAULT_LAYOUT_FOLDER = "layout";
 
     public static final String TABLE_TAG = "Table";
     public static final String ROW_TAG = "Row";
@@ -65,7 +64,7 @@ public class XmlParser {
     public List<BaseModel> parseLayout(String layout) {
         List<BaseModel> models = new ArrayList<>();
 
-        FileHandle layoutFileHandle = Gdx.files.internal(DEFAULT_LAYOUT_FOLDER + File.separator + layout);
+        FileHandle layoutFileHandle = Gdx.files.internal(layout);
 
         InputStreamReader inputStreamReader = null;
         try {
@@ -126,6 +125,7 @@ public class XmlParser {
             if (eventType != XmlPullParser.END_DOCUMENT) {
                 eventType = xmlParser.next();
             }
+
         }
         return modelsList;
     }
@@ -168,13 +168,19 @@ public class XmlParser {
         return model;
     }
 
-    private BaseModel buildScrollPaneModel(XmlPullParser xmlParser) {
+    private BaseModel buildScrollPaneModel(XmlPullParser xmlParser) throws IOException, XmlPullParserException {
         ScrollPaneModel model = new ScrollPaneModel();
         model.actorType = XmlMenuSceneBuilder.ActorType.Scroll;
         setBaseModelParameters(model, xmlParser);
 
         model.setHorizontalScrollBar(XmlHelper.readBooleanAttribute(xmlParser, "horizontal", false));
         model.setVerticalScrollBar(XmlHelper.readBooleanAttribute(xmlParser, "vertical", false));
+
+        xmlParser.next();
+        List<BaseModel> baseModels = buildModels(xmlParser);
+        if (baseModels.size() > 0) {
+            model.child = baseModels.get(0);
+        }
 
         return model;
     }

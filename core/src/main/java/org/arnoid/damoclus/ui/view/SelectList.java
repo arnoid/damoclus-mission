@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.arnoid.damoclus.DamoclusGdxGame;
-import org.arnoid.damoclus.logic.input.MenuNavigationInputAdapter;
+import org.arnoid.damoclus.logic.input.NavigationInputAdapter;
 import org.arnoid.damoclus.ui.scene.menu.AbstractMenuScene;
 
 public class SelectList<T> extends SelectBox<T> {
@@ -14,20 +14,11 @@ public class SelectList<T> extends SelectBox<T> {
         super(skin);
     }
 
-    public SelectList(Skin skin, String styleName) {
-        super(skin, styleName);
-    }
-
-    public SelectList(SelectBoxStyle style) {
-        super(style);
-    }
-
     public void show(AbstractMenuScene scene) {
         showList();
 
-        MenuNavigationInputAdapter menuNavigationInputAdapter = DamoclusGdxGame.mainComponent().provideMenuNavigationInputAdapter();
+        NavigationInputAdapter navigationInputAdapter = DamoclusGdxGame.mainComponent().provideMenuNavigationInputAdapter();
         InputMultiplexer inputMultiplexer = DamoclusGdxGame.mainComponent().provideInputMultiplexer();
-
 
         List list = getList();
 
@@ -36,9 +27,9 @@ public class SelectList<T> extends SelectBox<T> {
 
         scene.pause();
 
-        SelectListNavigationDelegate navigationDelegate = new SelectListNavigationDelegate(this, menuNavigationInputAdapter, inputMultiplexer, scene);
-        inputMultiplexer.removeProcessor(scene.getInputAdapter());
-        inputMultiplexer.addProcessor(navigationDelegate.getInputAdapter());
+        SelectListNavigationDelegate navigationDelegate = new SelectListNavigationDelegate(this, navigationInputAdapter, inputMultiplexer, scene);
+
+        inputMultiplexer.addProcessor(navigationInputAdapter);
     }
 
 }

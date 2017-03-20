@@ -14,7 +14,7 @@ public class MainMenuSceneDelegate extends AbstractScene.SceneDelegate {
     }
 
     public void onNewGame() {
-        Gdx.app.log(TAG, "New game clicked");
+        getGame().loadScene(SceneNavigator.SceneType.MENU_TEAM_ASSEMBLY);
     }
 
     public void onOptions() {

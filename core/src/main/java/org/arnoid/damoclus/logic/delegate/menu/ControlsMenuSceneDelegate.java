@@ -103,4 +103,12 @@ public class ControlsMenuSceneDelegate extends AbstractScene.SceneDelegate {
     public void onChangeUpKeyboard(int keyCode) {
         keyboardMapping.up = keyCode;
     }
+
+    public void onChangeBackController(int keyCode) {
+        controllerMap.back = keyCode;
+    }
+
+    public void onChangeBackKeyboard(int keyCode) {
+        keyboardMapping.back = keyCode;
+    }
 }

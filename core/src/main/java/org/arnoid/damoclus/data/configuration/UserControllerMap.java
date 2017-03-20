@@ -18,6 +18,7 @@ public class UserControllerMap extends AbstractUserControllerMap {
         controllerMap.inventory = Input.Keys.I;
 
         controllerMap.menu = Input.Keys.ESCAPE;
+        controllerMap.back = Input.Keys.ESCAPE;
 
         return controllerMap;
     }
@@ -35,6 +36,7 @@ public class UserControllerMap extends AbstractUserControllerMap {
         controllerMap.inventory = Input.Keys.I;
 
         controllerMap.menu = Input.Keys.ESCAPE;
+        controllerMap.back = Input.Keys.ESCAPE;
 
         return controllerMap;
     }
@@ -51,6 +53,7 @@ public class UserControllerMap extends AbstractUserControllerMap {
         clone.inventory = inventory;
 
         clone.menu = menu;
+        clone.back = back;
 
         return clone;
     }

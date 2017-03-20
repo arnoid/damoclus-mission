@@ -91,6 +91,17 @@
                         name="btn_menu_controller"/>
             </Row>
             <Row>
+                <Label
+                        grow="growX"
+                        text="@string/menu_controls_label_back"/>
+                <TextButton
+                        width="75"
+                        name="btn_back_keyboard"/>
+                <TextButton
+                        width="75"
+                        name="btn_back_controller"/>
+            </Row>
+            <Row>
                 <Space/>
                 <TextButton
                         name="btn_back"

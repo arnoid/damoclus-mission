@@ -71,22 +71,29 @@ class GenerateIdsTask extends DefaultTask {
         Gson gson = new Gson()
 
         String baseAssetsFolder = "$projectDir/assets/"
-        String imagesFolder = baseAssetsFolder + "images"
 
-        List<File> drawablesFiles = listDrawableFiles(imagesFolder)
-        List<File> fontFiles = listFontFiles(imagesFolder)
-        List<File> skinFiles = listSkinFiles(imagesFolder)
-        List<File> atlasFiles = listAtlasFiles(imagesFolder)
+        String imagesAssetsFolder = baseAssetsFolder + "drawable"
+        String fontAssetsFolder = baseAssetsFolder + "skin"
+        String skinAssetsFolder = baseAssetsFolder + "skin"
+        String atlasAssetsFolder = baseAssetsFolder + "skin"
+        String jsonAssetsFolder = baseAssetsFolder + "data/json"
+
+        List<File> jsonFiles = listJsonFiles(jsonAssetsFolder)
+        List<File> drawablesFiles = listDrawableFiles(imagesAssetsFolder)
+        List<File> fontFiles = listFontFiles(fontAssetsFolder)
+        List<File> skinFiles = listSkinFiles(skinAssetsFolder)
+        List<File> atlasFiles = listAtlasFiles(atlasAssetsFolder)
 
         List<File> layoutFiles = listLayoutFiles(baseAssetsFolder)
 
         Map<String, String> strings = readStringNames(baseAssetsFolder, gson)
 
-        List<String> drawables = readFileNames(drawablesFiles)
-        List<String> fonts = readFileNames(fontFiles)
-        List<String> skins = readFileNames(skinFiles)
-        List<String> atlases = readFileNames(atlasFiles)
-        List<String> layouts = readFileNames(layoutFiles)
+        Set<String> drawables = readFileNames(drawablesFiles)
+        Set<String> fonts = readFileNames(fontFiles)
+        Set<String> skins = readFileNames(skinFiles)
+        Set<String> atlases = readFileNames(atlasFiles)
+        Set<String> layouts = readFileNames(layoutFiles)
+        Set<String> jsons = readFileNames(jsonFiles)
 
         Set<String> ids = readIdsFromLayouts(layoutFiles);
 
@@ -101,11 +108,12 @@ class GenerateIdsTask extends DefaultTask {
             )
         }
 
-        TypeSpec.Builder drawablesTypeBuilder = produceResourcesTypeBuilder("drawable", drawables)
-        TypeSpec.Builder fontsTypeBuilder = produceResourcesTypeBuilder("font", fonts)
-        TypeSpec.Builder skinsTypeBuilder = produceResourcesTypeBuilder("skin", skins)
-        TypeSpec.Builder atlasesTypeBuilder = produceResourcesTypeBuilder("atlas", atlases)
-        TypeSpec.Builder layoutsTypeBuilder = produceResourcesTypeBuilder("layout", layouts)
+        TypeSpec.Builder drawablesTypeBuilder = produceResourcesTypeBuilder("drawable", drawables, baseAssetsFolder)
+        TypeSpec.Builder fontsTypeBuilder = produceResourcesTypeBuilder("font", fonts, baseAssetsFolder)
+        TypeSpec.Builder skinsTypeBuilder = produceResourcesTypeBuilder("skin", skins, baseAssetsFolder)
+        TypeSpec.Builder atlasesTypeBuilder = produceResourcesTypeBuilder("atlas", atlases, baseAssetsFolder)
+        TypeSpec.Builder layoutsTypeBuilder = produceResourcesTypeBuilder("layout", layouts, baseAssetsFolder)
+        TypeSpec.Builder jsonsTypeBuilder = produceResourcesTypeBuilder("json", jsons, baseAssetsFolder)
         TypeSpec.Builder idsTypeBuilder = produceResourcesTypeBuilder("id", ids)
 
         TypeSpec.Builder resourcesTypeBuilder = TypeSpec.classBuilder("R")
@@ -118,12 +126,31 @@ class GenerateIdsTask extends DefaultTask {
         resourcesTypeBuilder.addType(atlasesTypeBuilder.build())
         resourcesTypeBuilder.addType(layoutsTypeBuilder.build())
         resourcesTypeBuilder.addType(idsTypeBuilder.build())
+        resourcesTypeBuilder.addType(jsonsTypeBuilder.build())
 
         JavaFile.Builder idsJavaFileBuilder = JavaFile.builder(String.valueOf(project.group), resourcesTypeBuilder.build())
 
         JavaFile javaFile = idsJavaFileBuilder.build()
 
         javaFile.writeTo(generatedSrcDir)
+    }
+
+    private TypeSpec.Builder produceResourcesTypeBuilder(String resourceName, Collection<String> nameSource, String baseAssetsFolder) {
+        TypeSpec.Builder dataTypeBuilder = TypeSpec.classBuilder(resourceName).addModifiers(Modifier.PUBLIC, Modifier.FINAL, Modifier.STATIC);
+
+        for (String value : nameSource) {
+            
+            String internalPath = value.replaceAll(baseAssetsFolder, '')
+
+            String fileName = internalPath.find(~/(\w+[-]?\w+)*(?:\.(\w)+?)*$/)
+            dataTypeBuilder.addField(
+                    FieldSpec.builder(String.class, fileName.replaceFirst(~/\.[^\.]+$/, '').replaceAll("-", "_"), Modifier.FINAL, Modifier.STATIC, Modifier.PUBLIC)
+                            .initializer('$S', internalPath)
+                            .build()
+            )
+        }
+
+        return dataTypeBuilder
     }
 
     private TypeSpec.Builder produceResourcesTypeBuilder(String resourceName, Collection<String> nameSource) {
@@ -158,7 +185,7 @@ class GenerateIdsTask extends DefaultTask {
     private void fetchChildrenIds(Node item, final Set<String> ids) {
         List children = item.children()
 
-        for(Node child : children) {
+        for (Node child : children) {
             logger.debug("Found item [" + item + "]")
             fetchNodeId(child, ids)
             fetchChildrenIds(child, ids)
@@ -192,11 +219,16 @@ class GenerateIdsTask extends DefaultTask {
         return strings
     }
 
-    private List<String> readFileNames(List<File> files) {
-        List<String> strings = new ArrayList<>(files.size())
+    private Set<String> readFileNames(List<File> files) {
+        Set<String> strings = new HashSet<>(files.size())
 
         files.each { File file ->
-            strings.add(file.name);
+            strings.add(file.path
+                    .replaceAll("mdpi", "{resolution}")
+                    .replaceAll("xxxhdpi", "{resolution}")
+                    .replaceAll("xxhdpi", "{resolution}")
+                    .replaceAll("xhdpi", "{resolution}")
+                    .replaceAll("hdpi", "{resolution}"))
         }
 
         return strings
@@ -220,6 +252,11 @@ class GenerateIdsTask extends DefaultTask {
     private List<File> listAtlasFiles(String baseDrawablesFolder) {
         logger.info("Reading [" + baseDrawablesFolder + "] for *.atlas")
         return listFiles(baseDrawablesFolder, "atlas")
+    }
+
+    private List<File> listJsonFiles(String baseJsonFolder) {
+        logger.info("Reading [" + baseJsonFolder + "] for *.json")
+        return listFiles(baseJsonFolder, "json")
     }
 
     protected List<File> listFiles(String baseFolder, String extension) {

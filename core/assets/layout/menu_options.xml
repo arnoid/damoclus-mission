@@ -17,8 +17,7 @@
                 text="@string/menu_options_btn_video"/>
         <TextButton
                 name="btn_language"
-                padLeft="10"
-                padRight="10"
+                pad="10"
                 width="250"
                 align="center"
                 text="@string/menu_options_btn_language"/>
@@ -30,15 +29,12 @@
                 align="center"
                 text="@string/menu_options_btn_controllers"/>
         <Space
-                height="50"
-            />
+                height="50"/>
         <TextButton
                 name="btn_back"
                 pad="10"
                 width="250"
                 align="center"
                 text="@string/menu_options_btn_back"/>
-
-
     </Window>
 </Container>

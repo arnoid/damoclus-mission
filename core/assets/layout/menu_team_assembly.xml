@@ -1,0 +1,21 @@
+<Container
+        fillParent="true">
+    <Window
+            align="center"
+            title="@string/menu_team_assembly_window_title">
+        <ScrollPane
+                horizontal="false"
+                vertical="true">
+            <Table
+                    name="tbl_team_list">
+
+            </Table>
+        </ScrollPane>
+        <TextButton
+                name="btn_back"
+                pad="10"
+                width="250"
+                align="center"
+                text="@string/menu_team_assembly_btn_back"/>
+    </Window>
+</Container>

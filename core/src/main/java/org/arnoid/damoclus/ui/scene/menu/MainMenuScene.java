@@ -6,8 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import org.arnoid.damoclus.R;
 import org.arnoid.damoclus.component.MainComponent;
 import org.arnoid.damoclus.logic.delegate.menu.MainMenuSceneDelegate;
-import org.arnoid.damoclus.ui.scene.menu.builder.XmlMenuSceneBuilder;
-import org.arnoid.damoclus.ui.scene.menu.builder.XmlMenuSceneBuilderAdapter;
 
 public class MainMenuScene extends AbstractMenuScene<MainMenuSceneDelegate> {
 
@@ -26,10 +24,7 @@ public class MainMenuScene extends AbstractMenuScene<MainMenuSceneDelegate> {
 
     @Override
     protected void produceLayout() {
-        XmlMenuSceneBuilder
-                .with(R.layout.menu_main)
-                .listener(new XmlMenuSceneBuilderAdapter())
-                .build(getStage());
+        setLayout(R.layout.menu_main);
     }
 
     @Override
@@ -40,7 +35,12 @@ public class MainMenuScene extends AbstractMenuScene<MainMenuSceneDelegate> {
     }
 
     @Override
-    protected void clicked(Actor actor, InputEvent event) {
+    protected void changed(Actor actor, ChangeListener.ChangeEvent event) {
+
+    }
+
+    @Override
+    public void onInteract(Actor actor, InputEvent event) {
         switch (actor.getName()) {
             case R.id.btn_new_game:
                 getSceneDelegate().onNewGame();
@@ -53,10 +53,4 @@ public class MainMenuScene extends AbstractMenuScene<MainMenuSceneDelegate> {
                 break;
         }
     }
-
-    @Override
-    protected void changed(Actor actor, ChangeListener.ChangeEvent event) {
-
-    }
-
 }

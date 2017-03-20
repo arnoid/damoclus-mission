@@ -10,8 +10,6 @@ import org.arnoid.damoclus.component.MainComponent;
 import org.arnoid.damoclus.controller.persistent.ConfigurationController;
 import org.arnoid.damoclus.data.configuration.UserControllerMap;
 import org.arnoid.damoclus.logic.delegate.menu.ControlsMenuSceneDelegate;
-import org.arnoid.damoclus.ui.scene.menu.builder.XmlMenuSceneBuilder;
-import org.arnoid.damoclus.ui.scene.menu.builder.XmlMenuSceneBuilderAdapter;
 import org.arnoid.damoclus.ui.scene.menu.dialog.InputRecorderDialog;
 
 import javax.inject.Inject;
@@ -30,7 +28,7 @@ public class ControlsMenuScene extends AbstractMenuScene<ControlsMenuSceneDelega
     }
 
     @Override
-    protected void clicked(Actor actor, InputEvent event) {
+    public void onInteract(Actor actor, InputEvent event) {
 
         ControlsMenuSceneDelegate sceneDelegate = getSceneDelegate();
 
@@ -42,124 +40,166 @@ public class ControlsMenuScene extends AbstractMenuScene<ControlsMenuSceneDelega
                 sceneDelegate.onApply();
                 break;
             case R.id.btn_down_controller:
-                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                new InputRecorderDialog(R.string.dialog_recorder_keyboard_window_title, skinController.getSkin()) {
                     @Override
-                    public void onKey(int key) {
-                        sceneDelegate.onChangeDownController(key);
+                    public boolean keyTyped(InputEvent event, int character) {
+                        sceneDelegate.onChangeDownController(character);
+                        hide();
+                        return true;
                     }
-                });
+                }.show(this);
                 break;
             case R.id.btn_down_keyboard:
-                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                new InputRecorderDialog(R.string.dialog_recorder_keyboard_window_title, skinController.getSkin()) {
                     @Override
-                    public void onKey(int key) {
-                        sceneDelegate.onChangeDownKeyboard(key);
+                    public boolean keyTyped(InputEvent event, int character) {
+                        sceneDelegate.onChangeDownKeyboard(character);
+                        hide();
+                        return true;
                     }
-                });
+                }.show(this);
                 break;
             case R.id.btn_interact_controller:
-                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                new InputRecorderDialog(R.string.dialog_recorder_keyboard_window_title, skinController.getSkin()) {
                     @Override
-                    public void onKey(int key) {
-                        sceneDelegate.onChangeInteractController(key);
+                    public boolean keyTyped(InputEvent event, int character) {
+                        sceneDelegate.onChangeInteractController(character);
+                        hide();
+                        return true;
                     }
-                });
+                }.show(this);
                 break;
             case R.id.btn_interact_keyboard:
-                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                new InputRecorderDialog(R.string.dialog_recorder_keyboard_window_title, skinController.getSkin()) {
                     @Override
-                    public void onKey(int key) {
-                        sceneDelegate.onChangeInteractKeyboard(key);
+                    public boolean keyTyped(InputEvent event, int character) {
+                        sceneDelegate.onChangeInteractKeyboard(character);
+                        hide();
+                        return true;
                     }
-                });
+                }.show(this);
                 break;
             case R.id.btn_inventory_controller:
-                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                new InputRecorderDialog(R.string.dialog_recorder_keyboard_window_title, skinController.getSkin()) {
                     @Override
-                    public void onKey(int key) {
-                        sceneDelegate.onChangeInventoryController(key);
+                    public boolean keyTyped(InputEvent event, int character) {
+                        sceneDelegate.onChangeInventoryController(character);
+                        hide();
+                        return true;
                     }
-                });
+                }.show(this);
                 break;
             case R.id.btn_inventory_keyboard:
-                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                new InputRecorderDialog(R.string.dialog_recorder_keyboard_window_title, skinController.getSkin()) {
                     @Override
-                    public void onKey(int key) {
-                        sceneDelegate.onChangeInventoryKeyboard(key);
+                    public boolean keyTyped(InputEvent event, int character) {
+                        sceneDelegate.onChangeInventoryKeyboard(character);
+                        hide();
+                        return true;
                     }
-                });
+                }.show(this);
                 break;
             case R.id.btn_left_controller:
-                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                new InputRecorderDialog(R.string.dialog_recorder_keyboard_window_title, skinController.getSkin()) {
                     @Override
-                    public void onKey(int key) {
-                        sceneDelegate.onChangeLeftController(key);
+                    public boolean keyTyped(InputEvent event, int character) {
+                        sceneDelegate.onChangeLeftController(character);
+                        hide();
+                        return true;
                     }
-                });
+                }.show(this);
                 break;
             case R.id.btn_left_keyboard:
-                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                new InputRecorderDialog(R.string.dialog_recorder_keyboard_window_title, skinController.getSkin()) {
                     @Override
-                    public void onKey(int key) {
-                        sceneDelegate.onChangeLeftKeyboard(key);
+                    public boolean keyTyped(InputEvent event, int character) {
+                        sceneDelegate.onChangeLeftKeyboard(character);
+                        hide();
+                        return true;
                     }
-                });
+                }.show(this);
                 break;
             case R.id.btn_menu_controller:
-                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                new InputRecorderDialog(R.string.dialog_recorder_keyboard_window_title, skinController.getSkin()) {
                     @Override
-                    public void onKey(int key) {
-                        sceneDelegate.onChangeMenuController(key);
+                    public boolean keyTyped(InputEvent event, int character) {
+                        sceneDelegate.onChangeMenuController(character);
+                        hide();
+                        return true;
                     }
-                });
+                }.show(this);
                 break;
             case R.id.btn_menu_keyboard:
-                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                new InputRecorderDialog(R.string.dialog_recorder_keyboard_window_title, skinController.getSkin()) {
                     @Override
-                    public void onKey(int key) {
-                        sceneDelegate.onChangeMenuKeyboard(key);
+                    public boolean keyTyped(InputEvent event, int character) {
+                        sceneDelegate.onChangeMenuKeyboard(character);
+                        hide();
+                        return true;
                     }
-                });
+                }.show(this);
                 break;
             case R.id.btn_right_controller:
-                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                new InputRecorderDialog(R.string.dialog_recorder_keyboard_window_title, skinController.getSkin()) {
                     @Override
-                    public void onKey(int key) {
-                        sceneDelegate.onChangeRightController(key);
+                    public boolean keyTyped(InputEvent event, int character) {
+                        sceneDelegate.onChangeRightController(character);
+                        hide();
+                        return true;
                     }
-                });
+                }.show(this);
                 break;
             case R.id.btn_right_keyboard:
-                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                new InputRecorderDialog(R.string.dialog_recorder_keyboard_window_title, skinController.getSkin()) {
                     @Override
-                    public void onKey(int key) {
-                        sceneDelegate.onChangeRightKeyboard(key);
+                    public boolean keyTyped(InputEvent event, int character) {
+                        sceneDelegate.onChangeRightKeyboard(character);
+                        hide();
+                        return true;
                     }
-                });
+                }.show(this);
                 break;
             case R.id.btn_up_controller:
-                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                new InputRecorderDialog(R.string.dialog_recorder_keyboard_window_title, skinController.getSkin()) {
                     @Override
-                    public void onKey(int key) {
-                        sceneDelegate.onChangeUpController(key);
+                    public boolean keyTyped(InputEvent event, int character) {
+                        sceneDelegate.onChangeUpController(character);
+                        hide();
+                        return true;
                     }
-                });
+                }.show(this);
                 break;
             case R.id.btn_up_keyboard:
-                showInputRecorderDialog(new InputRecorderDialog.KeyListener() {
+                new InputRecorderDialog(R.string.dialog_recorder_keyboard_window_title, skinController.getSkin()) {
                     @Override
-                    public void onKey(int key) {
-                        sceneDelegate.onChangeUpKeyboard(key);
+                    public boolean keyTyped(InputEvent event, int character) {
+                        sceneDelegate.onChangeUpKeyboard(character);
+                        hide();
+                        return true;
                     }
-                });
+                }.show(this);
+                break;
+            case R.id.btn_back_controller:
+                new InputRecorderDialog(R.string.dialog_recorder_keyboard_window_title, skinController.getSkin()) {
+                    @Override
+                    public boolean keyTyped(InputEvent event, int character) {
+                        sceneDelegate.onChangeBackController(character);
+                        hide();
+                        return true;
+                    }
+                }.show(this);
+                break;
+            case R.id.btn_back_keyboard:
+                new InputRecorderDialog(R.string.dialog_recorder_keyboard_window_title, skinController.getSkin()) {
+                    @Override
+                    public boolean keyTyped(InputEvent event, int character) {
+                        sceneDelegate.onChangeBackKeyboard(character);
+                        hide();
+                        return true;
+                    }
+                }.show(this);
                 break;
         }
-    }
-
-    private void showInputRecorderDialog(InputRecorderDialog.KeyListener listener) {
-        new InputRecorderDialog(R.string.dialog_recorder_keyboard_window_title, skinController.getSkin())
-                .setListener(listener)
-                .show(this);
     }
 
     @Override
@@ -169,10 +209,7 @@ public class ControlsMenuScene extends AbstractMenuScene<ControlsMenuSceneDelega
 
     @Override
     protected void produceLayout() {
-        XmlMenuSceneBuilder
-                .with(R.layout.menu_controls)
-                .listener(new XmlMenuSceneBuilderAdapter())
-                .build(getStage());
+        setLayout(R.layout.menu_controls);
     }
 
     @Override
@@ -191,6 +228,8 @@ public class ControlsMenuScene extends AbstractMenuScene<ControlsMenuSceneDelega
         TextButton btnInventoryKeyboard = findButton(R.id.btn_inventory_keyboard);
         TextButton btnMenuController = findButton(R.id.btn_menu_controller);
         TextButton btnMenuKeyboard = findButton(R.id.btn_menu_keyboard);
+        TextButton btnBackController = findButton(R.id.btn_back_controller);
+        TextButton btnBackKeyboard = findButton(R.id.btn_back_keyboard);
 
         btnDownController.setText(getButtonLabel(R.id.btn_down_controller));
         btnDownKeyboard.setText(getButtonLabel(R.id.btn_down_keyboard));
@@ -206,6 +245,8 @@ public class ControlsMenuScene extends AbstractMenuScene<ControlsMenuSceneDelega
         btnInventoryKeyboard.setText(getButtonLabel(R.id.btn_inventory_keyboard));
         btnMenuController.setText(getButtonLabel(R.id.btn_menu_controller));
         btnMenuKeyboard.setText(getButtonLabel(R.id.btn_menu_keyboard));
+        btnBackController.setText(getButtonLabel(R.id.btn_back_controller));
+        btnBackKeyboard.setText(getButtonLabel(R.id.btn_back_keyboard));
 
         registerMenuItem(btnUpKeyboard);
         registerMenuItem(btnUpController);
@@ -228,6 +269,8 @@ public class ControlsMenuScene extends AbstractMenuScene<ControlsMenuSceneDelega
         registerMenuItem(btnMenuKeyboard);
         registerMenuItem(btnMenuController);
 
+        registerMenuItem(btnBackKeyboard);
+        registerMenuItem(btnBackController);
 
         registerMenuItem(findButton(R.id.btn_back));
         registerMenuItem(findButton(R.id.btn_apply));
@@ -289,10 +332,22 @@ public class ControlsMenuScene extends AbstractMenuScene<ControlsMenuSceneDelega
             case R.id.btn_up_keyboard:
                 value = Input.Keys.toString(keyboardMap.getUp());
                 break;
+            case R.id.btn_back_controller:
+                value = Input.Keys.toString(controllerMap.getBack());
+                break;
+            case R.id.btn_back_keyboard:
+                value = Input.Keys.toString(keyboardMap.getBack());
+                break;
             default:
                 value = stringsController.string(id);
         }
         return value;
+    }
+
+    @Override
+    public void onBack() {
+        super.onBack();
+        getSceneDelegate().onBack();
     }
 
 }

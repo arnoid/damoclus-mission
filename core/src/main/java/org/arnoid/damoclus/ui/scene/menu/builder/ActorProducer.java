@@ -133,6 +133,7 @@ public class ActorProducer {
         applyBaseParameters(scrollPane, model);
 
         scrollPane.setScrollBarPositions(model.horizontalScrollBar, model.verticalScrollBar);
+        scrollPane.setFadeScrollBars(false);
 
         if (model.child != null) {
             Actor child = produce(model.child);
@@ -290,10 +291,12 @@ public class ActorProducer {
 
         if (cellModel.width > 0) {
             cell.minWidth(cellModel.width);
+            cell.maxWidth(cellModel.width);
         }
 
         if (cellModel.height > 0) {
             cell.minHeight(cellModel.height);
+            cell.maxHeight(cellModel.height);
         }
 
         if (cellModel.expandX) {

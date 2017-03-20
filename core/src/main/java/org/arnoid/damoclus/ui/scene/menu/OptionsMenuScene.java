@@ -6,8 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import org.arnoid.damoclus.R;
 import org.arnoid.damoclus.component.MainComponent;
 import org.arnoid.damoclus.logic.delegate.menu.OptionsMenuSceneDelegate;
-import org.arnoid.damoclus.ui.scene.menu.builder.XmlMenuSceneBuilder;
-import org.arnoid.damoclus.ui.scene.menu.builder.XmlMenuSceneBuilderAdapter;
 
 public class OptionsMenuScene extends AbstractMenuScene<OptionsMenuSceneDelegate> {
 
@@ -21,10 +19,7 @@ public class OptionsMenuScene extends AbstractMenuScene<OptionsMenuSceneDelegate
 
     @Override
     protected void produceLayout() {
-        XmlMenuSceneBuilder
-                .with(R.layout.menu_options)
-                .listener(new XmlMenuSceneBuilderAdapter())
-                .build(getStage());
+        setLayout(R.layout.menu_options);
     }
 
     @Override
@@ -37,7 +32,7 @@ public class OptionsMenuScene extends AbstractMenuScene<OptionsMenuSceneDelegate
     }
 
     @Override
-    protected void clicked(Actor actor, InputEvent event) {
+    public void onInteract(Actor actor, InputEvent event) {
         switch (actor.getName()) {
             case R.id.btn_audio:
                 getSceneDelegate().onAudio();
@@ -55,6 +50,12 @@ public class OptionsMenuScene extends AbstractMenuScene<OptionsMenuSceneDelegate
                 getSceneDelegate().onBack();
                 break;
         }
+    }
+
+    @Override
+    public void onBack() {
+        super.onBack();
+        getSceneDelegate().onBack();
     }
 
     @Override
