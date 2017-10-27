@@ -1,12 +1,15 @@
 package org.arnoid.damoclus.ui.scene.menu.builder;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -14,15 +17,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.Align;
+import org.arnoid.damoclus.R;
+import org.arnoid.damoclus.controller.skin.AssetsController;
 import org.arnoid.damoclus.controller.skin.SkinController;
+import org.arnoid.damoclus.controller.strings.StringRefUtil;
 import org.arnoid.damoclus.controller.strings.StringsController;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.BaseModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.CheckBoxModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.ContainerModel;
+import org.arnoid.damoclus.ui.scene.menu.builder.model.ImageModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.LabelModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.ListModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.RowModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.ScrollPaneModel;
+import org.arnoid.damoclus.ui.scene.menu.builder.model.StackModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.TableModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.TextButtonModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.TextFieldModel;
@@ -37,10 +45,12 @@ public class ActorProducer {
     private final SkinController skinController;
     private final StringsController stringsController;
     private final XmlMenuSceneBuilderListener listener;
+    private final AssetsController assetsController;
 
-    public ActorProducer(SkinController skinController, StringsController stringsController, XmlMenuSceneBuilderListener listener) {
+    public ActorProducer(SkinController skinController, StringsController stringsController, AssetsController assetsController, XmlMenuSceneBuilderListener listener) {
         this.skinController = skinController;
         this.stringsController = stringsController;
+        this.assetsController = assetsController;
         this.listener = listener;
     }
 
@@ -80,6 +90,12 @@ public class ActorProducer {
             case List:
                 actor = produceList((ListModel) model);
                 break;
+            case Image:
+                actor = produceImage((ImageModel) model);
+                break;
+            case Stack:
+                actor = produceStack((StackModel) model);
+                break;
             default:
                 if (listener != null) {
                     listener.onError(new XmlParserException("Unknown actor type [" + model.actorType + "]"));
@@ -92,6 +108,18 @@ public class ActorProducer {
         }
 
         return actor;
+    }
+
+    private Image produceImage(ImageModel model) {
+        String src = model.getSrc();
+        if(src == null) {
+            src = "";
+        }
+        String resource = StringRefUtil.imageByRef(R.image._all, src);
+        Image image = new Image(assetsController.loadSyncAndGet(resource, Texture.class));
+        applyBaseParameters(image, model);
+
+        return image;
     }
 
     private List produceList(ListModel model) {
@@ -119,6 +147,17 @@ public class ActorProducer {
         }
 
         return container;
+    }
+
+    private Stack produceStack(StackModel model) {
+        Stack stack = new Stack();
+
+        for(BaseModel baseModel : model.getChildren()) {
+            Actor actor = produce(baseModel);
+            stack.add(actor);
+        }
+
+        return stack;
     }
 
     public Label produceLabel(LabelModel model) {

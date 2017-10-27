@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Disposable;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.arnoid.damoclus.R;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -15,7 +16,6 @@ import java.util.Map;
 public class StringsController implements Disposable {
 
     private static final String TAG = StringsController.class.getSimpleName();
-    private static final String PATTER_STRING_REFERENCE = "@string/";
 
     private final Gson gson;
     private Map<String, String> stringsMap;
@@ -47,19 +47,12 @@ public class StringsController implements Disposable {
     }
 
     public String string(String key) {
-        if (key != null && isStringReference(key)) {
-            String extractedReference = key.replace(PATTER_STRING_REFERENCE, "");
-            if (stringsMap.containsKey(extractedReference)) {
-                return stringsMap.get(extractedReference);
-            } else {
-                return key;
-            }
-        } else {
+        String value = StringRefUtil.stringByRef(stringsMap, key);
+        if (value == null) {
             return key;
+        } else {
+            return value;
         }
     }
 
-    public boolean isStringReference(String stringToCheck) {
-        return stringToCheck.startsWith(PATTER_STRING_REFERENCE);
-    }
 }

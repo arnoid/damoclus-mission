@@ -1,6 +1,13 @@
-<TextButton
-        name="btn_back"
-        pad="10"
-        width="250"
-        align="center"
-        text="@string/menu_audio_btn_back"/>
+<Table>
+    <ImageTextButton
+            name="img_helmet"
+            pad="10"
+            width="250"
+            img="@image/helmet_astronaut_logo"/>
+    <TextButton
+            name="btn_back"
+            pad="10"
+            width="250"
+            align="center"
+            text="@string/menu_audio_btn_back"/>
+</Table>

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import org.arnoid.damoclus.component.ControllerModule;
 import org.arnoid.damoclus.component.DaggerMainComponent;
 import org.arnoid.damoclus.component.MainComponent;
+import org.arnoid.damoclus.component.PersistingControllerModule;
 import org.arnoid.damoclus.component.SceneDelegateModule;
 import org.arnoid.damoclus.component.SceneModule;
 import org.arnoid.damoclus.controller.event.Dispatcher;
@@ -58,6 +59,7 @@ public class DamoclusGdxGame implements ApplicationListener, SceneNavigator {
 
         mainComponent = DaggerMainComponent.builder()
                 .controllerModule(new ControllerModule(this))
+                .persistingControllerModule(new PersistingControllerModule(this))
                 .sceneModule(new SceneModule())
                 .sceneDelegateModule(new SceneDelegateModule(this))
                 .build();

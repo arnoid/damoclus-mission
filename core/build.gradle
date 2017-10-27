@@ -1,5 +1,9 @@
 apply plugin: "java"
 apply plugin: "net.ltgt.apt"
+apply plugin: 'org.arnoid.resources.resources-plugin'
+
+//apply from : '${this.projectDir}/../../libgdx-resources-plugin/org/arnoid/resources/ResourcesPlugin.gradle'
+//apply plugin: 'ResourcesPlugin'
 
 sourceCompatibility = 1.8
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
@@ -24,290 +28,41 @@ dependencies {
     apt 'com.google.dagger:dagger-compiler:2+'
 }
 
-//apply from: 'GenerateIdsTask.gradle'
-
-task generateIds(type: GenerateIdsTask) {
-    generatedSourcesPath = "generated-ids/source/ids/main/"
-}
-
-tasks.assemble*.dependsOn tasks.getByName("generateIds")
-project.sourceSets.main.java.srcDirs += "$project.buildDir/" + tasks.getByName("generateIds").generatedSourcesPath
-
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.squareup.javapoet.FieldSpec
-import com.squareup.javapoet.JavaFile
-import com.squareup.javapoet.TypeSpec
-
-import javax.lang.model.element.Modifier
-import java.lang.reflect.Type
-
-class GenerateIdsTask extends DefaultTask {
-
-    @Input
-    def generatedSourcesPath
-
-    @TaskAction
-    void generateIds() {
-
-        def projectBuildDir = project.buildDir
-        def projectDir = project.projectDir
-
-        logger.info("Project build dir [" + projectBuildDir + "]")
-        logger.info("Project dir [" + projectDir + "]")
-
-        File generatedSrcDir = new File(projectBuildDir, generatedSourcesPath)
-
-        logger.info "Generated ids destination [" + generatedSrcDir.absolutePath + "]"
-
-        if (generatedSrcDir.exists()) {
-
-        } else {
-            generatedSrcDir.mkdirs()
-        }
-
-        project.sourceSets.main.java.srcDirs += "$projectBuildDir/" + generatedSourcesPath
-
-        Gson gson = new Gson()
-
-        String baseAssetsFolder = "$projectDir/assets/"
-
-        String imagesAssetsFolder = baseAssetsFolder + "drawable"
-        String fontAssetsFolder = baseAssetsFolder + "skin"
-        String skinAssetsFolder = baseAssetsFolder + "skin"
-        String atlasAssetsFolder = baseAssetsFolder + "skin"
-        String jsonAssetsFolder = baseAssetsFolder + "data/json"
-
-        List<File> jsonFiles = listJsonFiles(jsonAssetsFolder)
-        List<File> drawablesFiles = listDrawableFiles(imagesAssetsFolder)
-        List<File> fontFiles = listFontFiles(fontAssetsFolder)
-        List<File> skinFiles = listSkinFiles(skinAssetsFolder)
-        List<File> atlasFiles = listAtlasFiles(atlasAssetsFolder)
-
-        List<File> layoutFiles = listLayoutFiles(baseAssetsFolder)
-
-        Map<String, String> strings = readStringNames(baseAssetsFolder, gson)
-
-        Set<String> drawables = readFileNames(drawablesFiles)
-        Set<String> fonts = readFileNames(fontFiles)
-        Set<String> skins = readFileNames(skinFiles)
-        Set<String> atlases = readFileNames(atlasFiles)
-        Set<String> layouts = readFileNames(layoutFiles)
-        Set<String> jsons = readFileNames(jsonFiles)
-
-        Set<String> ids = readIdsFromLayouts(layoutFiles);
-
-        TypeSpec.Builder stringsTypeBuilder = TypeSpec.classBuilder("string").addModifiers(Modifier.PUBLIC, Modifier.FINAL, Modifier.STATIC);
-
-        for (String key : strings.keySet()) {
-
-            stringsTypeBuilder.addField(
-                    FieldSpec.builder(String.class, key, Modifier.FINAL, Modifier.STATIC, Modifier.PUBLIC)
-                            .initializer('$S', strings.get(key))
-                            .build()
-            )
-        }
-
-        TypeSpec.Builder drawablesTypeBuilder = produceResourcesTypeBuilder("drawable", drawables, baseAssetsFolder)
-        TypeSpec.Builder fontsTypeBuilder = produceResourcesTypeBuilder("font", fonts, baseAssetsFolder)
-        TypeSpec.Builder skinsTypeBuilder = produceResourcesTypeBuilder("skin", skins, baseAssetsFolder)
-        TypeSpec.Builder atlasesTypeBuilder = produceResourcesTypeBuilder("atlas", atlases, baseAssetsFolder)
-        TypeSpec.Builder layoutsTypeBuilder = produceResourcesTypeBuilder("layout", layouts, baseAssetsFolder)
-        TypeSpec.Builder jsonsTypeBuilder = produceResourcesTypeBuilder("json", jsons, baseAssetsFolder)
-        TypeSpec.Builder idsTypeBuilder = produceResourcesTypeBuilder("id", ids)
-
-        TypeSpec.Builder resourcesTypeBuilder = TypeSpec.classBuilder("R")
-                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-
-        resourcesTypeBuilder.addType(stringsTypeBuilder.build())
-        resourcesTypeBuilder.addType(drawablesTypeBuilder.build())
-        resourcesTypeBuilder.addType(fontsTypeBuilder.build())
-        resourcesTypeBuilder.addType(skinsTypeBuilder.build())
-        resourcesTypeBuilder.addType(atlasesTypeBuilder.build())
-        resourcesTypeBuilder.addType(layoutsTypeBuilder.build())
-        resourcesTypeBuilder.addType(idsTypeBuilder.build())
-        resourcesTypeBuilder.addType(jsonsTypeBuilder.build())
-
-        JavaFile.Builder idsJavaFileBuilder = JavaFile.builder(String.valueOf(project.group), resourcesTypeBuilder.build())
-
-        JavaFile javaFile = idsJavaFileBuilder.build()
-
-        javaFile.writeTo(generatedSrcDir)
-    }
-
-    private TypeSpec.Builder produceResourcesTypeBuilder(String resourceName, Collection<String> nameSource, String baseAssetsFolder) {
-        TypeSpec.Builder dataTypeBuilder = TypeSpec.classBuilder(resourceName).addModifiers(Modifier.PUBLIC, Modifier.FINAL, Modifier.STATIC);
-
-        for (String value : nameSource) {
-            
-            String internalPath = value.replaceAll(baseAssetsFolder, '')
-
-            String fileName = internalPath.find(~/(\w+[-]?\w+)*(?:\.(\w)+?)*$/)
-            dataTypeBuilder.addField(
-                    FieldSpec.builder(String.class, fileName.replaceFirst(~/\.[^\.]+$/, '').replaceAll("-", "_"), Modifier.FINAL, Modifier.STATIC, Modifier.PUBLIC)
-                            .initializer('$S', internalPath)
-                            .build()
-            )
-        }
-
-        return dataTypeBuilder
-    }
-
-    private TypeSpec.Builder produceResourcesTypeBuilder(String resourceName, Collection<String> nameSource) {
-        TypeSpec.Builder dataTypeBuilder = TypeSpec.classBuilder(resourceName).addModifiers(Modifier.PUBLIC, Modifier.FINAL, Modifier.STATIC);
-
-        for (String value : nameSource) {
-
-            dataTypeBuilder.addField(
-                    FieldSpec.builder(String.class, value.replaceFirst(~/\.[^\.]+$/, ''), Modifier.FINAL, Modifier.STATIC, Modifier.PUBLIC)
-                            .initializer('$S', value)
-                            .build()
-            )
-        }
-
-        return dataTypeBuilder
-    }
-
-    private Set<String> readIdsFromLayouts(List<File> layoutFiles) {
-        Set<String> ids = new ArrayList<>()
-
-        logger.info("Extracting ids from layouts")
-        for (File layoutFile : layoutFiles) {
-            logger.info("Processing layout [" + layoutFile.getAbsolutePath() + "]")
-            Node items = new XmlParser().parse(layoutFile)
-            fetchNodeId(items, ids)
-            fetchChildrenIds(items, ids)
-        }
-
-        return ids
-    }
-
-    private void fetchChildrenIds(Node item, final Set<String> ids) {
-        List children = item.children()
-
-        for (Node child : children) {
-            logger.debug("Found item [" + item + "]")
-            fetchNodeId(child, ids)
-            fetchChildrenIds(child, ids)
-        }
-    }
-
-    protected void fetchNodeId(Node item, Set<String> ids) {
-        if (item.hasProperty("name")) {
-            String name = item.attributes().get("name")
-            if (name != null && name.length() > 0) {
-                logger.info("Found id [" + name + "]")
-                ids.add(name)
-            }
-        }
-    }
-
-    protected Map<String, String> readStringNames(String baseAssetsFolder, Gson gson) {
-        File file = new File(baseAssetsFolder + "locale/en/strings.json")
-
-        logger.info "Parsing json file [" + file.absolutePath + "]"
-
-        Reader reader = new FileReader(file)
-
-        Type type = new TypeToken<Map<String, String>>() {
-        }.getType()
-
-        Map<String, String> strings = gson.fromJson(reader, type)
-
-        reader.close()
-
-        return strings
-    }
-
-    private Set<String> readFileNames(List<File> files) {
-        Set<String> strings = new HashSet<>(files.size())
-
-        files.each { File file ->
-            strings.add(file.path
-                    .replaceAll("mdpi", "{resolution}")
-                    .replaceAll("xxxhdpi", "{resolution}")
-                    .replaceAll("xxhdpi", "{resolution}")
-                    .replaceAll("xhdpi", "{resolution}")
-                    .replaceAll("hdpi", "{resolution}"))
-        }
-
-        return strings
-    }
-
-    private List<File> listDrawableFiles(String baseDrawablesFolder) {
-        logger.info("Reading [" + baseDrawablesFolder + "] for *.png")
-        return listFiles(baseDrawablesFolder, "png")
-    }
-
-    private List<File> listFontFiles(String baseFontsFolder) {
-        logger.info("Reading [" + baseFontsFolder + "] for *.fnt")
-        return listFiles(baseFontsFolder, "fnt")
-    }
-
-    private List<File> listSkinFiles(String baseJsonsFolder) {
-        logger.info("Reading [" + baseJsonsFolder + "] for *.json")
-        return listFiles(baseJsonsFolder, "json")
-    }
-
-    private List<File> listAtlasFiles(String baseDrawablesFolder) {
-        logger.info("Reading [" + baseDrawablesFolder + "] for *.atlas")
-        return listFiles(baseDrawablesFolder, "atlas")
-    }
-
-    private List<File> listJsonFiles(String baseJsonFolder) {
-        logger.info("Reading [" + baseJsonFolder + "] for *.json")
-        return listFiles(baseJsonFolder, "json")
-    }
-
-    protected List<File> listFiles(String baseFolder, String extension) {
-        List<File> drawableFiles = new ArrayList<>()
-
-        File drawablesFolder = new File(baseFolder)
-
-        if (drawablesFolder.exists()) {
-            drawablesFolder.listFiles().each { File file ->
-                if (file.directory) {
-                    drawableFiles.addAll(listFiles(file.getAbsolutePath(), extension))
-                } else if (file.name.endsWith(extension)) {
-                    logger.debug("Found file [" + file.getAbsolutePath() + "]")
-                    drawableFiles.add(file)
-                }
-            }
-        }
-
-        return drawableFiles
-    }
-
-    private List<File> listLayoutFiles(String baseAssetsFolder) {
-        logger.info("Reading [" + baseAssetsFolder + "] for layouts")
-        List<File> layoutFiles = new ArrayList<>();
-
-        File defaultLayoutFolder = new File(baseAssetsFolder, "layout")
-        if (defaultLayoutFolder.exists()) {
-            defaultLayoutFolder.listFiles().each { File file ->
-                logger.debug("Found layout [" + file.getAbsolutePath() + "]")
-                layoutFiles.add(file)
-            }
-
-        }
-
-        File landscapeLayoutFolder = new File(baseAssetsFolder, "layout-land")
-        if (landscapeLayoutFolder.exists()) {
-            landscapeLayoutFolder.listFiles().each { File file ->
-                logger.debug("Found layout [" + file.getAbsolutePath() + "]")
-                layoutFiles.add(file)
-            }
-        }
-
-        File portraitLayoutFolder = new File(baseAssetsFolder, "layout-port")
-        if (portraitLayoutFolder.exists()) {
-            portraitLayoutFolder.listFiles().each { File file ->
-                logger.debug("Found layout [" + file.getAbsolutePath() + "]")
-                layoutFiles.add(file)
-            }
-        }
-
-        return layoutFiles
-    }
-
+resources {
+    assetsDir="$projectDir/assets/"
+
+    outputDir = "generated-ids/source/ids/main/"
+
+    resourceClass = "R"
+
+    imagesDir = "drawable"
+    fontsDir = "skin"
+    skinsDir = "skin"
+    atlasesDir = "skin"
+    jsonsDir = "data/json"
+    stringsDir = "locale"
+    layoutsDir = "layout"
+
+    //imageResourceClass = "image"
+    //fontResourceClass = "font"
+    //skinResourceClass = "skin"
+    //atlasResourceClass = "atlas"
+    //jsonResourceClass = "json"
+    //stringResourceClass = "string"
+    //layoutResourceClass = "layout"
+    //idResourceClass = "id"
+
+    //idResourceAttributeName = "name"
+
+    //imageExtension = "png"
+    //fontExtension = "fnt"
+    //skinExtension = "json"
+    //atlasExtension = "atlas"
+    //jsonExtension = "json"
+    //stringExtension = "json"
+    //layoutExtension = "xml"
+
+
+    //resolution = "{resolution}"
+    resolutions = ["xxxhdpi", "xxhdpi", "xhdpi", "hdpi", "mdpi"]
 }

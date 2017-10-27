@@ -1,17 +1,21 @@
 buildscript {
     repositories {
         mavenLocal()
+        jcenter()
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        jcenter()
         maven {
             url "https://plugins.gradle.org/m2/"
+        }
+        maven {
+            url uri('../libgdx-resources-plugin')
         }
     }
     dependencies {
         classpath "net.ltgt.gradle:gradle-apt-plugin:0.9"
         classpath 'com.squareup:javapoet:1.8.0'
         classpath 'com.google.code.gson:gson:2.8.0'
+        classpath 'org.arnoid.resources:resources-plugin:0.0.1'
     }
 
 }
@@ -24,7 +28,7 @@ allprojects {
     group = "org.arnoid.damoclus"
     ext {
         appName = "Damoclus Mission"
-        gdxVersion = '1.9.6'
+        gdxVersion = '1.9.7'
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.3'
         aiVersion = '1.8.1'
@@ -33,6 +37,7 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
+        jcenter()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
@@ -71,10 +76,28 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
-        compile "com.underwaterapps.overlap2druntime:overlap2d-runtime-libgdx:0.1.0"
-        compile "net.dermetfan.libgdx-utils:libgdx-utils-box2d:0.13.3"
-        compile "net.dermetfan.libgdx-utils:libgdx-utils:0.13.3"
+        compile "com.underwaterapps.overlap2druntime:overlap2d-runtime-libgdx:0.1.1"
+        compile "net.dermetfan.libgdx-utils:libgdx-utils-box2d:0.13.4"
+        compile "net.dermetfan.libgdx-utils:libgdx-utils:0.13.4"
         compile 'xpp3:xpp3:1.1.4c'
+
+//        //voice
+//        compile 'de.dfki.mary:voice-bits1-hsmm:5.2'
+//        compile 'de.dfki.mary:voice-bits3-hsmm:5.2'
+//        compile 'de.dfki.mary:voice-cmu-bdl-hsmm:5.2'
+//        compile 'de.dfki.mary:voice-cmu-nk-hsmm:5.2'
+//        compile 'de.dfki.mary:voice-cmu-rms-hsmm:5.2'
+//        compile 'de.dfki.mary:voice-cmu-slt-hsmm:5.2'
+//        compile 'de.dfki.mary:voice-dfki-obadiah-hsmm:5.2'
+//        compile 'de.dfki.mary:voice-dfki-ot-hsmm:5.2'
+//        compile 'de.dfki.mary:voice-dfki-pavoque-neutral-hsmm:5.2'
+//        compile 'de.dfki.mary:voice-dfki-poppy-hsmm:5.2'
+//        compile 'de.dfki.mary:voice-dfki-spike-hsmm:5.2'
+//        compile 'de.dfki.mary:voice-enst-camille-hsmm:5.2'
+//        compile 'de.dfki.mary:voice-enst-dennys-hsmm:5.2'
+//        compile 'de.dfki.mary:voice-istc-lucia-hsmm:5.2'
+//        compile 'de.dfki.mary:voice-upmc-jessica-hsmm:5.2'
+//        compile 'de.dfki.mary:voice-upmc-pierre-hsmm:5.2'
     }
 
 }

@@ -2,6 +2,7 @@ package org.arnoid.damoclus.ui.scene.menu.builder;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import org.arnoid.damoclus.DamoclusGdxGame;
+import org.arnoid.damoclus.controller.skin.AssetsController;
 import org.arnoid.damoclus.controller.skin.SkinController;
 import org.arnoid.damoclus.controller.strings.StringsController;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.BaseModel;
@@ -22,6 +23,8 @@ public class XmlMenuSceneBuilder {
     SkinController skinController;
     @Inject
     StringsController stringsController;
+    @Inject
+    AssetsController assetsController;
 
     public enum ActorType {
         TextButton,
@@ -35,7 +38,9 @@ public class XmlMenuSceneBuilder {
         Window,
         TextField,
         Container,
+        Image,
         List,
+        Stack,
     }
 
     private XmlMenuSceneBuilder(String layoutFileName) {
@@ -65,7 +70,7 @@ public class XmlMenuSceneBuilder {
         List<BaseModel> holders = xmlParser.parseLayout(layoutFileName);
 
 
-        ActorProducer actorProducer = new ActorProducer(skinController, stringsController, listener);
+        ActorProducer actorProducer = new ActorProducer(skinController, stringsController, assetsController, listener);
 
         List<Actor> actors = new ArrayList<>(holders.size());
 

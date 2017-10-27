@@ -36,12 +36,6 @@ public class ControllerModule {
 
     @Singleton
     @Provides
-    public ConfigurationController provideControlMapConfigurationController() {
-        return new ConfigurationController();
-    }
-
-    @Singleton
-    @Provides
     public AssetsController provideAssetsController() {
         return new AssetsController();
     }

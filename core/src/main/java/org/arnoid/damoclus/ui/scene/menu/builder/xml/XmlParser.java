@@ -8,12 +8,14 @@ import org.arnoid.damoclus.ui.scene.menu.builder.XmlMenuSceneBuilderListener;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.BaseModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.CheckBoxModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.ContainerModel;
+import org.arnoid.damoclus.ui.scene.menu.builder.model.ImageModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.LabelModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.ListModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.RowModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.ScrollPaneModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.SelectBoxModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.SpaceModel;
+import org.arnoid.damoclus.ui.scene.menu.builder.model.StackModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.TableModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.TextButtonModel;
 import org.arnoid.damoclus.ui.scene.menu.builder.model.TextFieldModel;
@@ -46,13 +48,16 @@ public class XmlParser {
     public static final String SPACE_TAG = "Space";
     public static final String SELECTLIST_TAG = "SelectList";
     public static final String LISTBOX_TAG = "List";
+    public static final String IMAGE_TAG = "Image";
+    public static final String STACK_TAG = "Stack";
 
     public static final List<String> PARENT_TAGS_LIST = Arrays.asList(
             TABLE_TAG.toLowerCase(),
             ROW_TAG.toLowerCase(),
             WINDOW_TAG.toLowerCase(),
             CONTAINER_TAG.toLowerCase(),
-            SCROLLPANE_TAG.toLowerCase()
+            SCROLLPANE_TAG.toLowerCase(),
+            STACK_TAG.toLowerCase()
     );
 
     private final XmlMenuSceneBuilderListener listener;
@@ -157,6 +162,10 @@ public class XmlParser {
             model = buildScrollPaneModel(xmlParser);
         } else if (LISTBOX_TAG.equalsIgnoreCase(tagName)) {
             model = buildListModel(xmlParser);
+        } else if (IMAGE_TAG.equalsIgnoreCase(tagName)) {
+            model = buildImageModel(xmlParser);
+        } else if (STACK_TAG.equalsIgnoreCase(tagName)) {
+            model = buildStackModel(xmlParser);
         } else {
             String message = "Unknown tag [" + tagName + "]. It will be ignored";
             Gdx.app.error(TAG, message);
@@ -166,6 +175,16 @@ public class XmlParser {
             model = null;
         }
         return model;
+    }
+
+    private ImageModel buildImageModel(XmlPullParser xmlParser) {
+        ImageModel imageModel = new ImageModel();
+        imageModel.setActorType(XmlMenuSceneBuilder.ActorType.Image);
+        setBaseModelParameters(imageModel, xmlParser);
+
+        imageModel.setSrc(XmlHelper.readStringAttribute(xmlParser, "src"));
+
+        return imageModel;
     }
 
     private BaseModel buildScrollPaneModel(XmlPullParser xmlParser) throws IOException, XmlPullParserException {
@@ -219,6 +238,20 @@ public class XmlParser {
             containerModel.child = baseModels.get(0);
         }
         return containerModel;
+    }
+
+    private BaseModel buildStackModel(XmlPullParser xmlParser) throws IOException, XmlPullParserException {
+        StackModel model = new StackModel();
+        model.actorType = XmlMenuSceneBuilder.ActorType.Stack;
+        setBaseModelParameters(model, xmlParser);
+
+        xmlParser.next();
+        List<BaseModel> baseModels = buildModels(xmlParser);
+        if (baseModels != null && baseModels.size() > 0) {
+            model.getChildren().addAll(baseModels);
+        }
+
+        return model;
     }
 
     private BaseModel buildCheckBoxModel(XmlPullParser xmlParser) {

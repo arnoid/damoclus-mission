@@ -30,6 +30,7 @@ import javax.inject.Singleton;
                 SceneModule.class,
                 SceneDelegateModule.class,
                 ControllerModule.class,
+                PersistingControllerModule.class,
         }
 )
 @Singleton
